@@ -31,7 +31,7 @@ namespace PublicApi.Util.FoodProductEndpoints
             var pagedSpec = new FoodProductFilterPaginatedSpecification(request.PageIndex * request.PageSize, request.PageSize, request.UnitOfMeasureId, request.CaloriesGTE, request.CaloriesLTE, request.Protein);
             var foodProducts = await _foodProductService.GetAsync(filterSpec, pagedSpec);
             response.FoodProducts.AddRange(foodProducts.List.Select(_mapper.Map<FoodProductDto>));
-            response.PageCount = foodProducts.Count; 
+            response.PageCount = foodProducts.List.Count(); 
             return Ok(response);
         }
     }
