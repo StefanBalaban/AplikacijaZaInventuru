@@ -1,19 +1,19 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using System.Collections.Generic;
-using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Generator.Generators
 {
     public class ServicesSyntaxGenerator
     {
-        private readonly AdhocWorkspace _workspace = new AdhocWorkspace();
+        private readonly AdhocWorkspace _workspace = new();
         private SyntaxGenerator _generator;
         private string _modelClassName;
-        private List<KeyValuePair<string, string>> _propertiesWithAttributes = new List<KeyValuePair<string, string>>();
+        private List<KeyValuePair<string, string>> _propertiesWithAttributes = new();
         private string _repositoryFieldName;
 
         public SyntaxNode GenerateServiceClassNode(string modelClassName,
@@ -50,14 +50,14 @@ namespace Generator.Generators
 
             var classDefinition = _generator.ClassDeclaration($"{_modelClassName}Service", null, Accessibility.Public,
                 DeclarationModifiers.None,
-                null,
                 members: members);
 
             return
                 CompilationUnit()
                     .WithUsings(List(usings))
-                    .WithMembers(SingletonList<MemberDeclarationSyntax>(NamespaceDeclaration(IdentifierName("Services"))
-                        .WithMembers(SingletonList(classDefinition))))
+                    .WithMembers(SingletonList<MemberDeclarationSyntax>(
+                        NamespaceDeclaration(IdentifierName("ApplicationCore.Services"))
+                            .WithMembers(SingletonList(classDefinition))))
                     .NormalizeWhitespace();
         }
 
@@ -71,11 +71,11 @@ namespace Generator.Generators
                             IdentifierName("Ardalis"),
                             IdentifierName("Specification"))),
                     UsingDirective(
-                        IdentifierName("Interfaces")),
+                        IdentifierName("ApplicationCore.Interfaces")),
                     UsingDirective(
-                        IdentifierName("Extensions")),
+                        IdentifierName("ApplicationCore.Extensions")),
                     UsingDirective(
-                        IdentifierName("Entities"))
+                        IdentifierName("ApplicationCore.Entities"))
                 };
         }
 

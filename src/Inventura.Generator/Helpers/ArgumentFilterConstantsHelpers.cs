@@ -1,55 +1,53 @@
-﻿using ApplicationCore.Constants;
+﻿using System.Collections.Generic;
+using ApplicationCore.Constants;
 using Microsoft.CodeAnalysis.CSharp;
-using System.Collections.Generic;
 
 namespace Generator.Generators
 {
     public class ArgumentFilterConstantsHelpers
     {
         public string EQUAL = $"{nameof(FilterConstants)}.{nameof(FilterConstants.EQUAL)}";
-        public string LT = $"{nameof(FilterConstants)}.{nameof(FilterConstants.LT)}";
+        public List<FilterAndSyntax> FilterAndSyntaxList = new();
         public string GT = $"{nameof(FilterConstants)}.{nameof(FilterConstants.GT)}";
-        public string LTE = $"{nameof(FilterConstants)}.{nameof(FilterConstants.LTE)}";
         public string GTE = $"{nameof(FilterConstants)}.{nameof(FilterConstants.GTE)}";
-        public List<FilterAndSyntax> FilterAndSyntaxList = new List<FilterAndSyntax>();
+        public string LT = $"{nameof(FilterConstants)}.{nameof(FilterConstants.LT)}";
+        public string LTE = $"{nameof(FilterConstants)}.{nameof(FilterConstants.LTE)}";
 
         public ArgumentFilterConstantsHelpers()
         {
             FilterAndSyntaxList = new List<FilterAndSyntax>
             {
-
-                new FilterAndSyntax
+                new()
                 {
                     Argument = EQUAL,
                     SyntaxKind = SyntaxKind.EqualsExpression
                 },
-                new FilterAndSyntax
+                new()
                 {
                     Argument = LTE,
                     SyntaxKind = SyntaxKind.LessThanOrEqualExpression
                 },
-                new FilterAndSyntax
+                new()
                 {
                     Argument = GTE,
                     SyntaxKind = SyntaxKind.GreaterThanOrEqualExpression
                 },
-                new FilterAndSyntax
+                new()
                 {
                     Argument = LT,
                     SyntaxKind = SyntaxKind.LessThanExpression
                 },
-                new FilterAndSyntax
+                new()
                 {
                     Argument = GT,
                     SyntaxKind = SyntaxKind.GreaterThanExpression
                 }
             };
-
         }
 
         public string GetArgumentSufix(string argument)
         {
-            if (argument == EQUAL) return $"";
+            if (argument == EQUAL) return "";
             if (argument == LT) return $"{nameof(LT)}";
             if (argument == GT) return $"{nameof(GT)}";
             if (argument == LTE) return $"{nameof(LTE)}";

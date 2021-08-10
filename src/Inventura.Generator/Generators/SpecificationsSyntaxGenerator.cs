@@ -1,16 +1,16 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
-using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Generator.Generators
 {
     internal class SpecificationsSyntaxGenerator
     {
-        private readonly ArgumentFilterConstantsHelpers _argumentFilterConstantsHelpers = new ArgumentFilterConstantsHelpers();
-        private List<AttributesWithInfo> _attributes = new List<AttributesWithInfo>();
+        private readonly ArgumentFilterConstantsHelpers _argumentFilterConstantsHelpers = new();
+        private List<AttributesWithInfo> _attributes = new();
         private string _modelClassName;
 
         public SyntaxNode GenerateSpecificationsNode(string modelClassName,
@@ -44,7 +44,7 @@ namespace Generator.Generators
                                         QualifiedName(
                                             IdentifierName("ApplicationCore"),
                                             IdentifierName("Specifications")),
-                                        IdentifierName(_modelClassName)))
+                                        IdentifierName($"{_modelClassName}Specs")))
                                 .WithMembers(
                                     List(
                                         new MemberDeclarationSyntax[]
@@ -79,7 +79,7 @@ namespace Generator.Generators
                                                                     .WithTypeArgumentList(
                                                                         TypeArgumentList(
                                                                             SingletonSeparatedList<TypeSyntax>(
-                                                                                    IdentifierName(_modelClassName))))))))
+                                                                                IdentifierName(_modelClassName))))))))
                                                 .WithMembers(
                                                     SingletonList(
                                                         GenerateSpecificationConstructor()))
@@ -155,7 +155,7 @@ namespace Generator.Generators
                                     IdentifierName("Include")))
                             .WithArgumentList(
                                 ArgumentList(
-                                    SingletonSeparatedList<ArgumentSyntax>(
+                                    SingletonSeparatedList(
                                         Argument(
                                             SimpleLambdaExpression(
                                                     Parameter(
@@ -165,8 +165,8 @@ namespace Generator.Generators
                                                         SyntaxKind.SimpleMemberAccessExpression,
                                                         IdentifierName("x"),
                                                         IdentifierName(x.PropertyIdentifier)))))))))
-                    )
-                );
+                )
+            );
 
             return statementSyntaxList;
         }
@@ -231,7 +231,8 @@ namespace Generator.Generators
                         Token(SyntaxKind.CommaToken)
                     );
                 }));
-            syntaxNodeOrTokenList.RemoveAt(syntaxNodeOrTokenList.Count - 1);
+            if (syntaxNodeOrTokenList.Count > 0) syntaxNodeOrTokenList.RemoveAt(syntaxNodeOrTokenList.Count - 1);
+
             return syntaxNodeOrTokenList;
         }
 

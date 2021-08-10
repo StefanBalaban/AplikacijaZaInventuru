@@ -1,10 +1,10 @@
-﻿using ApplicationCore.Extensions;
-using PublicApi.Util.FoodProductEndpoints;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ApplicationCore.Extensions;
+using PublicApi.Endpoints.FoodProductEndpoints;
 using Xunit;
 
 namespace FunctionalTests.ApiTests.FoodProductEndpoints
@@ -12,7 +12,7 @@ namespace FunctionalTests.ApiTests.FoodProductEndpoints
     [Collection("Sequential")]
     public class DeleteEndpoint : IClassFixture<ApiTestFixture>
     {
-        JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        private JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
 
         public DeleteEndpoint(ApiTestFixture factory)
         {

@@ -1,11 +1,10 @@
-﻿using ApplicationCore.Constants;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using ApplicationCore.Constants;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FunctionalTests
 {
@@ -13,7 +12,7 @@ namespace FunctionalTests
     {
         public static string GetAdminUserToken()
         {
-            string userName = "admin@microsoft.com";
+            var userName = "admin@microsoft.com";
             string[] roles = { "Administrators" };
 
             return CreateToken(userName, roles);
@@ -21,7 +20,7 @@ namespace FunctionalTests
 
         public static string GetNormalUserToken()
         {
-            string userName = "demouser@microsoft.com";
+            var userName = "demouser@microsoft.com";
             string[] roles = { };
 
             return CreateToken(userName, roles);
@@ -29,19 +28,17 @@ namespace FunctionalTests
 
         private static string CreateToken(string userName, string[] roles)
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, userName) };
+            var claims = new List<Claim> { new(ClaimTypes.Name, userName) };
 
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
             var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims.ToArray()),
                 Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);

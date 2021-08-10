@@ -1,18 +1,18 @@
-﻿using FunctionalTests;
-using PublicApi.Util.FoodProductEndpoints;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Xunit;
 using ApplicationCore.Extensions;
+using PublicApi.Endpoints.FoodProductEndpoints;
+using Xunit;
 
 namespace FunctionalTests.ApiTests.FoodProductEndpoints
 {
     [Collection("Sequential")]
     public class GetByIdEndpoint : IClassFixture<ApiTestFixture>
     {
-        JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        private JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
 
         public GetByIdEndpoint(ApiTestFixture factory)
         {
@@ -24,6 +24,8 @@ namespace FunctionalTests.ApiTests.FoodProductEndpoints
         [Fact]
         public async Task ReturnsItemGivenValidId()
         {
+            var adminToken = ApiTokenHelper.GetAdminUserToken();
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminToken);
             var response = await Client.GetAsync("api/foodproduct/5");
             response.EnsureSuccessStatusCode();
             var stringResponse = await response.Content.ReadAsStringAsync();
@@ -36,6 +38,8 @@ namespace FunctionalTests.ApiTests.FoodProductEndpoints
         [Fact]
         public async Task ReturnsNotFoundGivenInvalidId()
         {
+            var adminToken = ApiTokenHelper.GetAdminUserToken();
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminToken);
             var response = await Client.GetAsync("api/foodproduct/0");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);

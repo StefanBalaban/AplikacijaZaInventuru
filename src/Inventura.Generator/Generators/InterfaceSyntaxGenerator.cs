@@ -12,13 +12,13 @@ namespace Generator.Generators
             return
                 CompilationUnit()
                     .WithUsings(
-                        SingletonList<UsingDirectiveSyntax>(
+                        SingletonList(
                             UsingDirective(
-                                IdentifierName("Entities"))))
+                                IdentifierName("ApplicationCore.Entities"))))
                     .WithMembers(
                         SingletonList<MemberDeclarationSyntax>(
                             NamespaceDeclaration(
-                                    IdentifierName("Interfaces"))
+                                    IdentifierName("ApplicationCore.Interfaces"))
                                 .WithMembers(
                                     SingletonList<MemberDeclarationSyntax>(
                                         InterfaceDeclaration($"I{modelClassName}Service")

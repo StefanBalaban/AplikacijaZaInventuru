@@ -1,13 +1,10 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Filters;
 
 namespace ApplicationCore.Entities.UserAggregate
 {
     public class UserContactInfo : BaseEntity
     {
-        public string Contact { get; private set; }
-
-        public UserContactInfo()
-        {
-        }
+        [Dto] [Get] [Post] [Put] [Required] public string Contact { get; set; }
     }
 }

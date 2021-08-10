@@ -1,12 +1,10 @@
-﻿
-
-using Ardalis.GuardClauses;
-using Ardalis.Specification;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using ApplicationCore.Extensions;
 using ApplicationCore.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using Ardalis.Specification;
 
 namespace ApplicationCore.Services
 {
@@ -14,7 +12,9 @@ namespace ApplicationCore.Services
     {
         private readonly IAsyncRepository<FoodProduct> _foodProductRepository;
         private readonly IAppLogger<FoodProductService> _logger;
-        public FoodProductService(IAsyncRepository<FoodProduct> foodProductRepository, IAppLogger<FoodProductService> logger)
+
+        public FoodProductService(IAsyncRepository<FoodProduct> foodProductRepository,
+            IAppLogger<FoodProductService> logger)
         {
             _foodProductRepository = foodProductRepository;
             _logger = logger;
@@ -32,15 +32,24 @@ namespace ApplicationCore.Services
             return foodProduct;
         }
 
-        public async Task<ListEntity<FoodProduct>> GetAsync(Specification<FoodProduct> filterSpec, Specification<FoodProduct> pagedSpec)
+        public async Task<ListEntity<FoodProduct>> GetAsync(Specification<FoodProduct> filterSpec,
+            Specification<FoodProduct> pagedSpec)
         {
-            return new ListEntity<FoodProduct> { List = await _foodProductRepository.ListAsync(pagedSpec), Count = await _foodProductRepository.CountAsync(filterSpec) };
+            return new ListEntity<FoodProduct>
+            {
+                List = await _foodProductRepository.ListAsync(pagedSpec),
+                Count = await _foodProductRepository.CountAsync(filterSpec)
+            };
         }
 
         public async Task<FoodProduct> PostAsync(FoodProduct t)
         {
             Guard.Against.ModelStateIsInvalid(t, nameof(FoodProduct));
-            return await _foodProductRepository.AddAsync(new FoodProduct { Name = t.Name, UnitOfMeasureId = t.UnitOfMeasureId, Calories = t.Calories, Protein = t.Protein, Carbohydrates = t.Carbohydrates, Fats = t.Fats });
+            return await _foodProductRepository.AddAsync(new FoodProduct
+            {
+                Name = t.Name, UnitOfMeasureId = t.UnitOfMeasureId, Calories = t.Calories, Protein = t.Protein,
+                Carbohydrates = t.Carbohydrates, Fats = t.Fats
+            });
         }
 
         public async Task<FoodProduct> PutAsync(FoodProduct t)
@@ -53,6 +62,7 @@ namespace ApplicationCore.Services
             foodProduct.Calories = t.Calories;
             foodProduct.Protein = t.Protein;
             foodProduct.Carbohydrates = t.Carbohydrates;
+            foodProduct.Fats = t.Fats;
             await _foodProductRepository.UpdateAsync(foodProduct);
             return foodProduct;
         }

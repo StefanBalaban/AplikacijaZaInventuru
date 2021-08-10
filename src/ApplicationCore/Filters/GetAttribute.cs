@@ -2,11 +2,10 @@
 
 namespace ApplicationCore.Filters
 {
-    class GetAttribute : Attribute
+    internal class GetAttribute : Attribute
     {
         public GetAttribute(params string[] param)
         {
-
         }
     }
 }

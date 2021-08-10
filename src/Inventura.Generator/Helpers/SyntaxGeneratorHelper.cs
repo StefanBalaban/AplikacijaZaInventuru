@@ -1,19 +1,19 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Generator.Generators
 {
     public class SyntaxGeneratorHelper
     {
-        private readonly EndpointSyntaxGenerator _endpointSyntaxGenerator = new EndpointSyntaxGenerator();
-        private readonly InterfaceSyntaxGenerator _interfaceSyntayGenerator = new InterfaceSyntaxGenerator();
-        private readonly PropertiesHelper _propertiesHelper = new PropertiesHelper();
-        private readonly ServicesSyntaxGenerator _servicesSyntaxGenerator = new ServicesSyntaxGenerator();
+        private readonly EndpointSyntaxGenerator _endpointSyntaxGenerator = new();
+        private readonly InterfaceSyntaxGenerator _interfaceSyntayGenerator = new();
+        private readonly PropertiesHelper _propertiesHelper = new();
+        private readonly ServicesSyntaxGenerator _servicesSyntaxGenerator = new();
 
         private readonly SpecificationsSyntaxGenerator _specificationsSyntaxGenerator =
-            new SpecificationsSyntaxGenerator();
+            new();
 
         private string _modelClassName;
 

@@ -3,11 +3,11 @@
 namespace PublicApi.Util
 {
     /// <summary>
-    /// Base class used by API responses
+    ///     Base class used by API responses
     /// </summary>
     public abstract class BaseResponse : BaseMessage
     {
-        public BaseResponse(Guid correlationId) : base()
+        public BaseResponse(Guid correlationId)
         {
             _correlationId = correlationId;
         }

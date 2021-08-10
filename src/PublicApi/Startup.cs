@@ -1,8 +1,10 @@
-using AutoMapper;
+using System.Collections.Generic;
+using System.Text;
 using ApplicationCore.Constants;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
+using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
@@ -17,8 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PublicApi.Util
 {
@@ -97,6 +97,8 @@ namespace PublicApi.Util
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
             services.AddTransient<IFoodProductService, FoodProductService>();
+            services.AddTransient<IFoodStockService, FoodStockService>();
+            services.AddTransient<IMealService, MealService>();
 
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
@@ -150,7 +152,7 @@ namespace PublicApi.Util
                     Scheme = "Bearer"
                 });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme

@@ -1,26 +1,26 @@
-﻿using Generator.Helpers;
+﻿using System.Collections.Generic;
+using Generator.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Generator.Generators
 {
     internal class EndpointSyntaxGenerator
     {
-        private EndpointSyntaxGeneratorHelper helper = new EndpointSyntaxGeneratorHelper();
         private readonly ArgumentFilterConstantsHelpers _argumentFilterConstantsHelpers =
-            new ArgumentFilterConstantsHelpers();
+            new();
 
-        private List<PropertiesWithInfo> _propertiesWithInfo;
+        private List<AttributesWithInfo> _attributesWithInfo;
         private string _modelClassName;
         private List<KeyValuePair<string, string>> _propertiesWithAttributes;
 
-        private List<AttributesWithInfo> _attributesWithInfo;
+        private List<PropertiesWithInfo> _propertiesWithInfo;
         private string _serviceInstanceName;
         private string _serviceInterfaceName;
         private string _serviceParameterName;
+        private readonly EndpointSyntaxGeneratorHelper helper = new();
 
         public SyntaxNode GenerateEndpointsNode(string modelClassName,
             List<KeyValuePair<string, string>> propertiesWithAttributes,
@@ -39,7 +39,7 @@ namespace Generator.Generators
         }
 
         private SyntaxNode GenerateEndpointsNode()
-        {            
+        {
             return
                 CompilationUnit()
                     .WithMembers(SingletonList(GenerateMembers())).NormalizeWhitespace();
@@ -48,13 +48,13 @@ namespace Generator.Generators
         private MemberDeclarationSyntax GenerateMembers()
         {
             return NamespaceDeclaration(
-               QualifiedName(
-                   QualifiedName(
-                       IdentifierName("PublicApi"),
-                       IdentifierName("Endpoints")),
-                   IdentifierName($"{_modelClassName}Endpoints"))).WithMembers(List(
-               GetMembers()
-           ));
+                QualifiedName(
+                    QualifiedName(
+                        IdentifierName("PublicApi"),
+                        IdentifierName("Endpoints")),
+                    IdentifierName($"{_modelClassName}Endpoints"))).WithMembers(List(
+                GetMembers()
+            ));
         }
 
         private List<MemberDeclarationSyntax> GetMembers()
@@ -67,7 +67,7 @@ namespace Generator.Generators
             list.AddRange(GenerateEndpoint("Delete"));
             list.AddRange(GenerateEndpoint("ListPaged"));
             list.AddRange(
-               GenerateDto());
+                GenerateDto());
             return list;
         }
 
@@ -76,12 +76,13 @@ namespace Generator.Generators
             return new List<MemberDeclarationSyntax>
             {
                 ClassDeclaration($"{_modelClassName}Dto")
-                                .WithModifiers(
-                                    TokenList(
-                                        Token(SyntaxKind.PublicKeyword)))
-                                .WithMembers(helper.GenerateRequestOrDtoClassMemeberProperties("Dto", _propertiesWithInfo))
+                    .WithModifiers(
+                        TokenList(
+                            Token(SyntaxKind.PublicKeyword)))
+                    .WithMembers(helper.GenerateRequestOrDtoClassMemeberProperties("Dto", _propertiesWithInfo))
             };
         }
+
         private IEnumerable<MemberDeclarationSyntax> GenerateEndpoint(string endpoint)
         {
             return new List<MemberDeclarationSyntax>
@@ -175,7 +176,7 @@ namespace Generator.Generators
                                     .WithParameterList(
                                         ParameterList(
                                             SeparatedList<ParameterSyntax>(
-                                                new SyntaxNodeOrToken[]
+                                                new[]
                                                 {
                                                     helper.GenerateHandleParameters(endpoint, _modelClassName),
                                                     Token(SyntaxKind.CommaToken),
@@ -185,64 +186,66 @@ namespace Generator.Generators
                                                             IdentifierName("CancellationToken"))
                                                 })))
                                     .WithBody(GenerateHandleBody(endpoint)
-                                        )
+                                    )
                             })),
                 ClassDeclaration($"{endpoint}{_modelClassName}Request")
-                                .WithModifiers(
-                                    TokenList(
-                                        Token(SyntaxKind.PublicKeyword)))
-                                .WithBaseList(
-                                    BaseList(
-                                        SingletonSeparatedList<BaseTypeSyntax>(
-                                            SimpleBaseType(
-                                                IdentifierName("BaseRequest")))))
-                                .WithMembers(helper.GenerateRequestOrDtoClassMemeberProperties(endpoint, _propertiesWithInfo, _modelClassName, _attributesWithInfo, _argumentFilterConstantsHelpers)),
+                    .WithModifiers(
+                        TokenList(
+                            Token(SyntaxKind.PublicKeyword)))
+                    .WithBaseList(
+                        BaseList(
+                            SingletonSeparatedList<BaseTypeSyntax>(
+                                SimpleBaseType(
+                                    IdentifierName("BaseRequest")))))
+                    .WithMembers(helper.GenerateRequestOrDtoClassMemeberProperties(endpoint, _propertiesWithInfo,
+                        _modelClassName, _attributesWithInfo, _argumentFilterConstantsHelpers)),
                 ClassDeclaration($"{endpoint}{_modelClassName}Response")
-                .WithModifiers(
-                    TokenList(
-                        Token(SyntaxKind.PublicKeyword)))
-                .WithBaseList(
-                    BaseList(
-                        SingletonSeparatedList<BaseTypeSyntax>(
-                            SimpleBaseType(
-                                IdentifierName("BaseResponse")))))
-                .WithMembers(helper.GenerateResponseClassMembers(endpoint, _modelClassName))
+                    .WithModifiers(
+                        TokenList(
+                            Token(SyntaxKind.PublicKeyword)))
+                    .WithBaseList(
+                        BaseList(
+                            SingletonSeparatedList<BaseTypeSyntax>(
+                                SimpleBaseType(
+                                    IdentifierName("BaseResponse")))))
+                    .WithMembers(helper.GenerateResponseClassMembers(endpoint, _modelClassName))
             };
         }
 
         private BlockSyntax GenerateHandleBody(string endpoint)
         {
-            var statements = new List<StatementSyntax>() {
+            var statements = new List<StatementSyntax>
+            {
                 LocalDeclarationStatement(
-                                                VariableDeclaration(
-                                                        IdentifierName(
-                                                            Identifier(
-                                                                TriviaList(),
-                                                                SyntaxKind.VarKeyword,
-                                                                "var",
-                                                                "var",
-                                                                TriviaList())))
-                                                    .WithVariables(
+                    VariableDeclaration(
+                            IdentifierName(
+                                Identifier(
+                                    TriviaList(),
+                                    SyntaxKind.VarKeyword,
+                                    "var",
+                                    "var",
+                                    TriviaList())))
+                        .WithVariables(
+                            SingletonSeparatedList(
+                                VariableDeclarator(
+                                        Identifier("response"))
+                                    .WithInitializer(
+                                        EqualsValueClause(
+                                            ObjectCreationExpression(
+                                                    IdentifierName(
+                                                        $"{endpoint}{_modelClassName}Response"))
+                                                .WithArgumentList(
+                                                    ArgumentList(
                                                         SingletonSeparatedList(
-                                                            VariableDeclarator(
-                                                                    Identifier("response"))
-                                                                .WithInitializer(
-                                                                    EqualsValueClause(
-                                                                        ObjectCreationExpression(
-                                                                                IdentifierName(
-                                                                                    $"{endpoint}{_modelClassName}Response"))
-                                                                            .WithArgumentList(
-                                                                                ArgumentList(
-                                                                                    SingletonSeparatedList(
-                                                                                        Argument(
-                                                                                            InvocationExpression(
-                                                                                                MemberAccessExpression(
-                                                                                                    SyntaxKind
-                                                                                                        .SimpleMemberAccessExpression,
-                                                                                                    IdentifierName(
-                                                                                                        "request"),
-                                                                                                    IdentifierName(
-                                                                                                        "CorrelationId"))))))))))))
+                                                            Argument(
+                                                                InvocationExpression(
+                                                                    MemberAccessExpression(
+                                                                        SyntaxKind
+                                                                            .SimpleMemberAccessExpression,
+                                                                        IdentifierName(
+                                                                            "request"),
+                                                                        IdentifierName(
+                                                                            "CorrelationId"))))))))))))
             };
             statements.AddRange(GenerateHandleBodyMethodSpecificStatements(endpoint)
             );
@@ -251,94 +254,217 @@ namespace Generator.Generators
 
         private List<StatementSyntax> GenerateHandleBodyMethodSpecificStatements(string endpoint)
         {
-
             var statements = new List<StatementSyntax>();
 
             if (endpoint.Equals("Create") || endpoint.Equals("Update"))
                 statements.Add(
-                LocalDeclarationStatement(
-                                                VariableDeclaration(
-                                                        IdentifierName(
-                                                            Identifier(
-                                                                TriviaList(),
-                                                                SyntaxKind.VarKeyword,
-                                                                "var",
-                                                                "var",
-                                                                TriviaList())))
-                                                    .WithVariables(
-                                                        SingletonSeparatedList(
-                                                            VariableDeclarator(
-                                                                    Identifier($"{_modelClassName.ToCamelCase()}"))
-                                                                .WithInitializer(
-                                                                    EqualsValueClause(
-                                                                        AwaitExpression(
-                                                                            InvocationExpression(
-                                                                                    MemberAccessExpression(
-                                                                                        SyntaxKind
-                                                                                            .SimpleMemberAccessExpression,
-                                                                                        IdentifierName(
-                                                                                            _serviceInstanceName),
-                                                                                        IdentifierName($"{helper.EndpointMethods[endpoint]}Async")))
-                                                                                .WithArgumentList(
-                                                                                    ArgumentList(
-                                                                                        SingletonSeparatedList(
-                                                                                            Argument(
-                                                                                                ObjectCreationExpression(
-                                                                                                        IdentifierName(
-                                                                                                            $"{_modelClassName}"))
-                                                                                                    .WithInitializer(
-                                                                                                        InitializerExpression(
-                                                                                                            SyntaxKind
-                                                                                                                .ObjectInitializerExpression,
-                                                                                                            SeparatedList(
-                                                                                                                helper.GenerateServiceRequestObjectInitialization(endpoint, _propertiesWithAttributes)
-                                                                                                            )))))))))))))
-
-            );
+                    LocalDeclarationStatement(
+                        VariableDeclaration(
+                                IdentifierName(
+                                    Identifier(
+                                        TriviaList(),
+                                        SyntaxKind.VarKeyword,
+                                        "var",
+                                        "var",
+                                        TriviaList())))
+                            .WithVariables(
+                                SingletonSeparatedList(
+                                    VariableDeclarator(
+                                            Identifier($"{_modelClassName.ToCamelCase()}"))
+                                        .WithInitializer(
+                                            EqualsValueClause(
+                                                AwaitExpression(
+                                                    InvocationExpression(
+                                                            MemberAccessExpression(
+                                                                SyntaxKind
+                                                                    .SimpleMemberAccessExpression,
+                                                                IdentifierName(
+                                                                    _serviceInstanceName),
+                                                                IdentifierName(
+                                                                    $"{helper.EndpointMethods[endpoint]}Async")))
+                                                        .WithArgumentList(
+                                                            ArgumentList(
+                                                                SingletonSeparatedList(
+                                                                    Argument(
+                                                                        ObjectCreationExpression(
+                                                                                IdentifierName(
+                                                                                    $"{_modelClassName}"))
+                                                                            .WithInitializer(
+                                                                                InitializerExpression(
+                                                                                    SyntaxKind
+                                                                                        .ObjectInitializerExpression,
+                                                                                    SeparatedList(
+                                                                                        helper
+                                                                                            .GenerateServiceRequestObjectInitialization(
+                                                                                                endpoint,
+                                                                                                _propertiesWithAttributes)
+                                                                                    )))))))))))))
+                );
 
 
             if (endpoint.Equals("GetById") || endpoint.Equals("Delete"))
                 statements.Add(
                     LocalDeclarationStatement(
-                VariableDeclaration(
-                    IdentifierName(
-                        Identifier(
-                            TriviaList(),
-                            SyntaxKind.VarKeyword,
-                            "var",
-                            "var",
-                            TriviaList())))
-                .WithVariables(
-                    SingletonSeparatedList<VariableDeclaratorSyntax>(
-                        VariableDeclarator(
-                            Identifier($"{_modelClassName.ToCamelCase()}"))
-                        .WithInitializer(
-                            EqualsValueClause(
-                                AwaitExpression(
-                                    InvocationExpression(
-                                        MemberAccessExpression(
-                                            SyntaxKind.SimpleMemberAccessExpression,
-                                            IdentifierName($"_{_modelClassName.ToCamelCase()}Service"),
-                                            IdentifierName($"{helper.EndpointMethods[endpoint]}Async")))
-                                    .WithArgumentList(
-                                        ArgumentList(
-                                            SingletonSeparatedList<ArgumentSyntax>(
-                                                Argument(
-                                                    MemberAccessExpression(
-                                                        SyntaxKind.SimpleMemberAccessExpression,
-                                                        IdentifierName("request"),
-                                                        IdentifierName($"{_modelClassName}Id"))))))))))))
+                        VariableDeclaration(
+                                IdentifierName(
+                                    Identifier(
+                                        TriviaList(),
+                                        SyntaxKind.VarKeyword,
+                                        "var",
+                                        "var",
+                                        TriviaList())))
+                            .WithVariables(
+                                SingletonSeparatedList(
+                                    VariableDeclarator(
+                                            Identifier($"{_modelClassName.ToCamelCase()}"))
+                                        .WithInitializer(
+                                            EqualsValueClause(
+                                                AwaitExpression(
+                                                    InvocationExpression(
+                                                            MemberAccessExpression(
+                                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                                IdentifierName(
+                                                                    $"_{_modelClassName.ToCamelCase()}Service"),
+                                                                IdentifierName(
+                                                                    $"{helper.EndpointMethods[endpoint]}Async")))
+                                                        .WithArgumentList(
+                                                            ArgumentList(
+                                                                SingletonSeparatedList(
+                                                                    Argument(
+                                                                        MemberAccessExpression(
+                                                                            SyntaxKind.SimpleMemberAccessExpression,
+                                                                            IdentifierName("request"),
+                                                                            IdentifierName("Id"))))))))))))
                 );
 
             if (endpoint.Equals("Create") || endpoint.Equals("Update") || endpoint.Equals("GetById"))
                 statements.Add(ExpressionStatement(
-                                                AssignmentExpression(
-                                                    SyntaxKind.SimpleAssignmentExpression,
+                    AssignmentExpression(
+                        SyntaxKind.SimpleAssignmentExpression,
+                        MemberAccessExpression(
+                            SyntaxKind.SimpleMemberAccessExpression,
+                            IdentifierName("response"),
+                            IdentifierName(_modelClassName)),
+                        InvocationExpression(
+                                MemberAccessExpression(
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    IdentifierName("_mapper"),
+                                    GenericName(
+                                            Identifier("Map"))
+                                        .WithTypeArgumentList(
+                                            TypeArgumentList(
+                                                SingletonSeparatedList<TypeSyntax>(
+                                                    IdentifierName($"{_modelClassName}Dto"))))))
+                            .WithArgumentList(
+                                ArgumentList(
+                                    SingletonSeparatedList(
+                                        Argument(
+                                            IdentifierName($"{_modelClassName.ToCamelCase()}"))))))));
+
+
+            if (endpoint.Equals("ListPaged"))
+            {
+                statements.Add(LocalDeclarationStatement(
+                    VariableDeclaration(
+                            IdentifierName(
+                                Identifier(
+                                    TriviaList(),
+                                    SyntaxKind.VarKeyword,
+                                    "var",
+                                    "var",
+                                    TriviaList())))
+                        .WithVariables(
+                            SingletonSeparatedList(
+                                VariableDeclarator(
+                                        Identifier("filterSpec"))
+                                    .WithInitializer(
+                                        EqualsValueClause(
+                                            ObjectCreationExpression(
+                                                    IdentifierName($"{_modelClassName}FilterSpecification"))
+                                                .WithArgumentList(
+                                                    ArgumentList(
+                                                        helper.GenerateListPagedSpecificationRequest(
+                                                            _attributesWithInfo, _argumentFilterConstantsHelpers)
+                                                    ))))))));
+                statements.Add(LocalDeclarationStatement(
+                    VariableDeclaration(
+                            IdentifierName(
+                                Identifier(
+                                    TriviaList(),
+                                    SyntaxKind.VarKeyword,
+                                    "var",
+                                    "var",
+                                    TriviaList())))
+                        .WithVariables(
+                            SingletonSeparatedList(
+                                VariableDeclarator(
+                                        Identifier("pagedSpec"))
+                                    .WithInitializer(
+                                        EqualsValueClause(
+                                            ObjectCreationExpression(
+                                                    IdentifierName($"{_modelClassName}FilterPaginatedSpecification"))
+                                                .WithArgumentList(
+                                                    ArgumentList(
+                                                        helper.GenerateListPagedSpecificationRequest(
+                                                            _attributesWithInfo, _argumentFilterConstantsHelpers, true)
+                                                    ))))))));
+                statements.Add(LocalDeclarationStatement(
+                    VariableDeclaration(
+                            IdentifierName(
+                                Identifier(
+                                    TriviaList(),
+                                    SyntaxKind.VarKeyword,
+                                    "var",
+                                    "var",
+                                    TriviaList())))
+                        .WithVariables(
+                            SingletonSeparatedList(
+                                VariableDeclarator(
+                                        Identifier($"{_modelClassName.ToCamelCase()}s"))
+                                    .WithInitializer(
+                                        EqualsValueClause(
+                                            AwaitExpression(
+                                                InvocationExpression(
+                                                        MemberAccessExpression(
+                                                            SyntaxKind.SimpleMemberAccessExpression,
+                                                            IdentifierName(_serviceInstanceName),
+                                                            IdentifierName("GetAsync")))
+                                                    .WithArgumentList(
+                                                        ArgumentList(
+                                                            SeparatedList<ArgumentSyntax>(
+                                                                new SyntaxNodeOrToken[]
+                                                                {
+                                                                    Argument(
+                                                                        IdentifierName("filterSpec")),
+                                                                    Token(SyntaxKind.CommaToken),
+                                                                    Argument(
+                                                                        IdentifierName("pagedSpec"))
+                                                                }))))))))));
+                statements.Add(ExpressionStatement(
+                    InvocationExpression(
+                            MemberAccessExpression(
+                                SyntaxKind.SimpleMemberAccessExpression,
+                                MemberAccessExpression(
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    IdentifierName("response"),
+                                    IdentifierName($"{_modelClassName}s")),
+                                IdentifierName("AddRange")))
+                        .WithArgumentList(
+                            ArgumentList(
+                                SingletonSeparatedList(
+                                    Argument(
+                                        InvocationExpression(
+                                                MemberAccessExpression(
+                                                    SyntaxKind.SimpleMemberAccessExpression,
                                                     MemberAccessExpression(
                                                         SyntaxKind.SimpleMemberAccessExpression,
-                                                        IdentifierName("response"),
-                                                        IdentifierName(_modelClassName)),
-                                                    InvocationExpression(
+                                                        IdentifierName($"{_modelClassName.ToCamelCase()}s"),
+                                                        IdentifierName("List")),
+                                                    IdentifierName("Select")))
+                                            .WithArgumentList(
+                                                ArgumentList(
+                                                    SingletonSeparatedList(
+                                                        Argument(
                                                             MemberAccessExpression(
                                                                 SyntaxKind.SimpleMemberAccessExpression,
                                                                 IdentifierName("_mapper"),
@@ -347,132 +473,19 @@ namespace Generator.Generators
                                                                     .WithTypeArgumentList(
                                                                         TypeArgumentList(
                                                                             SingletonSeparatedList<TypeSyntax>(
-                                                                                IdentifierName($"{_modelClassName}Dto"))))))
-                                                        .WithArgumentList(
-                                                            ArgumentList(
-                                                                SingletonSeparatedList(
-                                                                    Argument(
-                                                                        IdentifierName($"{_modelClassName.ToCamelCase()}"))))))));
-
-
-
-            if (endpoint.Equals("ListPaged"))
-            {
-                statements.Add(LocalDeclarationStatement(
-                    VariableDeclaration(
-                        IdentifierName(
-                            Identifier(
-                                TriviaList(),
-                                SyntaxKind.VarKeyword,
-                                "var",
-                                "var",
-                                TriviaList())))
-                    .WithVariables(
-                        SingletonSeparatedList<VariableDeclaratorSyntax>(
-                            VariableDeclarator(
-                                Identifier("filterSpec"))
-                            .WithInitializer(
-                                EqualsValueClause(
-                                    ObjectCreationExpression(
-                                        IdentifierName($"{_modelClassName}FilterSpecification"))
-                                    .WithArgumentList(
-                                        ArgumentList(helper.GenerateListPagedSpecificationRequest(_attributesWithInfo, _argumentFilterConstantsHelpers)
-                ))))))));
-                statements.Add(LocalDeclarationStatement(
-                    VariableDeclaration(
-                        IdentifierName(
-                            Identifier(
-                                TriviaList(),
-                                SyntaxKind.VarKeyword,
-                                "var",
-                                "var",
-                                TriviaList())))
-                    .WithVariables(
-                        SingletonSeparatedList<VariableDeclaratorSyntax>(
-                            VariableDeclarator(
-                                Identifier("pagedSpec"))
-                            .WithInitializer(
-                                EqualsValueClause(
-                                    ObjectCreationExpression(
-                                        IdentifierName($"{_modelClassName}FilterPaginatedSpecification"))
-                                    .WithArgumentList(
-                                        ArgumentList(helper.GenerateListPagedSpecificationRequest(_attributesWithInfo, _argumentFilterConstantsHelpers, true)
-                ))))))));
-                statements.Add(LocalDeclarationStatement(
-                    VariableDeclaration(
-                        IdentifierName(
-                            Identifier(
-                                TriviaList(),
-                                SyntaxKind.VarKeyword,
-                                "var",
-                                "var",
-                                TriviaList())))
-                    .WithVariables(
-                        SingletonSeparatedList<VariableDeclaratorSyntax>(
-                            VariableDeclarator(
-                                Identifier($"{_modelClassName.ToCamelCase()}s"))
-                            .WithInitializer(
-                                EqualsValueClause(
-                                    AwaitExpression(
-                                        InvocationExpression(
-                                            MemberAccessExpression(
-                                                SyntaxKind.SimpleMemberAccessExpression,
-                                                IdentifierName(_serviceInstanceName),
-                                                IdentifierName("GetAsync")))
-                                        .WithArgumentList(
-                                            ArgumentList(
-                                                SeparatedList<ArgumentSyntax>(
-                                                    new SyntaxNodeOrToken[]{
-                                                        Argument(
-                                                            IdentifierName("filterSpec")),
-                                                        Token(SyntaxKind.CommaToken),
-                                                        Argument(
-                                                            IdentifierName("pagedSpec"))}))))))))));
+                                                                                IdentifierName(
+                                                                                    $"{_modelClassName}Dto")))))))))))))));
                 statements.Add(ExpressionStatement(
-                    InvocationExpression(
+                    AssignmentExpression(
+                        SyntaxKind.SimpleAssignmentExpression,
                         MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression,
-                            MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                IdentifierName("response"),
-                                IdentifierName($"{_modelClassName}s")),
-                            IdentifierName("AddRange")))
-                    .WithArgumentList(
-                        ArgumentList(
-                            SingletonSeparatedList<ArgumentSyntax>(
-                                Argument(
-                                    InvocationExpression(
-                                        MemberAccessExpression(
-                                            SyntaxKind.SimpleMemberAccessExpression,
-                                            MemberAccessExpression(
-                                                SyntaxKind.SimpleMemberAccessExpression,
-                                                IdentifierName($"{_modelClassName.ToCamelCase()}s"),
-                                                IdentifierName("List")),
-                                            IdentifierName("Select")))
-                                    .WithArgumentList(
-                                        ArgumentList(
-                                            SingletonSeparatedList<ArgumentSyntax>(
-                                                Argument(
-                                                    MemberAccessExpression(
-                                                        SyntaxKind.SimpleMemberAccessExpression,
-                                                        IdentifierName("_mapper"),
-                                                        GenericName(
-                                                            Identifier("Map"))
-                                                        .WithTypeArgumentList(
-                                                            TypeArgumentList(
-                                                                SingletonSeparatedList<TypeSyntax>(
-                                                                    IdentifierName($"{_modelClassName}Dto")))))))))))))));
-                statements.Add(ExpressionStatement(
-                AssignmentExpression(
-                    SyntaxKind.SimpleAssignmentExpression,
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName("response"),
-                        IdentifierName("PageCount")),
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName($"{_modelClassName.ToCamelCase()}s"),
-                        IdentifierName("Count")))));
+                            IdentifierName("response"),
+                            IdentifierName("PageCount")),
+                        MemberAccessExpression(
+                            SyntaxKind.SimpleMemberAccessExpression,
+                            IdentifierName($"{_modelClassName.ToCamelCase()}s"),
+                            IdentifierName("Count")))));
             }
 
             if (endpoint.Equals("Create") || endpoint.Equals("Update"))
@@ -480,14 +493,13 @@ namespace Generator.Generators
 
             else
                 statements.Add(ReturnStatement(
-                InvocationExpression(
-                    IdentifierName("Ok"))
-                .WithArgumentList(
-                    ArgumentList(
-                        SingletonSeparatedList<ArgumentSyntax>(
-                            Argument(
-                                IdentifierName("response")))))));
-
+                    InvocationExpression(
+                            IdentifierName("Ok"))
+                        .WithArgumentList(
+                            ArgumentList(
+                                SingletonSeparatedList(
+                                    Argument(
+                                        IdentifierName("response")))))));
 
 
             return statements;

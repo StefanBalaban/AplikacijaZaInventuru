@@ -1,11 +1,11 @@
-﻿using ApplicationCore.Extensions;
-using PublicApi.Util.FoodProductEndpoints;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ApplicationCore.Extensions;
+using PublicApi.Endpoints.FoodProductEndpoints;
 using Xunit;
 
 namespace FunctionalTests.ApiTests.FoodProductEndpoints
@@ -13,13 +13,13 @@ namespace FunctionalTests.ApiTests.FoodProductEndpoints
     [Collection("Sequential")]
     public class CreateEndpoint : IClassFixture<ApiTestFixture>
     {
-        JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        private string _name = "Hljeb";
-        private int _unitOfMeasureId = 1;
-        private int _calories = 1;
-        private int _protein = 2;
-        private int _carbohydrates = 3;
-        private int _fats = 4;
+        private readonly int _calories = 1;
+        private readonly int _carbohydrates = 3;
+        private readonly int _fats = 4;
+        private JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
+        private readonly string _name = "Hljeb";
+        private readonly int _protein = 2;
+        private readonly int _unitOfMeasureId = 1;
 
         public CreateEndpoint(ApiTestFixture factory)
         {
@@ -60,7 +60,7 @@ namespace FunctionalTests.ApiTests.FoodProductEndpoints
 
         private StringContent GetValidNewItemJson()
         {
-            var request = new CreateFoodProductRequest()
+            var request = new CreateFoodProductRequest
             {
                 Name = _name,
                 UnitOfMeasureId = _unitOfMeasureId,

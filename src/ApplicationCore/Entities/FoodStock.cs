@@ -1,19 +1,29 @@
-﻿using Ardalis.GuardClauses;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Constants;
+using ApplicationCore.Filters;
+using ApplicationCore.Interfaces;
 
 namespace ApplicationCore.Entities
 {
-    public class FoodStock : BaseEntity
+    public class FoodStock : BaseEntity, IAggregateRoot
     {
-        public FoodProduct FoodProduct { get; private set; }
-        public float Amount { get; private set; }
-        public float? UpperAmount { get; private set; }
-        public float? LowerAmount { get; private set; }
-        public DateTime? DateOfPurchase { get; private set; }
-        public DateTime? BestUseByDate { get; set; }
+        [Get(FilterConstants.INCLUDE)] public FoodProduct FoodProduct { get; set; }
 
-        public FoodStock()
-        {
-        }
+        [Dto]
+        [Get(FilterConstants.EQUAL)]
+        [Post]
+        [Required]
+        public int FoodProductId { get; set; }
+
+        [Dto] [Get] [Post] [Put] [Required] public float Amount { get; set; }
+
+        [Dto] [Get] [Post] [Put] public float? UpperAmount { get; set; }
+
+        [Dto] [Get] [Post] [Put] public float? LowerAmount { get; set; }
+
+        [Dto] [Get] [Post] [Put] public DateTime? DateOfPurchase { get; set; }
+
+        [Dto] [Get] [Post] [Put] public DateTime? BestUseByDate { get; set; }
     }
 }

@@ -1,23 +1,15 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Constants;
 using ApplicationCore.Filters;
 using ApplicationCore.Interfaces;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationCore.Entities
 {
     public class FoodProduct : BaseEntity, IAggregateRoot
     {
-        [Dto]
-        [Get]
-        [Post]
-        [Put]
-        [Required]
-        public string Name { get; set; }
+        [Dto] [Get] [Post] [Put] [Required] public string Name { get; set; }
 
-        [Get(FilterConstants.INCLUDE)]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        [Get(FilterConstants.INCLUDE)] public UnitOfMeasure UnitOfMeasure { get; set; }
 
         [Get(FilterConstants.EQUAL)]
         [Post]
@@ -39,33 +31,8 @@ namespace ApplicationCore.Entities
         [Put]
         public float Protein { get; set; }
 
-        [Post]
-        [Put]
-        [Dto]
-        public float Carbohydrates { get; set; }
+        [Post] [Put] [Dto] public float Carbohydrates { get; set; }
 
-        [Get]
-        [Post]
-        [Dto]
-        public float Fats { get; set; }
-
-        public FoodProduct()
-        {
-        }
-
-        public void EditNutritionalValue(float calories, float protein, float carbohydrates, float fats)
-        {
-            Calories = calories;
-            Protein = protein;
-            Carbohydrates = carbohydrates;
-            Fats = fats;
-        }
-
-        public void EditName(string name)
-        {
-            Guard.Against.Null(name, nameof(name));
-
-            Name = name;
-        }
+        [Get] [Post] [Put] [Dto] public float Fats { get; set; }
     }
 }

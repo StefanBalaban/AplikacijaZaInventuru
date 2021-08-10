@@ -1,9 +1,9 @@
-﻿using ApplicationCore.Exceptions;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ApplicationCore.Exceptions;
+using Microsoft.AspNetCore.Http;
 
 namespace PublicApi.Util
 {

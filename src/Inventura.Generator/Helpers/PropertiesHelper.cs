@@ -1,15 +1,15 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Generator.Generators
 {
     public class PropertiesHelper
     {
-        public List<KeyValuePair<string, string>> PropertiesWithAttributes = new List<KeyValuePair<string, string>>();
-        public List<PropertiesWithInfo> PropertiesWithInfos { get; set; } = new List<PropertiesWithInfo>();
-        public List<AttributesWithInfo> AttributesWithInfo { get; set; } = new List<AttributesWithInfo>();
+        public List<KeyValuePair<string, string>> PropertiesWithAttributes = new();
+        public List<PropertiesWithInfo> PropertiesWithInfos { get; set; } = new();
+        public List<AttributesWithInfo> AttributesWithInfo { get; set; } = new();
 
         public void ExtractPropertiesAndAttrbitues(IEnumerable<MemberDeclarationSyntax> members)
         {
@@ -39,15 +39,15 @@ namespace Generator.Generators
                                         Type = property.Type.NormalizeWhitespace().ToFullString()
                                     });
                             }
-                            if (attributeName.Equals("Post") || attributeName.Equals("Get") || attributeName.Equals("Put") || attributeName.Equals("Dto"))
-                            {
-                                PropertiesWithInfos.Add(new PropertiesWithInfo()
+
+                            if (attributeName.Equals("Post") || attributeName.Equals("Get") ||
+                                attributeName.Equals("Put") || attributeName.Equals("Dto"))
+                                PropertiesWithInfos.Add(new PropertiesWithInfo
                                 {
                                     Identifier = property.Identifier.Text,
                                     Type = property.Type.NormalizeWhitespace().ToFullString(),
                                     Method = attributeName
                                 });
-                            }
                         }
                     }
 

@@ -4,7 +4,7 @@ namespace ApplicationCore.Extensions
 {
     public static class JsonExtensions
     {
-        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
         };
@@ -16,7 +16,7 @@ namespace ApplicationCore.Extensions
 
         public static string ToJson<T>(this T obj)
         {
-            return JsonSerializer.Serialize<T>(obj, _jsonOptions);
+            return JsonSerializer.Serialize(obj, _jsonOptions);
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using ApplicationCore.Entities;
+﻿using System.Reflection;
+using ApplicationCore.Entities;
+using ApplicationCore.Entities.MealAggregate;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Infrastructure.Data
 {
@@ -12,6 +13,8 @@ namespace Infrastructure.Data
 
         public DbSet<FoodProduct> FoodProducts { get; set; }
         public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
+        public DbSet<FoodStock> FoodStock { get; set; }
+        public DbSet<Meal> Meal { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

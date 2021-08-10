@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -5,8 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
+using AppContext = Infrastructure.Data.AppContext;
 
 namespace PublicApi.Util
 {
@@ -23,7 +24,7 @@ namespace PublicApi.Util
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {
-                    var catalogContext = services.GetRequiredService<Infrastructure.Data.AppContext>();
+                    var catalogContext = services.GetRequiredService<AppContext>();
                     await AppContextSeed.SeedAsync(catalogContext, loggerFactory);
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();

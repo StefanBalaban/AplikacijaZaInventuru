@@ -1,7 +1,7 @@
 ﻿namespace PublicApi.Util
 {
     /// <summary>
-    /// Base class used by API requests
+    ///     Base class used by API requests
     /// </summary>
     public abstract class BaseRequest : BaseMessage
     {

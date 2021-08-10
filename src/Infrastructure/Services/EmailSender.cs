@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Interfaces;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using ApplicationCore.Interfaces;
 
 namespace Infrastructure.Services
 {

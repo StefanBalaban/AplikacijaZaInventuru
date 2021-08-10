@@ -1,20 +1,16 @@
-﻿using ApplicationCore.Extensions;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Filters;
 using ApplicationCore.Interfaces;
-using Ardalis.GuardClauses;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ApplicationCore.Entities.UserAggregate
 {
     public class User : BaseEntity, IAggregateRoot
     {
-        private readonly List<UserContactInfo> _userContactInfos = new List<UserContactInfo>();
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public IReadOnlyList<UserContactInfo> UserContactInfos => _userContactInfos.AsReadOnly();
+        [Dto] [Get] [Post] [Put] [Required] public string FirstName { get; set; }
 
-        public User()
-        {
-        }
+        [Dto] [Get] [Post] [Put] [Required] public string LastName { get; set; }
+
+        [Dto] [Get] [Post] [Put] public List<UserContactInfo> UserContactInfos { get; set; }
     }
 }

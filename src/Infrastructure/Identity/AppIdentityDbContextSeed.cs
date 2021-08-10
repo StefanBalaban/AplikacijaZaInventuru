@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Constants;
+﻿using System.Threading.Tasks;
+using ApplicationCore.Constants;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Identity
 {
@@ -12,7 +12,7 @@ namespace Infrastructure.Identity
             await roleManager.CreateAsync(new IdentityRole("Administrators"));
 
             var defaultUser = new ApplicationUser
-            { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
+                { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
             await userManager.CreateAsync(defaultUser, AuthorizationConstants.DEFAULT_PASSWORD);
 
             var adminUserName = "admin@microsoft.com";

@@ -4,6 +4,5 @@ namespace ApplicationCore.Filters
 {
     public class PostAttribute : Attribute
     {
-
     }
 }

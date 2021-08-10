@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using Infrastructure.Data;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Data;
-using Infrastructure.Identity;
-using PublicApi.Util;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
+using PublicApi.Util;
+using AppContext = Infrastructure.Data.AppContext;
 
 namespace FunctionalTests
 {
@@ -28,7 +29,7 @@ namespace FunctionalTests
 
                 // Add a database context (ApplicationDbContext) using an in-memory 
                 // database for testing.
-                services.AddDbContext<Infrastructure.Data.AppContext>(options =>
+                services.AddDbContext<AppContext>(options =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
                     options.UseInternalServiceProvider(provider);
@@ -48,7 +49,7 @@ namespace FunctionalTests
                 using (var scope = sp.CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<Infrastructure.Data.AppContext>();
+                    var db = scopedServices.GetRequiredService<AppContext>();
                     var loggerFactory = scopedServices.GetRequiredService<ILoggerFactory>();
 
                     var logger = scopedServices
@@ -69,8 +70,8 @@ namespace FunctionalTests
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex, $"An error occurred seeding the " +
-                            "database with test messages. Error: {ex.Message}");
+                        logger.LogError(ex, "An error occurred seeding the " +
+                                            "database with test messages. Error: {ex.Message}");
                     }
                 }
             });

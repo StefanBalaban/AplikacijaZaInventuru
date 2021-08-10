@@ -1,18 +1,14 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using ApplicationCore.Entities.MealAggregate;
-using System.Collections.Generic;
-using System.Linq;
+using ApplicationCore.Filters;
 
 namespace ApplicationCore.Entities.DietPlanAggregate
 {
     public class DietPlan : BaseEntity
     {
-        private readonly List<Meal> _meals = new List<Meal>();
-        public IReadOnlyList<Meal> Meals => _meals.AsReadOnly();
-        public string Name { get; private set; }
+        [Dto] [Get] [Post] [Put] [Required] public List<Meal> Meals { get; set; }
 
-        public DietPlan()
-        {
-        }
+        [Dto] [Get] [Post] [Put] [Required] public string Name { get; set; }
     }
 }

@@ -1,14 +1,12 @@
-﻿using Ardalis.GuardClauses;
+﻿using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Filters;
 
 namespace ApplicationCore.Entities.MealAggregate
 {
     public class MealItem : BaseEntity
     {
-        public FoodProduct FoodProduct { get; private set; }
-        public float Amount { get; private set; }
+        [Dto] [Get] [Post] [Put] [Required] public FoodProduct FoodProduct { get; set; }
 
-        public MealItem()
-        {
-        }
+        [Dto] [Get] [Post] [Put] [Required] public float Amount { get; set; }
     }
 }

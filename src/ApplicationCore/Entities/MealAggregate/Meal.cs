@@ -1,18 +1,14 @@
-﻿using ApplicationCore.Interfaces;
-using Ardalis.GuardClauses;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Filters;
+using ApplicationCore.Interfaces;
 
 namespace ApplicationCore.Entities.MealAggregate
 {
     public class Meal : BaseEntity, IAggregateRoot
     {
-        private readonly List<MealItem> _items = new List<MealItem>();
-        public IReadOnlyList<MealItem> Items => _items.AsReadOnly();
-        public string Name { get; private set; }
+        [Dto] [Get] [Post] [Put] [Required] public List<MealItem> Meals { get; set; }
 
-        public Meal()
-        {
-        }
+        [Dto] [Get] [Post] [Put] [Required] public string Name { get; set; }
     }
 }

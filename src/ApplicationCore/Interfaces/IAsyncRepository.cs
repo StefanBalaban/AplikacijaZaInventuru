@@ -1,8 +1,8 @@
-﻿using Ardalis.Specification;
-using ApplicationCore.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ApplicationCore.Entities;
+using Ardalis.Specification;
 
 namespace ApplicationCore.Interfaces
 {
