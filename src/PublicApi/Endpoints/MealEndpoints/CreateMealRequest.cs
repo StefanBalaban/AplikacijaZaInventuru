@@ -6,7 +6,7 @@ namespace PublicApi.Endpoints.MealEndpoints
 {
     public class CreateMealRequest : BaseRequest
     {
-        public List<MealItem> Meals { get; set; }
+        public List<MealItem> Meals { get; set; } = new List<MealItem>();
 
         public string Name { get; set; }
     }

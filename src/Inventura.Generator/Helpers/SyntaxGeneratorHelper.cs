@@ -43,13 +43,13 @@ namespace Generator.Generators
             code.AppendLine(serviceClassNode.ToFullString());
             code.AppendLine(
                 $"// ApplicationCore\\Specifications\\{_modelClassName}\\{_modelClassName}FilterPaginatedSpecification.cs");
-            code.AppendLine(
-                $"// ApplicationCore\\Specifications\\{_modelClassName}\\{_modelClassName}FilterSpecification.cs");
             code.AppendLine(specificationsNode.ToFullString());
             code.AppendLine("// Infrastructure\\Data\\Context.cs");
             code.AppendLine($"public DbSet<{_modelClassName}> {_modelClassName} {{ get; set; }}");
-            code.AppendLine($"// PublicApi\\Endpoints\\{_modelClassName}Endpoints\\Context.cs");
+            code.AppendLine($"// PublicApi\\Endpoints\\{_modelClassName}Endpoints\\Create.cs");
             code.AppendLine(endpointsNode.ToFullString());
+            code.AppendLine("//Mapping");
+            code.AppendLine("//Dependency Injection");
 
             return code.ToString();
         }

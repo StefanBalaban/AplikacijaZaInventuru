@@ -9,6 +9,7 @@ namespace ApplicationCore.Specifications.MealSpecs
         {
             Query.Skip(skip);
             Query.Take(take);
+            Query.Include(x => x.Meals);
         }
     }
 }

@@ -99,6 +99,7 @@ namespace PublicApi.Util
             services.AddTransient<IFoodProductService, FoodProductService>();
             services.AddTransient<IFoodStockService, FoodStockService>();
             services.AddTransient<IMealService, MealService>();
+            services.AddTransient<IDietPlanService, DietPlanService>();
 
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);

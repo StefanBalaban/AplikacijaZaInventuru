@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.Extensions;
 using ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
 using Ardalis.Specification;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
 {
@@ -46,8 +46,12 @@ namespace ApplicationCore.Services
             Guard.Against.ModelStateIsInvalid(t, nameof(FoodStock));
             return await _foodStockRepository.AddAsync(new FoodStock
             {
-                FoodProductId = t.FoodProductId, Amount = t.Amount, UpperAmount = t.UpperAmount,
-                LowerAmount = t.LowerAmount, DateOfPurchase = t.DateOfPurchase, BestUseByDate = t.BestUseByDate
+                FoodProductId = t.FoodProductId,
+                Amount = t.Amount,
+                UpperAmount = t.UpperAmount,
+                LowerAmount = t.LowerAmount,
+                DateOfPurchase = t.DateOfPurchase,
+                BestUseByDate = t.BestUseByDate
             });
         }
 

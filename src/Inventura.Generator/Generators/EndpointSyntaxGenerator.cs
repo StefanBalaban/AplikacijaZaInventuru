@@ -485,7 +485,7 @@ namespace Generator.Generators
                         MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression,
                             IdentifierName($"{_modelClassName.ToCamelCase()}s"),
-                            IdentifierName("Count")))));
+                            IdentifierName("List.Count")))));
             }
 
             if (endpoint.Equals("Create") || endpoint.Equals("Update"))

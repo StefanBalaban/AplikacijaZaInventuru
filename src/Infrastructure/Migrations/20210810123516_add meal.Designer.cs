@@ -4,51 +4,22 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(Data.AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20210810123516_add meal")]
+    partial class addmeal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
-
-            modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DietPlans");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlanMeal", b =>
-                {
-                    b.Property<int>("DietPlanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DietPlanId", "MealId");
-
-                    b.HasIndex("MealId");
-
-                    b.ToTable("DietPlanMeal");
-                });
 
             modelBuilder.Entity("ApplicationCore.Entities.FoodProduct", b =>
                 {
@@ -171,25 +142,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("UnitOfMeasures");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlanMeal", b =>
-                {
-                    b.HasOne("ApplicationCore.Entities.DietPlanAggregate.DietPlan", "DietPlan")
-                        .WithMany("DietPlanMeals")
-                        .HasForeignKey("DietPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationCore.Entities.MealAggregate.Meal", "Meal")
-                        .WithMany("DietPlanMeals")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DietPlan");
-
-                    b.Navigation("Meal");
-                });
-
             modelBuilder.Entity("ApplicationCore.Entities.FoodProduct", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.UnitOfMeasure", "UnitOfMeasure")
@@ -227,15 +179,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("FoodProduct");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlan", b =>
-                {
-                    b.Navigation("DietPlanMeals");
-                });
-
             modelBuilder.Entity("ApplicationCore.Entities.MealAggregate.Meal", b =>
                 {
-                    b.Navigation("DietPlanMeals");
-
                     b.Navigation("Meals");
                 });
 #pragma warning restore 612, 618

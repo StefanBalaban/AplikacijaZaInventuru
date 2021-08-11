@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.Entities.MealAggregate;
 using ApplicationCore.Extensions;
 using ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
 using Ardalis.Specification;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
 {
@@ -36,7 +36,8 @@ namespace ApplicationCore.Services
         {
             return new ListEntity<Meal>
             {
-                List = await _mealRepository.ListAsync(pagedSpec), Count = await _mealRepository.CountAsync(filterSpec)
+                List = await _mealRepository.ListAsync(pagedSpec),
+                Count = await _mealRepository.CountAsync(filterSpec)
             };
         }
 
