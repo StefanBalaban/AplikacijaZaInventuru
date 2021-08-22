@@ -25,11 +25,11 @@ namespace PublicApi.Util
                 try
                 {
                     var catalogContext = services.GetRequiredService<AppContext>();
-                    await AppContextSeed.SeedAsync(catalogContext, loggerFactory);
+                    //await AppContextSeed.SeedAsync(catalogContext, loggerFactory);
 
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+                    //var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    //await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {

@@ -1,24 +1,21 @@
-using System.Collections.Generic;
-using System.Text;
 using ApplicationCore.Constants;
-using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace PublicApi.Util
 {
@@ -82,19 +79,22 @@ namespace PublicApi.Util
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
-                .AddDefaultTokenProviders();
+            //IdentityModelEventSource.ShowPII = true;
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<AppIdentityDbContext>()
+            //    .AddDefaultTokenProviders();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimFilter.Clear();
 
             services.AddDbContext<AppContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            //services.AddDbContext<AppIdentityDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+            //services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
             services.AddTransient<IFoodProductService, FoodProductService>();
             services.AddTransient<IFoodStockService, FoodStockService>();
@@ -112,19 +112,26 @@ namespace PublicApi.Util
             services.AddMemoryCache();
 
             var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
-            services.AddAuthentication(config => { config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
-                .AddJwtBearer(config =>
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
                 {
-                    config.RequireHttpsMetadata = false;
-                    config.SaveToken = true;
-                    config.TokenValidationParameters = new TokenValidationParameters
+                    options.Authority = "https://localhost:5001";
+
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
                         ValidateAudience = false
                     };
                 });
+
+            // adds an authorization policy to make sure the token is for scope 'api1'
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "api1");
+                });
+            });
 
             services.AddCors(options =>
             {
@@ -139,7 +146,6 @@ namespace PublicApi.Util
             });
 
             services.AddControllers();
-            services.AddMediatR(typeof(FoodProduct).Assembly);
 
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddSwaggerGen(c =>
@@ -188,6 +194,8 @@ namespace PublicApi.Util
             app.UseRouting();
 
             app.UseCors(CORS_POLICY);
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

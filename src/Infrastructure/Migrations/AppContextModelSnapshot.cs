@@ -267,6 +267,51 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserContactInfo");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.UserSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("BegginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSubscription");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserWeightEvidention", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("EvidentationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserWeightEvidention");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlanMeal", b =>
                 {
                     b.HasOne("ApplicationCore.Entities.DietPlanAggregate.DietPlan", "DietPlan")

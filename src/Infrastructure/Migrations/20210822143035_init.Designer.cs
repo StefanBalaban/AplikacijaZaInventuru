@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(Data.AppContext))]
-    [Migration("20210811133845_add dietplan")]
-    partial class adddietplan
+    [Migration("20210822143035_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,29 @@ namespace Infrastructure.Migrations
                     b.HasIndex("MealId");
 
                     b.ToTable("DietPlanMeal");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.DietPlanPeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("DietPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DietPlanId");
+
+                    b.ToTable("DietPlanPeriod");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.FoodProduct", b =>
@@ -158,6 +181,38 @@ namespace Infrastructure.Migrations
                     b.ToTable("MealItems");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.NotificationAggregate.NotificationRule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("FoodProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodProductId");
+
+                    b.ToTable("NotificationRule");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.NotificationAggregate.NotificationRuleUserContactInfos", b =>
+                {
+                    b.Property<int>("UserContactInfosId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotificationRuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserContactInfosId", "NotificationRuleId");
+
+                    b.HasIndex("NotificationRuleId");
+
+                    b.ToTable("NotificationRuleUserContactInfos");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.UnitOfMeasure", b =>
                 {
                     b.Property<int>("Id")
@@ -171,6 +226,92 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UnitOfMeasures");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserAggregate.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserAggregate.UserContactInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Contact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserContactInfo");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("BegginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSubscription");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserWeightEvidention", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("EvidentationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Weight")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserWeightEvidention");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlanMeal", b =>
@@ -190,6 +331,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("DietPlan");
 
                     b.Navigation("Meal");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.DietPlanPeriod", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.DietPlanAggregate.DietPlan", "DietPlan")
+                        .WithMany()
+                        .HasForeignKey("DietPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DietPlan");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.FoodProduct", b =>
@@ -229,6 +381,47 @@ namespace Infrastructure.Migrations
                     b.Navigation("FoodProduct");
                 });
 
+            modelBuilder.Entity("ApplicationCore.Entities.NotificationAggregate.NotificationRule", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.FoodProduct", "FoodProduct")
+                        .WithMany()
+                        .HasForeignKey("FoodProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodProduct");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.NotificationAggregate.NotificationRuleUserContactInfos", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.NotificationAggregate.NotificationRule", "NotificationRule")
+                        .WithMany("NotificationRuleUserContactInfos")
+                        .HasForeignKey("NotificationRuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApplicationCore.Entities.UserAggregate.UserContactInfo", "UserContactInfo")
+                        .WithMany("NotificationRuleUserContactInfos")
+                        .HasForeignKey("UserContactInfosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NotificationRule");
+
+                    b.Navigation("UserContactInfo");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserAggregate.UserContactInfo", b =>
+                {
+                    b.HasOne("ApplicationCore.Entities.UserAggregate.User", "User")
+                        .WithMany("UserContactInfos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ApplicationCore.Entities.DietPlanAggregate.DietPlan", b =>
                 {
                     b.Navigation("DietPlanMeals");
@@ -239,6 +432,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("DietPlanMeals");
 
                     b.Navigation("Meals");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.NotificationAggregate.NotificationRule", b =>
+                {
+                    b.Navigation("NotificationRuleUserContactInfos");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserAggregate.User", b =>
+                {
+                    b.Navigation("UserContactInfos");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Entities.UserAggregate.UserContactInfo", b =>
+                {
+                    b.Navigation("NotificationRuleUserContactInfos");
                 });
 #pragma warning restore 612, 618
         }
