@@ -100,6 +100,11 @@ namespace PublicApi.Util
             services.AddTransient<IFoodStockService, FoodStockService>();
             services.AddTransient<IMealService, MealService>();
             services.AddTransient<IDietPlanService, DietPlanService>();
+            services.AddTransient<IDietPlanPeriodService, DietPlanPeriodService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<INotificationRuleService, NotificationRuleService>();
+            services.AddTransient<IUserWeightEvidentionService, UserWeightEvidentionService>();
+            services.AddTransient<IUserSubscriptionService, UserSubscriptionService>();
 
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);

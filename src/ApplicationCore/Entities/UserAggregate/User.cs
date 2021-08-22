@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Constants;
 using ApplicationCore.Filters;
 using ApplicationCore.Interfaces;
 
@@ -11,6 +12,6 @@ namespace ApplicationCore.Entities.UserAggregate
 
         [Dto] [Get] [Post] [Put] [Required] public string LastName { get; set; }
 
-        [Dto] [Get] [Post] [Put] public List<UserContactInfo> UserContactInfos { get; set; }
+        [Dto] [Get(FilterConstants.INCLUDE)] [Post] [Put] public List<UserContactInfo> UserContactInfos { get; set; }
     }
 }
