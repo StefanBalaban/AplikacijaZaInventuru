@@ -1,4 +1,3 @@
-using ApplicationCore.Constants;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using AutoMapper;
@@ -11,11 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace PublicApi.Util
 {
@@ -79,12 +75,11 @@ namespace PublicApi.Util
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //IdentityModelEventSource.ShowPII = true;
+            ////IdentityModelEventSource.ShowPII = true;
             //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<AppIdentityDbContext>()
+            //    .AddEntityFrameworkStores<AppIdentityDbContext>();
             //    .AddDefaultTokenProviders();
 
-            JwtSecurityTokenHandler.DefaultInboundClaimFilter.Clear();
 
             services.AddDbContext<AppContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
@@ -111,26 +106,10 @@ namespace PublicApi.Util
 
             services.AddMemoryCache();
 
-            var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
-                {
-                    options.Authority = "https://localhost:5001";
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = false
-                    };
-                });
-
-            // adds an authorization policy to make sure the token is for scope 'api1'
-            services.AddAuthorization(options =>
+            services.AddAuthentication("Bearer").AddIdentityServerAuthentication("Bearer", options =>
             {
-                options.AddPolicy("ApiScope", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "api1");
-                });
+                options.ApiName = "api1";
+                options.Authority = "https://localhost:5001";
             });
 
             services.AddCors(options =>

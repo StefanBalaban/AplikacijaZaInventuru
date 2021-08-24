@@ -21,14 +21,14 @@ namespace PublicApi.Util.AuthEndpoints
             _tokenClaimsService = tokenClaimsService;
         }
 
-        [HttpPost("api/authenticate")]
+        [HttpGet("api/authenticate")]
         [SwaggerOperation(
             Summary = "Authenticates a user",
             Description = "Authenticates a user",
             OperationId = "auth.authenticate",
             Tags = new[] { "AuthEndpoints" })
         ]
-        public override async Task<ActionResult<AuthenticateResponse>> HandleAsync(AuthenticateRequest request,
+        public override async Task<ActionResult<AuthenticateResponse>> HandleAsync([FromQuery] AuthenticateRequest request,
             CancellationToken cancellationToken)
         {
             var response = new AuthenticateResponse(request.CorrelationId());

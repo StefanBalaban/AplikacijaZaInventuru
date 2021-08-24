@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.AuthEndpoints
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class Get : BaseAsyncEndpoint.WithoutRequest.WithResponse<string>
     {
 
