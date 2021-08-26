@@ -33,7 +33,7 @@ namespace IdentityServerAspNetIdentity
             new ApiResource("api1") // TODO: Possible doodoo
             {
                 Scopes = new List<string> { "api1"},
-                ApiSecrets = new List<Secret> { new Secret("secretsecret".Sha256()) },
+                ApiSecrets = new List<Secret> { new Secret("SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes".Sha256()) },
                 UserClaims = new List<string> { "role" }
             } 
         };
@@ -45,31 +45,11 @@ namespace IdentityServerAspNetIdentity
                 new Client
                 {
                     ClientId = "client",
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret("SecretKeyOfDoomThatMustBeAMinimumNumberOfBytes".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     // scopes that client has access to
                     AllowedScopes = { "api1" }
-                },
-                // interactive ASP.NET Core MVC client
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientSecrets = { new Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-
-                    // where to redirect to after login
-                    RedirectUris = { "https://localhost:44339/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://localhost:44339/signout-callback-oidc" },
-
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    }
                 }
             };
     }
