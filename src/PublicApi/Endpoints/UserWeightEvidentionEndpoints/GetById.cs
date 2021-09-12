@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GetById : BaseAsyncEndpoint.WithRequest<GetByIdUserWeightEvidentionRequest>.WithResponse<GetByIdUserWeightEvidentionResponse>
     {
         private readonly IUserWeightEvidentionService _userWeightEvidentionService;

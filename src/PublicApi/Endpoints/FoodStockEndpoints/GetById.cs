@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PublicApi.Endpoints.FoodStockEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GetById : BaseAsyncEndpoint.WithRequest<GetByIdFoodStockRequest>.WithResponse<GetByIdFoodStockResponse>
     {
         private readonly IFoodStockService _foodStockService;

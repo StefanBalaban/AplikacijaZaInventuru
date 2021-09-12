@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.DietPlanEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Create : BaseAsyncEndpoint.WithRequest<CreateDietPlanRequest>.WithResponse<CreateDietPlanResponse>
     {
         private readonly IDietPlanService _dietPlanService;

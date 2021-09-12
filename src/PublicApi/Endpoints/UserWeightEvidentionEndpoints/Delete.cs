@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Delete : BaseAsyncEndpoint.WithRequest<DeleteUserWeightEvidentionRequest>.WithResponse<DeleteUserWeightEvidentionResponse>
     {
         private readonly IUserWeightEvidentionService _userWeightEvidentionService;

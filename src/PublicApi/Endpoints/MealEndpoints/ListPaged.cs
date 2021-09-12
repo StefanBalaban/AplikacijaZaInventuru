@@ -12,7 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PublicApi.Endpoints.MealEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedMealRequest>.WithResponse<ListPagedMealResponse>
     {
         private readonly IMapper _mapper;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.DietPlanEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GetById : BaseAsyncEndpoint.WithRequest<GetByIdDietPlanRequest>.WithResponse<GetByIdDietPlanResponse>
     {
         private readonly IDietPlanService _dietPlanService;

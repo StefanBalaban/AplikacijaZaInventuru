@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.NotificationRuleEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Update : BaseAsyncEndpoint.WithRequest<UpdateNotificationRuleRequest>.WithResponse<UpdateNotificationRuleResponse>
     {
         private readonly INotificationRuleService _notificationRuleService;

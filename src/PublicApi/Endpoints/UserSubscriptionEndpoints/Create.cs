@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace PublicApi.Endpoints.UserSubscriptionEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class Create : BaseAsyncEndpoint.WithRequest<CreateUserSubscriptionRequest>.WithResponse<CreateUserSubscriptionResponse>
 {
         private readonly IUserSubscriptionService _userSubscriptionService;
@@ -63,7 +63,7 @@ public class Create : BaseAsyncEndpoint.WithRequest<CreateUserSubscriptionReques
         public UserSubscriptionDto UserSubscription { get; set; }
     }
 
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Update : BaseAsyncEndpoint.WithRequest<UpdateUserSubscriptionRequest>.WithResponse<UpdateUserSubscriptionResponse>
 {
         private readonly IUserSubscriptionService _userSubscriptionService;
@@ -109,7 +109,7 @@ public class Create : BaseAsyncEndpoint.WithRequest<CreateUserSubscriptionReques
         public UserSubscriptionDto UserSubscription { get; set; }
     }
 
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GetById : BaseAsyncEndpoint.WithRequest<GetByIdUserSubscriptionRequest>.WithResponse<GetByIdUserSubscriptionResponse>
 {
 private readonly IUserSubscriptionService _userSubscriptionService;
@@ -149,7 +149,7 @@ private readonly IUserSubscriptionService _userSubscriptionService;
         public UserSubscriptionDto UserSubscription { get; set; }
     }
 
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Delete : BaseAsyncEndpoint.WithRequest<DeleteUserSubscriptionRequest>.WithResponse<DeleteUserSubscriptionResponse>
 {
 private readonly IUserSubscriptionService _userSubscriptionService;
@@ -188,7 +188,7 @@ private readonly IUserSubscriptionService _userSubscriptionService;
         public string Status { get; set; } = "Deleted";
     }
 
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedUserSubscriptionRequest>.WithResponse<ListPagedUserSubscriptionResponse>
 {
 private readonly IUserSubscriptionService _userSubscriptionService;

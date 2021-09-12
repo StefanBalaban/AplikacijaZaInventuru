@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.UserEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GetById : BaseAsyncEndpoint.WithRequest<GetByIdUserRequest>.WithResponse<GetByIdUserResponse>
     {
         private readonly IUserService _userService;

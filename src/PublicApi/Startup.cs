@@ -109,7 +109,10 @@ namespace PublicApi.Util
             services.AddAuthentication("Bearer").AddIdentityServerAuthentication("Bearer", options =>
             {
                 options.ApiName = "api1";
-                options.Authority = "https://localhost:5001";
+                // TODO: Put this in config
+                options.Authority = "http://192.168.0.20:5001";
+                // TODO: KILL THIS
+                options.RequireHttpsMetadata = false;
             });
 
             services.AddCors(options =>

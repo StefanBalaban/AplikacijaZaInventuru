@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PublicApi.Endpoints.FoodStockEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Update : BaseAsyncEndpoint.WithRequest<UpdateFoodStockRequest>.WithResponse<UpdateFoodStockResponse>
     {
         private readonly IFoodStockService _foodStockService;

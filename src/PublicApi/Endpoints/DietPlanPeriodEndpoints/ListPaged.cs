@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.DietPlanPeriodEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedDietPlanPeriodRequest>.WithResponse<ListPagedDietPlanPeriodResponse>
     {
         private readonly IDietPlanPeriodService _dietPlanPeriodService;

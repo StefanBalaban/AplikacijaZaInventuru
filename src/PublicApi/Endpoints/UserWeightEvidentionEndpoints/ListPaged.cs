@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedUserWeightEvidentionRequest>.WithResponse<ListPagedUserWeightEvidentionResponse>
     {
         private readonly IUserWeightEvidentionService _userWeightEvidentionService;

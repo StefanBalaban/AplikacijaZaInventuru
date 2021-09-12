@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.DietPlanPeriodEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Delete : BaseAsyncEndpoint.WithRequest<DeleteDietPlanPeriodRequest>.WithResponse<DeleteDietPlanPeriodResponse>
     {
         private readonly IDietPlanPeriodService _dietPlanPeriodService;

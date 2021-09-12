@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PublicApi.Endpoints.FoodProductEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Update : BaseAsyncEndpoint.WithRequest<UpdateFoodProductRequest>.WithResponse<
         UpdateFoodProductResponse>
     {
@@ -33,6 +33,7 @@ namespace PublicApi.Endpoints.FoodProductEndpoints
             var response = new UpdateFoodProductResponse(request.CorrelationId());
             var foodProduct = await _foodProductService.PutAsync(new FoodProduct
             {
+                Id = request.Id,
                 Name = request.Name, UnitOfMeasureId = request.UnitOfMeasureId, Calories = request.Calories,
                 Protein = request.Protein, Carbohydrates = request.Carbohydrates, Fats = request.Fats
             });

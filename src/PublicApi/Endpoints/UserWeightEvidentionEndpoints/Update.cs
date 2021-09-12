@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class Update : BaseAsyncEndpoint.WithRequest<UpdateUserWeightEvidentionRequest>.WithResponse<UpdateUserWeightEvidentionResponse>
     {
         private readonly IUserWeightEvidentionService _userWeightEvidentionService;

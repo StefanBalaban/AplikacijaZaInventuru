@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.NotificationRuleEndpoints
 {
-    [Authorize(Roles = "Administrators", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedNotificationRuleRequest>.WithResponse<ListPagedNotificationRuleResponse>
     {
         private readonly INotificationRuleService _notificationRuleService;
