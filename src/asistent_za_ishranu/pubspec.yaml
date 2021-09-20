@@ -35,6 +35,7 @@ dependencies:
   flutter_stripe: ^1.2.0
   pay: ^1.0.1
   progress_dialog: ^1.2.4
+  email_validator: ^1.0.6
 
 
 dev_dependencies:

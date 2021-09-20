@@ -33,9 +33,9 @@ namespace PublicApi.Endpoints.FoodProductEndpoints
         {
             var response = new ListPagedFoodProductResponse(request.CorrelationId());
             var filterSpec = new FoodProductFilterSpecification(request.UnitOfMeasureId, request.CaloriesGTE,
-                request.CaloriesLTE, request.Protein);
+                request.CaloriesLTE, request.Protein, request.Name);
             var pagedSpec = new FoodProductFilterPaginatedSpecification(request.PageIndex * request.PageSize,
-                request.PageSize, request.UnitOfMeasureId, request.CaloriesGTE, request.CaloriesLTE, request.Protein);
+                request.PageSize, request.UnitOfMeasureId, request.CaloriesGTE, request.CaloriesLTE, request.Protein, request.Name);
             var foodProducts = await _foodProductService.GetAsync(filterSpec, pagedSpec);
             response.FoodProducts.AddRange(foodProducts.List.Select(_mapper.Map<FoodProductDto>));
             response.PageCount = foodProducts.Count;

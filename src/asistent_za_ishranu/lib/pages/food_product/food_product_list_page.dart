@@ -14,57 +14,98 @@ class FoodProductListPage extends StatefulWidget {
 }
 
 class _FoodProductListPageState extends State<FoodProductListPage> {
+  late Future<List<FoodProductRequest>> foodProducts;
+  String? name;
+  Future<List<FoodProductRequest>> getItems(String? name) async {
+    var apiService = ApiService();
+    if (name == null) {
+      var result =
+      await apiService.get("api/foodproduct?pageSize=1000&index=0");
+      return FoodProductRequest.resultListFromJson(result);
+    }
+    var result =
+    await apiService.get("api/foodproduct?pageSize=1000&index=0&name=$name");
+    return FoodProductRequest.resultListFromJson(result);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     List<FoodProductRequest> _foodProducts = [
       FoodProductRequest.forListResponse(1, "name")
     ];
-    Future<List<FoodProductRequest>> getItems() async {
-      var apiService = ApiService();
-      var result = await apiService.get("api/foodproduct?pageSize=1000  &index=0");
-      return FoodProductRequest.resultListFromJson(result);
-    }
+
 
     return Scaffold(
-        appBar: AppBar(title: Text("Prehrambeni proizvodi", style: TextStyle(fontSize: 15),), actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: ElevatedButton(
-              child: Text("Nova stavka"),
-              onPressed: () {
-                Navigator.of(context).pushNamed(FoodProductCreatePage.routeName).then((value) => setState((){}));
-              },
+        appBar: AppBar(
+            title: Text(
+              "Prehrambeni proizvodi",
+              style: TextStyle(fontSize: 15),
             ),
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: ElevatedButton(
+                  child: Text("Nova stavka"),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(FoodProductCreatePage.routeName)
+                        .then((value) => setState(() {}));
+                  },
+                ),
+              ),
+            ]),
+        body: Column(children: [
+          TextFormField(
+            decoration: InputDecoration(labelText: "Pretraga"),
+            onChanged: (input) {
+                name = input;
+                setState(() {
+
+                });
+            },
           ),
-        ]),
-        body: Center(
-            child: FutureBuilder<List<FoodProductRequest>>(
-          future: getItems(),
-          builder: (BuildContext context,
-              AsyncSnapshot<List<FoodProductRequest>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return ListView.builder(
-                  itemCount: _foodProducts.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return ListTile(
-                      title: Text(_foodProducts[index].name!),
-                      onTap: () {
-                      },
-                    );
-                  });
-            } else {
-              return new ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return ListTile(
-                      title: Text("${snapshot.data![index].name!}"),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(FoodProductDetailsPage.routeName, arguments: snapshot.data![index].id).then((value) => setState((){}));
-                      },
-                    );
-                  });
-            }
-          },
-        )));
+
+          FutureBuilder<List<FoodProductRequest>>(
+            future: getItems(name),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<FoodProductRequest>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Column(children: [
+                  ListView.builder(
+                      itemCount: _foodProducts.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext ctxt, int index) {
+                        return ListTile(
+                          title: Text(""),
+                          onTap: () {},
+                        );
+                      })
+                ]);
+              } else {
+                return Expanded(
+                    //TODO: Add Expanded here
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext ctxt, int index) {
+                          return ListTile(
+                            title: Center(
+                                child: Text("${snapshot.data![index].name!}")),
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(FoodProductDetailsPage.routeName,
+                                      arguments: snapshot.data![index].id)
+                                  .then((value) => setState(() {}));
+                            },
+                          );
+                        }));
+              }
+            },
+          )
+        ]));
   }
 }

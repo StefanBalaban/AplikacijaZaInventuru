@@ -41,7 +41,8 @@ class _FoodProductDetailsPageState extends State<FoodProductDetailsPage> {
                   children: [],
                 ));
               } else {
-                return Form(
+                return SingleChildScrollView(
+                  child: Form(
                     child: Column(
                   children: [
                     TextFormField(
@@ -114,7 +115,7 @@ class _FoodProductDetailsPageState extends State<FoodProductDetailsPage> {
                       ),
                     )
                   ],
-                ));
+                )));
               }
             }));
   }

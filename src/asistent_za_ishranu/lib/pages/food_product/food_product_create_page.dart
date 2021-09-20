@@ -29,7 +29,7 @@ class _FoodProductCreatePageState extends State<FoodProductCreatePage> {
           "api/foodproduct",
           FoodProductRequest(
                   _nameController.text,
-              _unitOfId!,
+                  _unitOfId!,
                   double.parse(_caloriesController.text),
                   double.parse(_proteinController.text),
                   double.parse(_carbohydratesController.text),
@@ -40,81 +40,121 @@ class _FoodProductCreatePageState extends State<FoodProductCreatePage> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text("Unos prehrambenog proizvoda"),
-            ),
-            body: Column(
-              key: _formKey,
-
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Unos prehrambenog proizvoda"),
+        ),
+        body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+                child: Center(
+                    child: Column(
               children: <Widget>[
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Naziv';
-                    }
-                  },
-                  controller: _nameController,
-                  decoration: InputDecoration(hintText: "Naziv"),
-                ),
-
-                DropdownButtonFormField(
-                  items: [DropdownMenuItem(child: Text("Komad"), value: 1), DropdownMenuItem(child: Text("Težina"), value: 2)]
-                      .toList(),
-                  hint: Text('Jedinica mjere'),
-                  onChanged: (value) {
-                    setState(() {
-                      _unitOfId = value! as int;
-                    });
-                  },
-
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Kalorije';
-                    }
-                  },
-                  controller: _caloriesController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Proteini';
-                    }
-                  },
-                  controller: _proteinController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Ugljikohidrati';
-                    }
-                  },
-                  controller: _carbohydratesController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Masti';
-                    }
-                  },
-                  controller: _fatsController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Naziv';
+                        }
+                      },
+                      controller: _nameController,
+                      decoration: InputDecoration(hintText: "Naziv"),
+                    )),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: DropdownButtonFormField(
+                      items: [
+                        DropdownMenuItem(child: Text("Komad"), value: 1),
+                        DropdownMenuItem(child: Text("Težina"), value: 2)
+                      ].toList(),
+                      hint: Text('Jedinica mjere'),
+                      onChanged: (value) {
+                        setState(() {
+                          _unitOfId = value! as int;
+                        });
+                      },
+                      validator: (int? value) {
+                        if (value == null || value == 0) {
+                          return 'Odaberite jedinicu';
+                        }
+                        return null;
+                      },
+                    )),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Kalorije"),
+                        controller: _caloriesController,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              double.tryParse(value) == null) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration:
+                            InputDecoration(labelText: "Ugljikohidrati"),
+                        controller: _carbohydratesController,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              double.tryParse(value) == null) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Proteini"),
+                        controller: _proteinController,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              !(double.tryParse(value) is double)) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Masti"),
+                        controller: _fatsController,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              !(double.tryParse(value) is double)) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
                 ElevatedButton(
                   onPressed: () {
-                    create();
+                    if (_formKey.currentState!.validate()) {
+                      create();
+                    }
                   },
                   child: const Text("Unos"),
                 )
               ],
-            )));
+            )))));
   }
 }

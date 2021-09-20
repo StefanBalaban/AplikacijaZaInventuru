@@ -22,51 +22,66 @@ class _LoginPageState extends State<LoginPage> {
       var authService = AuthService();
       AuthResult? response = await authService.loginAction(
           AuthRequest(_usernameController.text, _passwordController.text));
-      if (response!.result) Navigator.of(context).pushReplacementNamed("/home");
-      else _errorMessageController.text = "Invalid credentials";
+      if (response!.result)
+        Navigator.of(context).pushReplacementNamed("/home");
+      else
+        _errorMessageController.text = "Invalid credentials";
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text("Login"),
-            ),
-            body: Column(
-              key: _formKey,
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Login"),
+        ),
+        body: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+                child: Center(
+                    child: Column(
               children: <Widget>[
-                TextFormField(
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Korisnik';
-                    }
-                  },
-                  controller: _usernameController,
-                ),
-                TextFormField(
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Lozinka';
-                    }
-                  },
-                  controller: _passwordController,
-                ),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Email adresa"),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Unesi email adresu';
+                        }
+                      },
+                      controller: _usernameController,
+                    )),
+                ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Lozinka"),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Unesite lozinku';
+                        }
+                      },
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                    )),
                 ElevatedButton(
                   onPressed: () {
-                    _login();
+                    if (_formKey.currentState!.validate()) {
+                      _login();
+                    }
                   },
                   child: const Text('Unos'),
                 ),
-                TextButton(onPressed: () {
-                  Navigator.of(context).pushReplacementNamed("/register");
-                },
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed("/register");
+                  },
                   child: const Text("Registracija"),
                 )
               ],
-            )));
+            )))));
   }
 }
