@@ -2,6 +2,7 @@
 using ApplicationCore.Entities.MealAggregate;
 using ApplicationCore.Extensions;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications.MealSpecs;
 using Ardalis.GuardClauses;
 using Ardalis.Specification;
 using System.Collections.Generic;
@@ -27,7 +28,8 @@ namespace ApplicationCore.Services
 
         public async Task<Meal> GetAsync(int id)
         {
-            var meal = await _mealRepository.GetByIdAsync(id);
+            var spec = new MealByIdFilterSpecification(id);
+            var meal = await _mealRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(meal, nameof(Meal));
             return meal;
         }

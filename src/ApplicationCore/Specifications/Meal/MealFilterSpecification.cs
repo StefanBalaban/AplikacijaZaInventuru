@@ -5,5 +5,6 @@ namespace ApplicationCore.Specifications.MealSpecs
 {
     public class MealFilterSpecification : Specification<Meal>
     {
+        
     }
 }

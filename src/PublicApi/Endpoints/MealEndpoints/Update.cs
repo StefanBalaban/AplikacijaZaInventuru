@@ -30,7 +30,7 @@ namespace PublicApi.Endpoints.MealEndpoints
             CancellationToken cancellationToken)
         {
             var response = new UpdateMealResponse(request.CorrelationId());
-            var meal = await _mealService.PutAsync(new Meal { Meals = request.Meals, Name = request.Name });
+            var meal = await _mealService.PutAsync(new Meal { Id = request.Id, Meals = request.Meals, Name = request.Name });
             response.Meal = _mapper.Map<MealDto>(meal);
             return response;
         }

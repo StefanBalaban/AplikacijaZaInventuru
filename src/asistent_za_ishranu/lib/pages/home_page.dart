@@ -1,3 +1,5 @@
+import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.dart';
+import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,10 +29,15 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Text("Prehrambeni proizvodi"),
               onTap: () {
-                Navigator.of(context).pushNamed("/food_product_list");
+                Navigator.of(context).pushNamed(FoodProductListPage.routeName);
               },
             ),
-
+            ListTile(
+              title: Text("Obroci"),
+              onTap: () {
+                Navigator.of(context).pushNamed(MealListPage.routeName);
+              },
+            ),
           ],
         ),
       ),

@@ -1,41 +1,41 @@
-import 'package:asistent_za_ishranu/models/food_product_request.dart';
-import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
+import 'package:asistent_za_ishranu/models/meal_request.dart';
+import 'package:asistent_za_ishranu/pages/meal/meal_details_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'food_product_create_page.dart';
+import 'meal_create_page.dart';
 
-class FoodProductListPage extends StatefulWidget {
-  const FoodProductListPage({Key? key}) : super(key: key);
+class MealListPage extends StatefulWidget {
+  const MealListPage({Key? key}) : super(key: key);
 
-  static const routeName = 'food_product_list';
+  static const routeName = 'meal_list';
 
   @override
-  _FoodProductListPageState createState() => _FoodProductListPageState();
+  _MealListPageState createState() => _MealListPageState();
 }
 
-class _FoodProductListPageState extends State<FoodProductListPage> {
-  late Future<List<FoodProductRequest>> foodProducts;
+class _MealListPageState extends State<MealListPage> {
+  late Future<List<MealRequest>> meals;
   String? name;
-  Future<List<FoodProductRequest>> getItems(String? name) async {
+  Future<List<MealRequest>> getItems(String? name) async {
     var apiService = ApiService();
     if (name == null) {
       var result =
-      await apiService.get("api/foodproduct?pageSize=1000&index=0");
-      return FoodProductRequest.resultListFromJson(result);
+      await apiService.get("api/meal?pageSize=1000&index=0");
+      return MealRequest.resultListFromJson(result);
     }
     var result =
-    await apiService.get("api/foodproduct?pageSize=1000&index=0&name=$name");
-    return FoodProductRequest.resultListFromJson(result);
+    await apiService.get("api/meal?pageSize=1000&index=0&name=$name");
+    return MealRequest.resultListFromJson(result);
   }
 
 
 
   @override
   Widget build(BuildContext context) {
-    List<FoodProductRequest> _foodProducts = [
-      FoodProductRequest.forListResponse(1, "name")
+    List<MealRequest> _meals = [
+      MealRequest.forListResponse(1, "name")
     ];
 
 
@@ -52,7 +52,7 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                   child: Text("Nova stavka"),
                   onPressed: () {
                     Navigator.of(context)
-                        .pushNamed(FoodProductCreatePage.routeName)
+                        .pushNamed(MealCreatePage.routeName)
                         .then((value) => setState(() {}));
                   },
                 ),
@@ -69,14 +69,14 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
             },
           ),
 
-          FutureBuilder<List<FoodProductRequest>>(
+          FutureBuilder<List<MealRequest>>(
             future: getItems(name),
             builder: (BuildContext context,
-                AsyncSnapshot<List<FoodProductRequest>> snapshot) {
+                AsyncSnapshot<List<MealRequest>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(children: [
                   ListView.builder(
-                      itemCount: _foodProducts.length,
+                      itemCount: _meals.length,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemBuilder: (BuildContext ctxt, int index) {
@@ -99,7 +99,7 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                                 child: Text("${snapshot.data![index].name!}")),
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed(FoodProductDetailsPage.routeName,
+                                  .pushNamed(MealDetailsPage.routeName,
                                       arguments: snapshot.data![index].id)
                                   .then((value) => setState(() {}));
                             },

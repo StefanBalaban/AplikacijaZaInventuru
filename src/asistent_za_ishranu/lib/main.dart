@@ -5,6 +5,10 @@ import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.da
 import 'package:asistent_za_ishranu/pages/home_page.dart';
 import 'package:asistent_za_ishranu/pages/landing_page.dart';
 import 'package:asistent_za_ishranu/pages/login_page.dart';
+import 'package:asistent_za_ishranu/pages/meal/meal_create_page.dart';
+import 'package:asistent_za_ishranu/pages/meal/meal_details_page.dart';
+import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
+import 'package:asistent_za_ishranu/pages/meal/meal_update_page.dart';
 import 'package:asistent_za_ishranu/pages/register_page.dart';
 import 'package:asistent_za_ishranu/pages/subscribe_page.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +40,13 @@ class MyApp extends StatelessWidget {
         "/register":(context)=> RegisterPage(),
         "/subscribe":(context)=> SubscribePage(),
         FoodProductCreatePage.routeName:(context)=> FoodProductCreatePage(),
-        "/food_product_list":(context)=> FoodProductListPage(),
+        FoodProductListPage.routeName:(context)=> FoodProductListPage(),
         FoodProductDetailsPage.routeName:(context)=>FoodProductDetailsPage(),
-        FoodProductUpdatePage.routeName:(context)=>FoodProductUpdatePage()
+        FoodProductUpdatePage.routeName:(context)=>FoodProductUpdatePage(),
+        MealCreatePage.routeName:(context)=> MealCreatePage(),
+        MealListPage.routeName:(context)=> MealListPage(),
+        MealDetailsPage.routeName:(context)=>MealDetailsPage(),
+        MealUpdatePage.routeName:(context)=>MealUpdatePage()
       },
     );
   }
