@@ -1,3 +1,6 @@
+import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_create_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_details_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_list_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_create_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_update_page.dart';
@@ -46,7 +49,10 @@ class MyApp extends StatelessWidget {
         MealCreatePage.routeName:(context)=> MealCreatePage(),
         MealListPage.routeName:(context)=> MealListPage(),
         MealDetailsPage.routeName:(context)=>MealDetailsPage(),
-        MealUpdatePage.routeName:(context)=>MealUpdatePage()
+        MealUpdatePage.routeName:(context)=>MealUpdatePage(),
+        DietPlanListPage.routeName:(context)=>DietPlanListPage(),
+        DietPlanCreatePage.routeName:(context)=> DietPlanCreatePage(),
+        DietPlanDetailsPage.routeName:(context)=>DietPlanDetailsPage()
       },
     );
   }

@@ -17,5 +17,6 @@ namespace ApplicationCore.Interfaces
         Task<int> CountAsync(ISpecification<T> spec, CancellationToken cancellationToken = default);
         Task<T> FirstAsync(ISpecification<T> spec, CancellationToken cancellationToken = default);
         Task<T> FirstOrDefaultAsync(ISpecification<T> spec, CancellationToken cancellationToken = default);
+        Task<List<T>> ListByShadowPropertyId(string shadowProperty, int id, CancellationToken cancellationToken = default);
     }
 }

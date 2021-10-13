@@ -14,11 +14,13 @@ namespace ApplicationCore.Services
     {
         private readonly IAppLogger<MealService> _logger;
         private readonly IAsyncRepository<Meal> _mealRepository;
+        private readonly IAsyncRepository<MealItem> _mealItemRepository;
 
-        public MealService(IAsyncRepository<Meal> mealRepository, IAppLogger<MealService> logger)
+        public MealService(IAsyncRepository<Meal> mealRepository, IAppLogger<MealService> logger, IAsyncRepository<MealItem> mealItemRepository)
         {
             _mealRepository = mealRepository;
             _logger = logger;
+            _mealItemRepository = mealItemRepository;
         }
 
         public async Task<IEnumerable<Meal>> GetAsync()
@@ -54,6 +56,11 @@ namespace ApplicationCore.Services
             Guard.Against.ModelStateIsInvalid(t, nameof(Meal));
             var meal = await _mealRepository.GetByIdAsync(t.Id);
             Guard.Against.EntityNotFound(meal, nameof(Meal));
+            var meals = await _mealItemRepository.ListByShadowPropertyId("MealId", meal.Id);
+            if (meals != null)
+            {
+                meals.ForEach(e => meal.Meals.Remove(e));
+            }
             meal.Meals = t.Meals;
             meal.Name = t.Name;
             await _mealRepository.UpdateAsync(meal);
@@ -64,6 +71,11 @@ namespace ApplicationCore.Services
         {
             var meal = await _mealRepository.GetByIdAsync(id);
             Guard.Against.EntityNotFound(meal, nameof(Meal));
+            var meals = await _mealItemRepository.ListByShadowPropertyId("MealId", meal.Id);
+            if (meals != null)
+            {
+                meals.ForEach(e => meal.Meals.Remove(e));
+            }
             await _mealRepository.DeleteAsync(meal);
             return true;
         }

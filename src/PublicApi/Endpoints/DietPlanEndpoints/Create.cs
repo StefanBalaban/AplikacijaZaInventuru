@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Entities.DietPlanAggregate;
+﻿using System.Linq;
+using ApplicationCore.Entities.DietPlanAggregate;
 using ApplicationCore.Interfaces;
 using Ardalis.ApiEndpoints;
 using AutoMapper;
@@ -27,7 +28,15 @@ namespace PublicApi.Endpoints.DietPlanEndpoints
         public override async Task<ActionResult<CreateDietPlanResponse>> HandleAsync(CreateDietPlanRequest request, CancellationToken cancellationToken)
         {
             var response = new CreateDietPlanResponse(request.CorrelationId());
-            var dietPlan = await _dietPlanService.PostAsync(new DietPlan { DietPlanMeals = request.DietPlanMeals, Name = request.Name });
+            var dietPlan = await _dietPlanService.PostAsync(new DietPlan
+            {
+                DietPlanMeals = request.DietPlanMeals.Select(x => new DietPlanMeal()
+                {
+                    MealId = x.MealId,
+                    DietPlanId = x.DietPlanId
+                }).ToList(),
+                Name = request.Name
+            });
             response.DietPlan = _mapper.Map<DietPlanDto>(dietPlan);
             return response;
         }

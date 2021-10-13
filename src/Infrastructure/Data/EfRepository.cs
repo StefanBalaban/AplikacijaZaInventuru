@@ -58,7 +58,7 @@ namespace Infrastructure.Data
 
         public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Set<T>().Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -78,6 +78,12 @@ namespace Infrastructure.Data
         {
             var specificationResult = ApplySpecification(spec);
             return await specificationResult.FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<List<T>> ListByShadowPropertyId(string shadowProperty, int id, CancellationToken cancellationToken = default) 
+        {
+            var list = _dbContext.Set<T>().Where(x => EF.Property<int>(x, shadowProperty) == id).ToListAsync(cancellationToken);
+            return await list;
         }
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
