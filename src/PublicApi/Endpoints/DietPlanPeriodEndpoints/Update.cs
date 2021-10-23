@@ -27,7 +27,7 @@ namespace PublicApi.Endpoints.DietPlanPeriodEndpoints
         public override async Task<ActionResult<UpdateDietPlanPeriodResponse>> HandleAsync(UpdateDietPlanPeriodRequest request, CancellationToken cancellationToken)
         {
             var response = new UpdateDietPlanPeriodResponse(request.CorrelationId());
-            var dietPlanPeriod = await _dietPlanPeriodService.PutAsync(new DietPlanPeriod { DietPlanId = request.DietPlanId, StartDate = request.StartDate, EndDate = request.EndDate });
+            var dietPlanPeriod = await _dietPlanPeriodService.PutAsync(new DietPlanPeriod { DietPlanId = request.DietPlanId, StartDate = request.StartDate, EndDate = request.EndDate, Id = request.Id });
             response.DietPlanPeriod = _mapper.Map<DietPlanPeriodDto>(dietPlanPeriod);
             return response;
         }

@@ -40,8 +40,6 @@ class _FoodProductCreatePageState extends State<FoodProductCreatePage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

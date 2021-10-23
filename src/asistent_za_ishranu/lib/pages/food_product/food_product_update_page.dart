@@ -124,23 +124,25 @@ class _FoodProductUpdatePageState extends State<FoodProductUpdatePage> {
                                   }
                                   return null;
                                 },
-                                keyboardType: TextInputType.numberWithOptions(decimal: true))),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true))),
                         ConstrainedBox(
                             constraints:
                                 BoxConstraints.tight(const Size(200, 50)),
                             child: TextFormField(
-                              decoration:
-                                  InputDecoration(labelText: "Ugljikohidrati"),
-                              controller: carbohydrates,validator: (String? value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  double.tryParse(value) == null) {
-                                return 'Vrijednost je prazna ili nije broj';
-                              }
-                              return null;
-                            },
-                                keyboardType: TextInputType.numberWithOptions(decimal: true)
-                            )),
+                                decoration: InputDecoration(
+                                    labelText: "Ugljikohidrati"),
+                                controller: carbohydrates,
+                                validator: (String? value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      double.tryParse(value) == null) {
+                                    return 'Vrijednost je prazna ili nije broj';
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true))),
                         ConstrainedBox(
                             constraints:
                                 BoxConstraints.tight(const Size(200, 50)),
@@ -156,7 +158,8 @@ class _FoodProductUpdatePageState extends State<FoodProductUpdatePage> {
                                   }
                                   return null;
                                 },
-                                keyboardType: TextInputType.numberWithOptions(decimal: true))),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true))),
                         ConstrainedBox(
                             constraints:
                                 BoxConstraints.tight(const Size(200, 50)),
@@ -171,7 +174,8 @@ class _FoodProductUpdatePageState extends State<FoodProductUpdatePage> {
                                   }
                                   return null;
                                 },
-                                keyboardType: TextInputType.numberWithOptions(decimal: true))),
+                                keyboardType: TextInputType.numberWithOptions(
+                                    decimal: true))),
                         Center(
                           child: ElevatedButton(
                             child: Text("Izmijeni"),

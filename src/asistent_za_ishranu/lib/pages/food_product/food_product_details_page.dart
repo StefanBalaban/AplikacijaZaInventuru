@@ -42,8 +42,8 @@ class _FoodProductDetailsPageState extends State<FoodProductDetailsPage> {
                 ));
               } else {
                 return SingleChildScrollView(
-                  child: Form(
-                    child: Column(
+                    child: Form(
+                        child: Column(
                   children: [
                     TextFormField(
                       initialValue: snapshot.data!.name,
@@ -81,9 +81,10 @@ class _FoodProductDetailsPageState extends State<FoodProductDetailsPage> {
                       child: ElevatedButton(
                         child: Text("Izmijeni"),
                         onPressed: () {
-                          Navigator.of(context).pushNamed(
-                              FoodProductUpdatePage.routeName,
-                              arguments: id).then((value) => setState((){}));
+                          Navigator.of(context)
+                              .pushNamed(FoodProductUpdatePage.routeName,
+                                  arguments: id)
+                              .then((value) => setState(() {}));
                         },
                       ),
                     ),
@@ -94,11 +95,11 @@ class _FoodProductDetailsPageState extends State<FoodProductDetailsPage> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: const Text('Potvrda brisanja'),
-                            content: const Text('Da li ste sigurni da želite obrisati stavku?'),
+                            content: const Text(
+                                'Da li ste sigurni da želite obrisati stavku?'),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Ne'),
+                                onPressed: () => Navigator.pop(context, 'Ne'),
                                 child: const Text('Ne'),
                               ),
                               TextButton(

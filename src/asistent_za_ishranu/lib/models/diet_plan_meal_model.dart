@@ -12,6 +12,6 @@ class DietPlanMealModel extends BaseModel {
   }
 
   factory DietPlanMealModel.fromJson(Map<String, dynamic> map) {
-    return DietPlanMealModel(map["dietPlanId"], map["mealId"]);
+    return DietPlanMealModel(map["mealId"], map["dietPlanId"]);
   }
 }

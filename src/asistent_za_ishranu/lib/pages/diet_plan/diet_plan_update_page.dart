@@ -1,7 +1,9 @@
-/* import 'package:asistent_za_ishranu/models/food_product_request.dart';
-import 'package:asistent_za_ishranu/models/diet_plan_item_model.dart';
+import 'package:asistent_za_ishranu/models/diet_plan_meal_model.dart';
+import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
+import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
+import 'package:asistent_za_ishranu/widgets/checkbox_with_id.dart';
 import 'package:flutter/material.dart';
 
 class DietPlanUpdatePage extends StatefulWidget {
@@ -14,17 +16,12 @@ class DietPlanUpdatePage extends StatefulWidget {
 }
 
 class _DietPlanUpdatePageState extends State<DietPlanUpdatePage> {
-  late Future<DietPlanRequest> dietplan;
   final _formKey = GlobalKey<FormState>();
-  List<FoodProductRequest> foodProducts = [];
-  var id = 0;
-  var unitOfMeasureId = 0;
-  var firstLoad = true;
-  List<TextEditingController> _foodProductIds = [];
-  List<TextEditingController> _amountControllers = [];
-  List<Widget> _foodProductFields = <Widget>[];
-  int _foodProductFieldIndex = 0;
-  bool initialization = true;
+  late Future<DietPlanRequest> dietPlan;
+  int id = 0;
+  List<MealRequest>? meals;
+  TextEditingController _nameController = TextEditingController();
+  List<CheckBoxWithId> checkboxes = [];
 
   Future<DietPlanRequest> getItem(id) async {
     var apiService = ApiService();
@@ -32,113 +29,30 @@ class _DietPlanUpdatePageState extends State<DietPlanUpdatePage> {
     return DietPlanRequest.resultFromJson(result);
   }
 
-  List<Widget> getDietPlanFields(List<DietPlanItemModel>? data) {
-    if (initialization) {
-      data!.forEach((element) {
-        addDietPlanField(element);
-      });
-      initialization = false;
-    }
-
-    return _foodProductFields;
-  }
-  void addFoodProductField(List<FoodProductRequest>? data) {
-    _foodProductIds.add(TextEditingController());
-    var _foodProductIdIndex = _foodProductFieldIndex;
-    _amountControllers.add(TextEditingController());
-    _foodProductFields!.add(ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(200, 50)),
-        child: Padding(
-          child: Text("Prehrambeni proizvod: ${_foodProductFieldIndex + 1}"),
-          padding: EdgeInsets.all(10),
-        )));
-    _foodProductFields!.add(ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(200, 50)),
-        child: DropdownButtonFormField(
-          items: data!
-              .map((e) => DropdownMenuItem(
-            child: Text(e.name!),
-            value: e.id,
-          ))
-              .toList(),
-          hint: Text('Jedinica mjere'),
-          onChanged: (value) {
-            setState(() {
-              _foodProductIds[_foodProductIdIndex].text = "$value";
-            });
-          },
-          validator: (int? value) {
-            if (value == null || value == 0) {
-              return 'Odaberite jedinicu';
-            }
-            return null;
-          },
-        )));
-    _foodProductFields!.add(ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(200, 50)),
-        child: TextFormField(
-            decoration: InputDecoration(labelText: "Količina"),
-            controller: _amountControllers[_foodProductFieldIndex],
-            validator: (String? value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  double.tryParse(value) == null) {
-                return 'Vrijednost je prazna ili nije broj';
-              }
-              return null;
-            },
-            keyboardType: TextInputType.numberWithOptions(decimal: true))));
-    _foodProductFieldIndex++;
+  Future<void> update() async {
+    var apiService = ApiService();
+    List<DietPlanMealModel> dietPlanMealModels = [];
+    checkboxes.forEach((element) {
+      if (element.wrappedBoolean!.value)
+        dietPlanMealModels.add(DietPlanMealModel(element.mealRequest!.id, 0));
+    });
+    var req =
+        DietPlanRequest(_nameController.text, dietPlanMealModels, id).modelToJson();
+    await apiService.put("api/dietplan", req);
+    Navigator.of(context).pop(context);
   }
 
-  void addDietPlanField(DietPlanItemModel? data) {
-    _foodProductIds.add(TextEditingController(text: data!.dietPlanId.toString()));
-    var _foodProductIdIndex = _foodProductFieldIndex;
-    _amountControllers.add(TextEditingController(text: data!.mealId.toString()));
-    _foodProductFields!.add(ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(200, 50)),
-        child: Padding(
-          child: Text("Prehrambeni proizvod: ${_foodProductFieldIndex + 1}"),
-          padding: EdgeInsets.all(10),
-        )));
-    _foodProductFields!.add(ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(200, 50)),
-        child: DropdownButtonFormField(
-          items: foodProducts!
-              .map((e) => DropdownMenuItem(
-            child: Text(e.name!),
-            value: e.id,
-          ))
-              .toList(),
-          hint: Text('Jedinica mjere'),
-          onChanged: (value) {
-            setState(() {
-              _foodProductIds[_foodProductIdIndex].text = "$value";
-            });
-          },
-          validator: (int? value) {
-            if (value == null || value == 0) {
-              return 'Odaberite jedinicu';
-            }
-            return null;
-          },
-          value: data!.dietPlanId,
-        )));
-    _foodProductFields!.add(ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(200, 50)),
-        child: TextFormField(
-            decoration: InputDecoration(labelText: "Količina"),
-            controller: _amountControllers[_foodProductFieldIndex],
-            validator: (String? value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  double.tryParse(value) == null) {
-                return 'Vrijednost je prazna ili nije broj';
-              }
-              return null;
-            },
-            keyboardType: TextInputType.numberWithOptions(decimal: true))));
-    _foodProductFieldIndex++;
+  List<CheckBoxWithId> populateCheckBoxes(
+      List<MealRequest>? data, List<DietPlanMealModel>? dietPlanMeals) {
+    checkboxes = data!.map((e) => CheckBoxWithId(e)).toList();
+    dietPlanMeals!.forEach((element) {
+      checkboxes
+          .singleWhere((checkbox) => checkbox.mealRequest!.id == element.mealId)
+          .wrappedBoolean!
+          .value = true;
+    });
+
+    return checkboxes;
   }
 
   @override
@@ -146,12 +60,14 @@ class _DietPlanUpdatePageState extends State<DietPlanUpdatePage> {
     super.initState();
     // future that allows us to access context. function is called inside the future
     // otherwise it would be skipped and args would return null
-    Future.delayed(Duration.zero, () async {
+    Future.delayed(Duration.zero, () {
       setState(() {
-        id = (ModalRoute.of(context)!.settings.arguments as List<dynamic>)[0] as int;
-        foodProducts = (ModalRoute.of(context)!.settings.arguments as List<dynamic>)[1] as List<FoodProductRequest>;
+        id = (ModalRoute.of(context)!.settings.arguments as List<dynamic>)[0]
+            as int;
+        meals = (ModalRoute.of(context)!.settings.arguments as List<dynamic>)[1]
+            as List<MealRequest>;
       });
-      dietplan = getItem(id);
+    dietPlan = getItem(id);
     });
   }
 
@@ -159,78 +75,50 @@ class _DietPlanUpdatePageState extends State<DietPlanUpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Izmjeni prehrambeni proizvod"),
+          title: Text("Uredi plan ishrane"),
         ),
         body: FutureBuilder<DietPlanRequest>(
-            future: dietplan,
+            future: dietPlan,
             builder: (BuildContext context,
                 AsyncSnapshot<DietPlanRequest> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Form(
-                    child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(labelText: ""),
-                      initialValue: "",
-                      readOnly: true,
-                    )
-                  ],
-                ));
+                return Column(
+                  children: [],
+                );
               } else {
-                var name = TextEditingController(text: snapshot.data!.name);
+                _nameController.text = snapshot.data!.name!;
                 return Form(
                     key: _formKey,
                     child: SingleChildScrollView(
-                        child: Column(
-                      children: [
-                        ConstrainedBox(
-                            constraints:
-                                BoxConstraints.tight(const Size(200, 50)),
-                            child: TextFormField(
-                              decoration: InputDecoration(labelText: "Naziv"),
-                              controller: name,
-                              validator: (String? value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Vrijednost ne smije biti prazna';
-                                }
-                                return null;
-                              },
-                            )),
-                        Column(children: getDietPlanFields(snapshot.data!.dietplans),),
-
-              ElevatedButton(
-              onPressed: () {
-              addFoodProductField(foodProducts);
-              setState(() {
-
-              });
-              },
-              child: const Text("Novi prehrambeni proizvod"),
-              ),
-                        Center(
-                          child: ElevatedButton(
-                            child: Text("Izmijeni"),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                var apiService = ApiService();
-                                var fieldIndex = 0;
-                                var result = await apiService.put(
-                                    "api/dietplan/",
-                                    DietPlanRequest(
-                                        name.text,
-                                        _foodProductIds.map((e) {
-                                          return DietPlanItemModel(int.parse(e.text),
-                                              double.parse(_amountControllers[fieldIndex++].text));
-                                        },).toList(), id)
-                                        .modelToJson());
-                                Navigator.of(context).pop();
+                        child: Center(
+                            child: Column(children: <Widget>[
+                      ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tight(const Size(200, 50)),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Naziv';
                               }
+                            
                             },
-                          ),
-                        ),
-                      ],
-                    )));
-              }}));
+                            controller: _nameController,
+                            decoration: InputDecoration(hintText: "Naziv"),
+                          )),
+                      Column(
+                        children: populateCheckBoxes(
+                            meals, snapshot.data!.dietPlanMeals),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            update();
+                          }
+                        },
+                        child: const Text("Unos"),
+                      )
+                    ]))));
+              }
+            }));
   }
 }
- */

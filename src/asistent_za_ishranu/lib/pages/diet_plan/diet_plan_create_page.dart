@@ -58,7 +58,7 @@ class _DietPlanCreatePageState extends State<DietPlanCreatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Unos obroka"),
+          title: Text("Unos plana ishrane"),
         ),
         body: FutureBuilder<List<MealRequest>>(
             future: meals,

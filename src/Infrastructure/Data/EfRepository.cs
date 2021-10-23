@@ -80,12 +80,6 @@ namespace Infrastructure.Data
             return await specificationResult.FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<List<T>> ListByShadowPropertyId(string shadowProperty, int id, CancellationToken cancellationToken = default) 
-        {
-            var list = _dbContext.Set<T>().Where(x => EF.Property<int>(x, shadowProperty) == id).ToListAsync(cancellationToken);
-            return await list;
-        }
-
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             var evaluator = new SpecificationEvaluator<T>();

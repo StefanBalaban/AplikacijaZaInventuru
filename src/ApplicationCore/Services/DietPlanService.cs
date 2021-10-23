@@ -6,6 +6,7 @@ using Ardalis.Specification;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Extensions;
+using ApplicationCore.Specifications.DietPlanSpecs;
 
 namespace ApplicationCore.Services
 {
@@ -26,7 +27,8 @@ namespace ApplicationCore.Services
 
         public async Task<DietPlan> GetAsync(int id)
         {
-            var dietPlan = await _dietPlanRepository.GetByIdAsync(id);
+            var spec = new DietPlanByIdFilterSpecification(id);
+            var dietPlan = await _dietPlanRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(dietPlan, nameof(DietPlan));
             return dietPlan;
         }
@@ -45,7 +47,8 @@ namespace ApplicationCore.Services
         public async Task<DietPlan> PutAsync(DietPlan t)
         {
             Guard.Against.ModelStateIsInvalid(t, nameof(DietPlan));
-            var dietPlan = await _dietPlanRepository.GetByIdAsync(t.Id);
+            var spec = new DietPlanByIdFilterSpecification(t.Id);
+            var dietPlan = await _dietPlanRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(dietPlan, nameof(DietPlan));
             dietPlan.DietPlanMeals = t.DietPlanMeals;
             dietPlan.Name = t.Name;
@@ -55,7 +58,8 @@ namespace ApplicationCore.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var dietPlan = await _dietPlanRepository.GetByIdAsync(id);
+            var spec = new DietPlanByIdFilterSpecification(id);
+            var dietPlan = await _dietPlanRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(dietPlan, nameof(DietPlan));
             await _dietPlanRepository.DeleteAsync(dietPlan);
             return true;

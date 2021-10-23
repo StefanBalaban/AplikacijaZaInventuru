@@ -1,10 +1,16 @@
 import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_create_page.dart';
 import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_details_page.dart';
 import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_list_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_update_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_create_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_details_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_list_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_update_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_create_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_update_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.dart';
+import 'package:asistent_za_ishranu/pages/food_stock/food_stock_list_page.dart';
 import 'package:asistent_za_ishranu/pages/home_page.dart';
 import 'package:asistent_za_ishranu/pages/landing_page.dart';
 import 'package:asistent_za_ishranu/pages/login_page.dart';
@@ -30,13 +36,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Asistent za ishranu',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LandingPage(),
-      routes: {
+    var routes = {
         "/landing":(context)=> LandingPage(),
         "/login":(context)=>LoginPage(),
         "/home":(context)=> HomePage(),
@@ -52,8 +52,22 @@ class MyApp extends StatelessWidget {
         MealUpdatePage.routeName:(context)=>MealUpdatePage(),
         DietPlanListPage.routeName:(context)=>DietPlanListPage(),
         DietPlanCreatePage.routeName:(context)=> DietPlanCreatePage(),
-        DietPlanDetailsPage.routeName:(context)=>DietPlanDetailsPage()
-      },
+        DietPlanDetailsPage.routeName:(context)=>DietPlanDetailsPage(),
+        DietPlanUpdatePage.routeName:(context)=>DietPlanUpdatePage(),
+        DietPlanPeriodListPage.routeName:(context)=>DietPlanPeriodListPage(),
+        DietPlanPeriodCreatePage.routeName:(context)=>DietPlanPeriodCreatePage(),
+        DietPlanPeriodDetailsPage.routeName:(context)=>DietPlanPeriodDetailsPage(),
+        DietPlanPeriodUpdatePage.routeName:(context)=>DietPlanPeriodUpdatePage(),
+        FoodStockListPage.routeName:(context)=>FoodStockListPage()
+      };
+      
+    return MaterialApp(
+      title: 'Asistent za ishranu',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LandingPage(),
+      routes: routes,
     );
   }
 }

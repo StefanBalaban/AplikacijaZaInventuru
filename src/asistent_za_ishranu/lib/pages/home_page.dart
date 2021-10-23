@@ -1,4 +1,5 @@
 import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_list_page.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_list_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,12 @@ class _HomePageState extends State<HomePage> {
               title: Text("Planovi ishrane"),
               onTap: () {
                 Navigator.of(context).pushNamed(DietPlanListPage.routeName);
+              },
+            ),
+            ListTile(
+              title: Text("Period planova ishrane"),
+              onTap: () {
+                Navigator.of(context).pushNamed(DietPlanPeriodListPage.routeName);
               },
             ),
           ],

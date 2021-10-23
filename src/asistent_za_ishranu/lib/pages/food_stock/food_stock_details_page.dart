@@ -1,52 +1,40 @@
-import 'package:asistent_za_ishranu/models/diet_plan_meal_model.dart';
-import 'package:asistent_za_ishranu/models/food_product_request.dart';
+/* import 'package:asistent_za_ishranu/models/food_stock_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
-import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import 'diet_plan_update_page.dart';
+import 'food_stock_update_page.dart';
 
-class DietPlanDetailsPage extends StatefulWidget {
-  const DietPlanDetailsPage({Key? key}) : super(key: key);
+class FoodStockDetailsPage extends StatefulWidget {
+  const FoodStockDetailsPage({Key? key}) : super(key: key);
 
-  static const routeName = '/diet_plan_details';
+  static const routeName = '/food_stock_details';
 
   @override
-  _DietPlanDetailsPageState createState() => _DietPlanDetailsPageState();
+  _FoodStockDetailsPageState createState() =>
+      _FoodStockDetailsPageState();
 }
 
-class _DietPlanDetailsPageState extends State<DietPlanDetailsPage> {
+class _FoodStockDetailsPageState extends State<FoodStockDetailsPage> {
+  DietPlanRequest? dietPlan;
+  Future<FoodStockRequest> getItem(id) async {
+    var apiService = ApiService();
+    var result = await apiService.get("api/foodstock/$id");
+    var dietPlanPeriodRequest = FoodStockRequest.resultFromJson(result);
+    dietPlan = await getDietPlan(dietPlanPeriodRequest.foodProductId!);
+    return FoodStockRequest.resultFromJson(result);
+  }
 
-  List<MealRequest> meals = []; 
-  Future<DietPlanRequest> getItem(id) async {
+  Future<DietPlanRequest> getDietPlan(int id) async {
     var apiService = ApiService();
     var result = await apiService.get("api/dietplan/$id");
-
-    apiService = ApiService();
-    var mealResult = await apiService.get("api/meal?pageSize=1000&index=0");
-    meals = MealRequest.resultListFromJson(mealResult);
-
-    var dietPlan = DietPlanRequest.resultFromJson(result);
-    return dietPlan;
+    return DietPlanRequest.resultFromJson(result);
   }
 
   Future<void> deleteItem(id) async {
     var apiService = ApiService();
-    await apiService.delete("api/dietplan/$id");
-  }
-
-  List<Widget> getListOfDietPlanItems(List<DietPlanMealModel> dietplanRequests) {
-    List<Widget> fields = dietplanRequests!.toList().map((e) {
-      return
-        TextFormField(
-          initialValue: "${meals.singleWhere((element) => element.id == e.mealId).name}",
-          decoration: InputDecoration(labelText: "Obrok:"),
-          readOnly: true,
-
-        );}).toList();
-
-    return fields;
+    await apiService.delete("api/foodstock/$id");
   }
 
   @override
@@ -54,12 +42,12 @@ class _DietPlanDetailsPageState extends State<DietPlanDetailsPage> {
     final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Detalji plana "),
+          title: Text("Detalji perioda plana ishrane"),
         ),
-        body: FutureBuilder<DietPlanRequest>(
+        body: FutureBuilder<FoodStockRequest>(
             future: getItem(id),
             builder: (BuildContext context,
-                AsyncSnapshot<DietPlanRequest> snapshot) {
+                AsyncSnapshot<FoodStockRequest> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Form(
                     child: Column(
@@ -67,23 +55,34 @@ class _DietPlanDetailsPageState extends State<DietPlanDetailsPage> {
                 ));
               } else {
                 return SingleChildScrollView(
-                  child: Form(
-                    child: Column(
+                    child: Form(
+                        child: Column(
                   children: [
                     TextFormField(
-                      initialValue: snapshot.data!.name,
+                      initialValue: dietPlan?.name,
+                      decoration: InputDecoration(labelText: "Plan ishrane"),
+                      readOnly: true,
+                    ),
+                    TextFormField(
+                      initialValue:
+                          "${DateFormat('dd.MM.yyyy').format(snapshot.data!.bestUseByDate!)}",
                       decoration: InputDecoration(labelText: "Naziv"),
                       readOnly: true,
                     ),
-                    Column(
-                        children: getListOfDietPlanItems(snapshot!.data!.dietPlanMeals!)),
+                    TextFormField(
+                      initialValue:
+                          "${DateFormat('dd.MM.yyyy').format(snapshot.data!.dateOfPurchase!)}",
+                      decoration: InputDecoration(labelText: "Jedinica mjere"),
+                      readOnly: true,
+                    ),
                     Center(
                       child: ElevatedButton(
                         child: Text("Izmijeni"),
                         onPressed: () {
-                          Navigator.of(context).pushNamed(
-                              DietPlanUpdatePage.routeName,
-                              arguments: [id, meals]).then((value) => setState((){}));
+                          Navigator.of(context)
+                              .pushNamed(FoodStockUpdatePage.routeName,
+                                  arguments: id)
+                              .then((value) => setState(() {}));
                         },
                       ),
                     ),
@@ -94,11 +93,11 @@ class _DietPlanDetailsPageState extends State<DietPlanDetailsPage> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: const Text('Potvrda brisanja'),
-                            content: const Text('Da li ste sigurni da želite obrisati stavku?'),
+                            content: const Text(
+                                'Da li ste sigurni da želite obrisati stavku?'),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Ne'),
+                                onPressed: () => Navigator.pop(context, 'Ne'),
                                 child: const Text('Ne'),
                               ),
                               TextButton(
@@ -120,3 +119,4 @@ class _DietPlanDetailsPageState extends State<DietPlanDetailsPage> {
             }));
   }
 }
+ */

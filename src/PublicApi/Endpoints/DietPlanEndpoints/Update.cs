@@ -27,7 +27,7 @@ namespace PublicApi.Endpoints.DietPlanEndpoints
         public override async Task<ActionResult<UpdateDietPlanResponse>> HandleAsync(UpdateDietPlanRequest request, CancellationToken cancellationToken)
         {
             var response = new UpdateDietPlanResponse(request.CorrelationId());
-            var dietPlan = await _dietPlanService.PutAsync(new DietPlan { DietPlanMeals = request.DietPlanMeals, Name = request.Name });
+            var dietPlan = await _dietPlanService.PutAsync(new DietPlan { DietPlanMeals = request.DietPlanMeals, Name = request.Name, Id = request.Id });
             response.DietPlan = _mapper.Map<DietPlanDto>(dietPlan);
             return response;
         }

@@ -61,7 +61,7 @@ class _MealUpdatePageState extends State<MealUpdatePage> {
             value: e.id,
           ))
               .toList(),
-          hint: Text('Jedinica mjere'),
+          hint: Text('Prehrambeni proizvod'),
           onChanged: (value) {
             setState(() {
               _foodProductIds[_foodProductIdIndex].text = "$value";
@@ -110,7 +110,7 @@ class _MealUpdatePageState extends State<MealUpdatePage> {
             value: e.id,
           ))
               .toList(),
-          hint: Text('Jedinica mjere'),
+          hint: Text('Prehrambeni proizvod'),
           onChanged: (value) {
             setState(() {
               _foodProductIds[_foodProductIdIndex].text = "$value";
@@ -159,7 +159,7 @@ class _MealUpdatePageState extends State<MealUpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Izmjeni prehrambeni proizvod"),
+          title: Text("Izmjeni obrok"),
         ),
         body: FutureBuilder<MealRequest>(
             future: meal,

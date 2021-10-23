@@ -1,45 +1,57 @@
-import 'package:asistent_za_ishranu/models/food_product_request.dart';
-import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
+import 'package:asistent_za_ishranu/models/diet_plan_period_request.dart';
+import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
+import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_details_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
-import 'food_product_create_page.dart';
+import 'diet_plan_period_create_page.dart';
 
-class FoodProductListPage extends StatefulWidget {
-  const FoodProductListPage({Key? key}) : super(key: key);
+class DietPlanPeriodListPage extends StatefulWidget {
+  const DietPlanPeriodListPage({Key? key}) : super(key: key);
 
-  static const routeName = 'food_product_list';
+  static const routeName = 'diet_plan_period_list';
 
   @override
-  _FoodProductListPageState createState() => _FoodProductListPageState();
+  _DietPlanPeriodListPageState createState() => _DietPlanPeriodListPageState();
 }
 
-class _FoodProductListPageState extends State<FoodProductListPage> {
-  late Future<List<FoodProductRequest>> foodProducts;
+class _DietPlanPeriodListPageState extends State<DietPlanPeriodListPage> {
+  late Future<List<DietPlanPeriodRequest>> foodProducts;
   String? name;
-  Future<List<FoodProductRequest>> getItems(String? name) async {
+  List<DietPlanRequest>? dietPlans;
+
+  Future<List<DietPlanRequest>> getDietPlans() async {
+    var apiService = ApiService();
+    var result = await apiService.get("api/dietplan?pageSize=1000&index=0");
+    return DietPlanRequest.resultListFromJson(result);
+  }
+
+  Future<List<DietPlanPeriodRequest>> getItems(String? name) async {
     var apiService = ApiService();
     if (name == null) {
       var result =
-          await apiService.get("api/foodproduct?pageSize=1000&index=0");
-      return FoodProductRequest.resultListFromJson(result);
+          await apiService.get("api/dietplanperiod?pageSize=1000&index=0");
+      dietPlans = await getDietPlans();
+      return DietPlanPeriodRequest.resultListFromJson(result);
     }
     var result = await apiService
-        .get("api/foodproduct?pageSize=1000&index=0&name=$name");
-    return FoodProductRequest.resultListFromJson(result);
+        .get("api/dietplanperiod?pageSize=1000&index=0&name=$name");
+
+    dietPlans = await getDietPlans();
+    return DietPlanPeriodRequest.resultListFromJson(result);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<FoodProductRequest> _foodProducts = [
-      FoodProductRequest.forListResponse(1, "name")
+    List<DietPlanPeriodRequest> _foodProducts = [
+      DietPlanPeriodRequest.forListResponse(1, DateTime.now())
     ];
 
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              "Prehrambeni proizvodi",
+              "Period plana ishrane",
               style: TextStyle(fontSize: 15),
             ),
             actions: <Widget>[
@@ -49,24 +61,18 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                   child: Text("Nova stavka"),
                   onPressed: () {
                     Navigator.of(context)
-                        .pushNamed(FoodProductCreatePage.routeName)
+                        .pushNamed(DietPlanPeriodCreatePage.routeName)
                         .then((value) => setState(() {}));
                   },
                 ),
               ),
             ]),
         body: Column(children: [
-          TextFormField(
-            decoration: InputDecoration(labelText: "Pretraga"),
-            onChanged: (input) {
-              name = input;
-              setState(() {});
-            },
-          ),
-          FutureBuilder<List<FoodProductRequest>>(
+          
+          FutureBuilder<List<DietPlanPeriodRequest>>(
             future: getItems(name),
             builder: (BuildContext context,
-                AsyncSnapshot<List<FoodProductRequest>> snapshot) {
+                AsyncSnapshot<List<DietPlanPeriodRequest>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(children: [
                   ListView.builder(
@@ -90,10 +96,12 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                         itemBuilder: (BuildContext ctxt, int index) {
                           return ListTile(
                             title: Center(
-                                child: Text("${snapshot.data![index].name!}")),
+                                child: Text(
+                                    "${snapshot.data![index].dietPlanId != null ? dietPlans!.singleWhere((element) => element.id == snapshot.data![index].dietPlanId).name : ""}  ${DateFormat("dd.MM.yyyy.").format(snapshot.data![index].startDate!)}-${DateFormat("dd.MM.yyyy.").format(snapshot.data![index].endDate!)}")),
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed(FoodProductDetailsPage.routeName,
+                                  .pushNamed(
+                                      DietPlanPeriodDetailsPage.routeName,
                                       arguments: snapshot.data![index].id)
                                   .then((value) => setState(() {}));
                             },

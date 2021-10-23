@@ -4,7 +4,7 @@ using ApplicationCore.Interfaces;
 
 namespace ApplicationCore.Entities.MealAggregate
 {
-    public class MealItem : BaseEntity, IAggregateRoot
+    public class MealItem : BaseEntity
     {
         [Dto] [Get] [Post] [Put]  public FoodProduct FoodProduct { get; set; }
         [Required] public int FoodProductId { get; set; }

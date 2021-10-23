@@ -1,45 +1,54 @@
 import 'package:asistent_za_ishranu/models/food_product_request.dart';
-import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
+import 'package:asistent_za_ishranu/models/food_stock_request.dart';
+import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-import 'food_product_create_page.dart';
+class FoodStockListPage extends StatefulWidget {
+  const FoodStockListPage({Key? key}) : super(key: key);
 
-class FoodProductListPage extends StatefulWidget {
-  const FoodProductListPage({Key? key}) : super(key: key);
-
-  static const routeName = 'food_product_list';
+  static const routeName = 'food_stock_list';
 
   @override
-  _FoodProductListPageState createState() => _FoodProductListPageState();
+  _FoodStockListPageState createState() => _FoodStockListPageState();
 }
 
-class _FoodProductListPageState extends State<FoodProductListPage> {
-  late Future<List<FoodProductRequest>> foodProducts;
+class _FoodStockListPageState extends State<FoodStockListPage> {
+  late Future<List<FoodStockRequest>> foodStocks;
   String? name;
-  Future<List<FoodProductRequest>> getItems(String? name) async {
+  List<FoodProductRequest>? foodProducts;
+
+  Future<List<FoodProductRequest>> getFoodProduct() async {
+    var apiService = ApiService();
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    return FoodProductRequest.resultListFromJson(result);
+  }
+
+  Future<List<FoodStockRequest>> getItems(String? name) async {
     var apiService = ApiService();
     if (name == null) {
       var result =
-          await apiService.get("api/foodproduct?pageSize=1000&index=0");
-      return FoodProductRequest.resultListFromJson(result);
+          await apiService.get("api/foodstock?pageSize=1000&index=0");
+      foodProducts = await getFoodProduct();
+      return FoodStockRequest.resultListFromJson(result);
     }
     var result = await apiService
-        .get("api/foodproduct?pageSize=1000&index=0&name=$name");
-    return FoodProductRequest.resultListFromJson(result);
+        .get("api/foodstock?pageSize=1000&index=0&name=$name");
+
+    foodProducts = await getFoodProduct();
+    return FoodStockRequest.resultListFromJson(result);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<FoodProductRequest> _foodProducts = [
-      FoodProductRequest.forListResponse(1, "name")
+    List<FoodStockRequest> _foodProducts = [
+      FoodStockRequest.forListResponse(1)
     ];
 
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              "Prehrambeni proizvodi",
+              "Zaliha prehrambenih proizvoda",
               style: TextStyle(fontSize: 15),
             ),
             actions: <Widget>[
@@ -49,24 +58,17 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                   child: Text("Nova stavka"),
                   onPressed: () {
                     Navigator.of(context)
-                        .pushNamed(FoodProductCreatePage.routeName)
+                        .pushNamed("FoodStockCreatePage.routeName")
                         .then((value) => setState(() {}));
                   },
                 ),
               ),
             ]),
         body: Column(children: [
-          TextFormField(
-            decoration: InputDecoration(labelText: "Pretraga"),
-            onChanged: (input) {
-              name = input;
-              setState(() {});
-            },
-          ),
-          FutureBuilder<List<FoodProductRequest>>(
+          FutureBuilder<List<FoodStockRequest>>(
             future: getItems(name),
             builder: (BuildContext context,
-                AsyncSnapshot<List<FoodProductRequest>> snapshot) {
+                AsyncSnapshot<List<FoodStockRequest>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(children: [
                   ListView.builder(
@@ -82,7 +84,6 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                 ]);
               } else {
                 return Expanded(
-                    //TODO: Add Expanded here
                     child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         scrollDirection: Axis.vertical,
@@ -90,10 +91,12 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
                         itemBuilder: (BuildContext ctxt, int index) {
                           return ListTile(
                             title: Center(
-                                child: Text("${snapshot.data![index].name!}")),
+                                child: Text(
+                                    "Zaliha za ${snapshot.data![index].foodProductId != null ? foodProducts!.singleWhere((element) => element.id == snapshot.data![index].foodProductId).name : ""}")),
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed(FoodProductDetailsPage.routeName,
+                                  .pushNamed(
+                                      "FoodStockDetailsPage.routeName",
                                       arguments: snapshot.data![index].id)
                                   .then((value) => setState(() {}));
                             },
