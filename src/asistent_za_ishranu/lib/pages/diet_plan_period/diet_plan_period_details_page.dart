@@ -64,12 +64,12 @@ class _DietPlanPeriodDetailsPageState extends State<DietPlanPeriodDetailsPage> {
                     ),
                     TextFormField(
                       initialValue: "${DateFormat('dd.MM.yyyy').format(snapshot.data!.startDate!)}",
-                      decoration: InputDecoration(labelText: "Naziv"),
+                      decoration: InputDecoration(labelText: "Početni datum"),
                       readOnly: true,
                     ),
                     TextFormField(
                       initialValue:  "${DateFormat('dd.MM.yyyy').format(snapshot.data!.endDate!)}",
-                      decoration: InputDecoration(labelText: "Jedinica mjere"),
+                      decoration: InputDecoration(labelText: "Krajnji datum"),
                       readOnly: true,
                     ),
                     Center(

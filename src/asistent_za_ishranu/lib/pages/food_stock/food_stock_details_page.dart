@@ -1,4 +1,5 @@
-/* import 'package:asistent_za_ishranu/models/food_stock_request.dart';
+import 'package:asistent_za_ishranu/models/food_product_request.dart';
+import 'package:asistent_za_ishranu/models/food_stock_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -17,19 +18,19 @@ class FoodStockDetailsPage extends StatefulWidget {
 }
 
 class _FoodStockDetailsPageState extends State<FoodStockDetailsPage> {
-  DietPlanRequest? dietPlan;
+  FoodProductRequest? foodProduct;
   Future<FoodStockRequest> getItem(id) async {
     var apiService = ApiService();
     var result = await apiService.get("api/foodstock/$id");
     var dietPlanPeriodRequest = FoodStockRequest.resultFromJson(result);
-    dietPlan = await getDietPlan(dietPlanPeriodRequest.foodProductId!);
+    foodProduct = await getDietPlan(dietPlanPeriodRequest.foodProductId!);
     return FoodStockRequest.resultFromJson(result);
   }
 
-  Future<DietPlanRequest> getDietPlan(int id) async {
+  Future<FoodProductRequest> getDietPlan(int id) async {
     var apiService = ApiService();
-    var result = await apiService.get("api/dietplan/$id");
-    return DietPlanRequest.resultFromJson(result);
+    var result = await apiService.get("api/foodproduct/$id");
+    return FoodProductRequest.resultFromJson(result);
   }
 
   Future<void> deleteItem(id) async {
@@ -42,7 +43,7 @@ class _FoodStockDetailsPageState extends State<FoodStockDetailsPage> {
     final id = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Detalji perioda plana ishrane"),
+          title: Text("Detalji zalihe prehrambenog proizvoda"),
         ),
         body: FutureBuilder<FoodStockRequest>(
             future: getItem(id),
@@ -59,20 +60,36 @@ class _FoodStockDetailsPageState extends State<FoodStockDetailsPage> {
                         child: Column(
                   children: [
                     TextFormField(
-                      initialValue: dietPlan?.name,
-                      decoration: InputDecoration(labelText: "Plan ishrane"),
+                      initialValue: foodProduct?.name,
+                      decoration: InputDecoration(labelText: "Prehrambeni proizvod"),
                       readOnly: true,
                     ),
                     TextFormField(
                       initialValue:
                           "${DateFormat('dd.MM.yyyy').format(snapshot.data!.bestUseByDate!)}",
-                      decoration: InputDecoration(labelText: "Naziv"),
+                      decoration: InputDecoration(labelText: "Rok trajanja"),
                       readOnly: true,
                     ),
                     TextFormField(
                       initialValue:
                           "${DateFormat('dd.MM.yyyy').format(snapshot.data!.dateOfPurchase!)}",
-                      decoration: InputDecoration(labelText: "Jedinica mjere"),
+                      decoration: InputDecoration(labelText: "Datum kupovine"),
+                      readOnly: true,
+                    ),
+                                        TextFormField(
+                      initialValue:
+                          snapshot.data!.amount.toString(),
+                      decoration: InputDecoration(labelText: "Količina"),
+                      readOnly: true,
+                    ),                    TextFormField(
+                      initialValue:
+                           snapshot.data!.upperAmount.toString(),
+                      decoration: InputDecoration(labelText: "Gornja granica"),
+                      readOnly: true,
+                    ),                    TextFormField(
+                      initialValue:
+                          snapshot.data!.lowerAmount.toString(),
+                      decoration: InputDecoration(labelText: "Donja granica"),
                       readOnly: true,
                     ),
                     Center(
@@ -119,4 +136,3 @@ class _FoodStockDetailsPageState extends State<FoodStockDetailsPage> {
             }));
   }
 }
- */

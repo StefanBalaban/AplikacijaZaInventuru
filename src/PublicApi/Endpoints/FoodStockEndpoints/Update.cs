@@ -32,8 +32,13 @@ namespace PublicApi.Endpoints.FoodStockEndpoints
             var response = new UpdateFoodStockResponse(request.CorrelationId());
             var foodStock = await _foodStockService.PutAsync(new FoodStock
             {
-                Amount = request.Amount, UpperAmount = request.UpperAmount, LowerAmount = request.LowerAmount,
-                DateOfPurchase = request.DateOfPurchase, BestUseByDate = request.BestUseByDate
+                Amount = request.Amount,
+                UpperAmount = request.UpperAmount,
+                LowerAmount = request.LowerAmount,
+                DateOfPurchase = request.DateOfPurchase,
+                BestUseByDate = request.BestUseByDate,
+                Id = request.Id,
+                FoodProductId = request.FoodProductId
             });
             response.FoodStock = _mapper.Map<FoodStockDto>(foodStock);
             return response;

@@ -10,7 +10,10 @@ import 'package:asistent_za_ishranu/pages/food_product/food_product_create_page.
 import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_update_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.dart';
+import 'package:asistent_za_ishranu/pages/food_stock/food_stock_create_page.dart';
+import 'package:asistent_za_ishranu/pages/food_stock/food_stock_details_page.dart';
 import 'package:asistent_za_ishranu/pages/food_stock/food_stock_list_page.dart';
+import 'package:asistent_za_ishranu/pages/food_stock/food_stock_update_page.dart';
 import 'package:asistent_za_ishranu/pages/home_page.dart';
 import 'package:asistent_za_ishranu/pages/landing_page.dart';
 import 'package:asistent_za_ishranu/pages/login_page.dart';
@@ -58,7 +61,10 @@ class MyApp extends StatelessWidget {
         DietPlanPeriodCreatePage.routeName:(context)=>DietPlanPeriodCreatePage(),
         DietPlanPeriodDetailsPage.routeName:(context)=>DietPlanPeriodDetailsPage(),
         DietPlanPeriodUpdatePage.routeName:(context)=>DietPlanPeriodUpdatePage(),
-        FoodStockListPage.routeName:(context)=>FoodStockListPage()
+        FoodStockListPage.routeName:(context)=>FoodStockListPage(),
+        FoodStockCreatePage.routeName:(context)=>FoodStockCreatePage(),
+        FoodStockDetailsPage.routeName:(context)=>FoodStockDetailsPage(),
+        FoodStockUpdatePage.routeName:(context)=>FoodStockUpdatePage()
       };
       
     return MaterialApp(

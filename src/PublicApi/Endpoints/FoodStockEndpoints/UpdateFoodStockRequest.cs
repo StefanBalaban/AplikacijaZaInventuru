@@ -15,5 +15,6 @@ namespace PublicApi.Endpoints.FoodStockEndpoints
         public DateTime? DateOfPurchase { get; set; }
 
         public DateTime? BestUseByDate { get; set; }
+        public int FoodProductId { get; set; }
     }
 }

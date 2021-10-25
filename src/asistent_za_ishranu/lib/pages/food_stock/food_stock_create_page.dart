@@ -1,4 +1,5 @@
-/* import 'package:asistent_za_ishranu/models/food_stock_request.dart';
+import 'package:asistent_za_ishranu/models/food_product_request.dart';
+import 'package:asistent_za_ishranu/models/food_stock_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -11,31 +12,36 @@ class FoodStockCreatePage extends StatefulWidget {
   static const routeName = "/food_stock_create";
 
   @override
-  _FoodStockCreatePageState createState() =>
-      _FoodStockCreatePageState();
+  _FoodStockCreatePageState createState() => _FoodStockCreatePageState();
 }
 
 class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
   final _formKey = GlobalKey<FormState>();
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
-  int dietPlanId = 0;
-  late Future<List<DietPlanRequest>> dietPlans;
+  int? foodProductId;
+  DateTime? bestUseByDate;
+  DateTime? dateOfPurchase;
+  TextEditingController amount = TextEditingController();
+  TextEditingController upperAmount = TextEditingController();
+  TextEditingController lowerAmount = TextEditingController();
+  late Future<List<FoodProductRequest>> foodProducts;
 
   Future<void> create() async {
     {
       var apiService = ApiService();
-      await apiService.post("api/foodstock",
-          FoodStockRequest(dietPlanId, startDate, endDate).modelToJson());
+      await apiService.post(
+          "api/foodstock",
+          FoodStockRequest(foodProductId, bestUseByDate, dateOfPurchase, double.parse(amount.text),
+                  double.parse(upperAmount.text), double.parse(lowerAmount.text))
+              .modelToJson());
 
       Navigator.of(context).pop(context);
     }
   }
 
-  Future<List<DietPlanRequest>> getDietPlans() async {
+  Future<List<FoodProductRequest>> getFoodProducts() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/dietplan?pageSize=1000&index=0");
-    return DietPlanRequest.resultListFromJson(result);
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    return FoodProductRequest.resultListFromJson(result);
   }
 
   @override
@@ -45,7 +51,7 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
     // otherwise it would be skipped and args would return null
     Future.delayed(Duration.zero, () {
       setState(() {});
-      dietPlans = getDietPlans();
+      foodProducts = getFoodProducts();
     });
   }
 
@@ -55,10 +61,10 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
         appBar: AppBar(
           title: Text("Unos perioda plana ishrane"),
         ),
-        body: FutureBuilder<List<DietPlanRequest>>(
-            future: dietPlans,
+        body: FutureBuilder<List<FoodProductRequest>>(
+            future: foodProducts,
             builder: (BuildContext context,
-                AsyncSnapshot<List<DietPlanRequest>> snapshot) {
+                AsyncSnapshot<List<FoodProductRequest>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(
                   children: [],
@@ -79,15 +85,15 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
                                       value: e.id,
                                     ))
                                 .toList(),
-                            hint: Text('Plan ishrane'),
+                            hint: Text('Prehrambeni proizvod'),
                             onChanged: (value) {
                               setState(() {
-                                dietPlanId = value! as int;
+                                foodProductId = value! as int;
                               });
                             },
                             validator: (int? value) {
                               if (value == null || value == 0) {
-                                return 'Odaberite plan ishrane';
+                                return 'Odaberite prehrambeni proizvod';
                               }
                               return null;
                             },
@@ -103,15 +109,15 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
                                       showTitleActions: true,
                                       onConfirm: (date) {
                                     setState(() {
-                                      startDate = date;
+                                      bestUseByDate = date;
                                     });
-                                  }, currentTime: startDate);
+                                  }, currentTime: bestUseByDate);
                                 },
                                 child: Text(
-                                  'Početni datum',
+                                  'Rok trajanja',
                                 ),
                               ))),
-                      Text("${DateFormat('dd.MM.yyyy').format(startDate)}"),
+                      Text("${DateFormat('dd.MM.yyyy').format(bestUseByDate ?? DateTime.now())}"),
                       ConstrainedBox(
                           constraints:
                               BoxConstraints.tight(const Size(200, 50)),
@@ -124,17 +130,62 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
                                     showTitleActions: true,
                                     onConfirm: (date) {
                                       setState(() {
-                                        endDate = date;
+                                        dateOfPurchase = date;
                                       });
                                     },
-                                    currentTime: endDate,
+                                    currentTime: dateOfPurchase,
                                   );
                                 },
                                 child: Text(
-                                  'Krajnji datum',
+                                  'Datum kupovine',
                                 ),
                               ))),
-                      Text("${DateFormat('dd.MM.yyyy').format(endDate)}"),
+                      Text("${DateFormat('dd.MM.yyyy').format(dateOfPurchase ?? DateTime.now())}"),
+                      ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Količina"),
+                        controller: amount,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              double.tryParse(value) == null) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
+                            ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Gornja granica"),
+                        controller: upperAmount,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              double.tryParse(value) == null) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
+                            ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                        decoration: InputDecoration(labelText: "Donja granica"),
+                        controller: lowerAmount,
+                        validator: (String? value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              double.tryParse(value) == null) {
+                            return 'Vrijednost je prazna ili nije broj';
+                          }
+                          return null;
+                        },
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true))),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -148,4 +199,3 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
             }));
   }
 }
- */

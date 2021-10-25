@@ -15,7 +15,7 @@ class FoodStockRequest extends BaseModel {
       this.amount, this.upperAmount, this.lowerAmount,
       [this.id]);
 
-  FoodStockRequest.forListResponse(this.id);
+  FoodStockRequest.forListResponse(this.id, this.foodProductId);
 
   @override
   Map<String, dynamic> toJson() {
@@ -41,7 +41,7 @@ class FoodStockRequest extends BaseModel {
   }
 
   factory FoodStockRequest.fromListJson(Map<String, dynamic> map) {
-    return FoodStockRequest.fromListJson(map["id"]);
+    return FoodStockRequest.forListResponse(map["id"],map["foodProductId"]);
   }
 
   static List<FoodStockRequest> fromJsonList(Map<String, dynamic> map) {

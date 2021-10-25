@@ -65,6 +65,7 @@ namespace ApplicationCore.Services
             foodStock.LowerAmount = t.LowerAmount;
             foodStock.DateOfPurchase = t.DateOfPurchase;
             foodStock.BestUseByDate = t.BestUseByDate;
+            foodStock.FoodProductId = t.FoodProductId;
             await _foodStockRepository.UpdateAsync(foodStock);
             return foodStock;
         }

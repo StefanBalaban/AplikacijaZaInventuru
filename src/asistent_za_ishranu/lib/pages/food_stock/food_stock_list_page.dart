@@ -4,6 +4,9 @@ import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
 
+import 'food_stock_create_page.dart';
+import 'food_stock_details_page.dart';
+
 class FoodStockListPage extends StatefulWidget {
   const FoodStockListPage({Key? key}) : super(key: key);
 
@@ -25,24 +28,26 @@ class _FoodStockListPageState extends State<FoodStockListPage> {
   }
 
   Future<List<FoodStockRequest>> getItems(String? name) async {
+    
     var apiService = ApiService();
-    if (name == null) {
-      var result =
+    var result =
           await apiService.get("api/foodstock?pageSize=1000&index=0");
+    if (name == null) {
       foodProducts = await getFoodProduct();
       return FoodStockRequest.resultListFromJson(result);
     }
-    var result = await apiService
-        .get("api/foodstock?pageSize=1000&index=0&name=$name");
+    var foodProductsResult = await apiService
+        .get("api/foodproduct?pageSize=1000&index=0&name=$name");
 
-    foodProducts = await getFoodProduct();
-    return FoodStockRequest.resultListFromJson(result);
+    foodProducts = FoodProductRequest.resultListFromJson(foodProductsResult);
+    var foodStockRequests = FoodStockRequest.resultListFromJson(result);
+    return foodStockRequests.where((element) => foodProducts!.any((e) => e.id == element.foodProductId)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     List<FoodStockRequest> _foodProducts = [
-      FoodStockRequest.forListResponse(1)
+      FoodStockRequest.forListResponse(1, 1)
     ];
 
     return Scaffold(
@@ -58,13 +63,20 @@ class _FoodStockListPageState extends State<FoodStockListPage> {
                   child: Text("Nova stavka"),
                   onPressed: () {
                     Navigator.of(context)
-                        .pushNamed("FoodStockCreatePage.routeName")
+                        .pushNamed(FoodStockCreatePage.routeName)
                         .then((value) => setState(() {}));
                   },
                 ),
               ),
             ]),
         body: Column(children: [
+                    TextFormField(
+            decoration: InputDecoration(labelText: "Pretraga"),
+            onChanged: (input) {
+              name = input;
+              setState(() {});
+            },
+          ),
           FutureBuilder<List<FoodStockRequest>>(
             future: getItems(name),
             builder: (BuildContext context,
@@ -96,7 +108,7 @@ class _FoodStockListPageState extends State<FoodStockListPage> {
                             onTap: () {
                               Navigator.of(context)
                                   .pushNamed(
-                                      "FoodStockDetailsPage.routeName",
+                                      FoodStockDetailsPage.routeName,
                                       arguments: snapshot.data![index].id)
                                   .then((value) => setState(() {}));
                             },

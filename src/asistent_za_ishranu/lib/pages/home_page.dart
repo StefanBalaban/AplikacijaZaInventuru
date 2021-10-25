@@ -1,6 +1,7 @@
 import 'package:asistent_za_ishranu/pages/diet_plan/diet_plan_list_page.dart';
 import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_list_page.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.dart';
+import 'package:asistent_za_ishranu/pages/food_stock/food_stock_list_page.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,18 +16,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Asistent za ishranu")
-      ),
+      appBar: AppBar(title: Text("Asistent za ishranu")),
       drawer: Drawer(
         child: ListView(
           children: [
             ListTile(
-              title: Text("Meni", style: TextStyle(color: Colors.white),),
+              title: Text(
+                "Meni",
+                style: TextStyle(color: Colors.white),
+              ),
               tileColor: Colors.blue,
-
-              onTap: () {
-              },
+              onTap: () {},
             ),
             ListTile(
               title: Text("Prehrambeni proizvodi"),
@@ -49,13 +49,25 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Text("Period planova ishrane"),
               onTap: () {
-                Navigator.of(context).pushNamed(DietPlanPeriodListPage.routeName);
+                Navigator.of(context)
+                    .pushNamed(DietPlanPeriodListPage.routeName);
+              },
+            ),
+            ListTile(
+              title: Text("Zaliha prehrambenih proizvoda"),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(FoodStockListPage.routeName);
               },
             ),
           ],
         ),
       ),
-      body:  Center(child: Icon(Icons.food_bank_outlined, size: 100,)),
+      body: Center(
+          child: Icon(
+        Icons.food_bank_outlined,
+        size: 100,
+      )),
     );
   }
 }
