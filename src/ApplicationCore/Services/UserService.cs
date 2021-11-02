@@ -2,6 +2,7 @@
 using ApplicationCore.Entities.UserAggregate;
 using ApplicationCore.Extensions;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications.UserSpecs;
 using Ardalis.GuardClauses;
 using Ardalis.Specification;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace ApplicationCore.Services
 
         public async Task<User> GetAsync(int id)
         {
-            var user = await _userRepository.GetByIdAsync(id);
+            var spec = new UserByIdFilterSpecification(id);
+            var user = await _userRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(user, nameof(User));
             return user;
         }
@@ -39,7 +41,7 @@ namespace ApplicationCore.Services
         public async Task<User> PostAsync(User t)
         {
             Guard.Against.ModelStateIsInvalid(t, nameof(User));
-            return await _userRepository.AddAsync(new User { FirstName = t.FirstName, LastName = t.LastName, UserContactInfos = t.UserContactInfos });
+            return await _userRepository.AddAsync(new User { FirstName = t.FirstName, LastName = t.LastName, UserContactInfos = new List<UserContactInfo> { new UserContactInfo { Contact = t.FirstName } } });
         }
 
         public async Task<User> PutAsync(User t)

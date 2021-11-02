@@ -21,8 +21,16 @@ import 'package:asistent_za_ishranu/pages/meal/meal_create_page.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_details_page.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_update_page.dart';
+import 'package:asistent_za_ishranu/pages/notification_rule/notification_rule_create_page.dart';
+import 'package:asistent_za_ishranu/pages/notification_rule/notification_rule_details_page.dart';
+import 'package:asistent_za_ishranu/pages/notification_rule/notification_rule_list_page.dart';
+import 'package:asistent_za_ishranu/pages/notification_rule/notification_rule_update_page.dart';
 import 'package:asistent_za_ishranu/pages/register_page.dart';
 import 'package:asistent_za_ishranu/pages/subscribe_page.dart';
+import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_create_page.dart';
+import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_details_page.dart';
+import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_list_page.dart';
+import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_update_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -64,7 +72,15 @@ class MyApp extends StatelessWidget {
         FoodStockListPage.routeName:(context)=>FoodStockListPage(),
         FoodStockCreatePage.routeName:(context)=>FoodStockCreatePage(),
         FoodStockDetailsPage.routeName:(context)=>FoodStockDetailsPage(),
-        FoodStockUpdatePage.routeName:(context)=>FoodStockUpdatePage()
+        FoodStockUpdatePage.routeName:(context)=>FoodStockUpdatePage(),
+        NotificationRuleListPage.routeName:(context)=>NotificationRuleListPage(),
+        NotificationRuleCreatePage.routeName:(context)=>NotificationRuleCreatePage(),
+        NotificationRuleDetailsPage.routeName:(context)=>NotificationRuleDetailsPage(),
+        NotificationRuleUpdatePage.routeName:(context)=>NotificationRuleUpdatePage(),
+        UserWeightEvidentationListPage.routeName:(context)=>UserWeightEvidentationListPage(),
+        UserWeightEvidentationCreatePage.routeName:(context)=>UserWeightEvidentationCreatePage(),
+        UserWeightEvidentationDetailsPage.routeName:(context)=>UserWeightEvidentationDetailsPage(),
+        UserWeightEvidentationUpdatePage.routeName:(context)=>UserWeightEvidentationUpdatePage()
       };
       
     return MaterialApp(

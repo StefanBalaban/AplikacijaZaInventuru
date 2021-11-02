@@ -74,6 +74,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                     )),
+                    ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                      controller: _errorMessageController,
+                      readOnly: true
+                    )),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {

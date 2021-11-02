@@ -1,6 +1,8 @@
 import 'package:asistent_za_ishranu/models/auth_result.dart';
 import 'package:asistent_za_ishranu/models/auth_request.dart';
+import 'package:asistent_za_ishranu/models/user_model.dart';
 import 'package:asistent_za_ishranu/pages/home_page.dart';
+import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +22,15 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     {
       var authService = AuthService();
+      var apiService = ApiService();
       AuthResult? response = await authService.loginAction(
           AuthRequest(_usernameController.text, _passwordController.text));
-      if (response!.result)
+      if (response!.result){
+        var result = await apiService.get("api/userid");
+        authService.userId = UserModel.resultFromJson(result).id!;
         Navigator.of(context).pushReplacementNamed("/home");
+      }
+        
       else
         _errorMessageController.text = "Invalid credentials";
     }
@@ -66,6 +73,12 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
+                    )),
+                    ConstrainedBox(
+                    constraints: BoxConstraints.tight(const Size(200, 50)),
+                    child: TextFormField(
+                      controller: _errorMessageController,
+                      readOnly: true
                     )),
                 ElevatedButton(
                   onPressed: () {

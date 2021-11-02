@@ -8,6 +8,7 @@ class ApiService {
   String _baseApiUrl = "https://192.168.0.20:5099";
 
   Future<String> post(String path, String body) async {
+    _authService.verifySession();
     var client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
@@ -31,6 +32,7 @@ class ApiService {
   }
 
   Future<String> put(String path, String body) async {
+    _authService.verifySession();
     var client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
@@ -42,6 +44,7 @@ class ApiService {
 
 
     if (result.statusCode == 200) {
+      _authService.verifySession();
       final contents = StringBuffer();
       await for (var data in result.transform(utf8.decoder)) {
         contents.write(data);
@@ -58,6 +61,7 @@ class ApiService {
   }
 
   Future<String> get(String path) async {
+    _authService.verifySession();
     var client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
@@ -76,9 +80,10 @@ class ApiService {
     else {
       throw HttpException("Request failed. Status code: ${result.statusCode }");
     }
-  }
+    }
 
   Future<String> delete(String path) async {
+    _authService.verifySession();
     var client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 

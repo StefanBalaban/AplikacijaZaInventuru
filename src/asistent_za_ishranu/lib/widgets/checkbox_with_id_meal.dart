@@ -1,21 +1,22 @@
 import 'package:asistent_za_ishranu/models/meal_request.dart';
+import 'package:asistent_za_ishranu/util/wrapped_boolean.dart';
 import 'package:flutter/material.dart';
 
-class CheckBoxWithId extends StatefulWidget {
+class CheckBoxWithIdMeal extends StatefulWidget {
   MealRequest? mealRequest = null;
   WrappedBoolean? wrappedBoolean = WrappedBoolean(false);
 
-  CheckBoxWithId(this.mealRequest);
+  CheckBoxWithIdMeal(this.mealRequest);
 
   @override
-  _CheckBoxWithIdState createState() => _CheckBoxWithIdState(mealRequest, wrappedBoolean);
+  _CheckBoxWithIdMealState createState() => _CheckBoxWithIdMealState(mealRequest, wrappedBoolean);
 }
 
-class _CheckBoxWithIdState extends State<CheckBoxWithId> {
+class _CheckBoxWithIdMealState extends State<CheckBoxWithIdMeal> {
   MealRequest? mealRequest = null;
   WrappedBoolean? wrappedBoolean;
 
-  _CheckBoxWithIdState(this.mealRequest, this.wrappedBoolean);
+  _CheckBoxWithIdMealState(this.mealRequest, this.wrappedBoolean);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,8 +33,3 @@ class _CheckBoxWithIdState extends State<CheckBoxWithId> {
   }
 }
 
-class WrappedBoolean {
-  bool value;
-
-  WrappedBoolean(this.value);
-}

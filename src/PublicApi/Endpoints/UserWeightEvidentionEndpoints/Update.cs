@@ -27,7 +27,7 @@ namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
         public override async Task<ActionResult<UpdateUserWeightEvidentionResponse>> HandleAsync(UpdateUserWeightEvidentionRequest request, CancellationToken cancellationToken)
         {
             var response = new UpdateUserWeightEvidentionResponse(request.CorrelationId());
-            var userWeightEvidention = await _userWeightEvidentionService.PutAsync(new UserWeightEvidention { EvidentationDate = request.EvidentationDate, Weight = request.Weight });
+            var userWeightEvidention = await _userWeightEvidentionService.PutAsync(new UserWeightEvidention { EvidentationDate = request.EvidentationDate, Weight = request.Weight, Id = request.Id });
             response.UserWeightEvidention = _mapper.Map<UserWeightEvidentionDto>(userWeightEvidention);
             return response;
         }

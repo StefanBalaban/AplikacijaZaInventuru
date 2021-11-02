@@ -3,6 +3,8 @@ import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_list
 import 'package:asistent_za_ishranu/pages/food_product/food_product_list_page.dart';
 import 'package:asistent_za_ishranu/pages/food_stock/food_stock_list_page.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
+import 'package:asistent_za_ishranu/pages/notification_rule/notification_rule_list_page.dart';
+import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_list_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -58,6 +60,20 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.of(context)
                     .pushNamed(FoodStockListPage.routeName);
+              },
+            ),
+            ListTile(
+              title: Text("Notifikacijska pravila"),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(NotificationRuleListPage.routeName);
+              },
+            ),
+            ListTile(
+              title: Text("Evidencija kilaže"),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(UserWeightEvidentationListPage.routeName);
               },
             ),
           ],

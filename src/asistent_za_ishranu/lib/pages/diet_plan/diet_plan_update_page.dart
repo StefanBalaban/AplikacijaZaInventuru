@@ -3,7 +3,7 @@ import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
-import 'package:asistent_za_ishranu/widgets/checkbox_with_id.dart';
+import 'package:asistent_za_ishranu/widgets/checkbox_with_id_meal.dart';
 import 'package:flutter/material.dart';
 
 class DietPlanUpdatePage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _DietPlanUpdatePageState extends State<DietPlanUpdatePage> {
   int id = 0;
   List<MealRequest>? meals;
   TextEditingController _nameController = TextEditingController();
-  List<CheckBoxWithId> checkboxes = [];
+  List<CheckBoxWithIdMeal> checkboxes = [];
 
   Future<DietPlanRequest> getItem(id) async {
     var apiService = ApiService();
@@ -42,9 +42,9 @@ class _DietPlanUpdatePageState extends State<DietPlanUpdatePage> {
     Navigator.of(context).pop(context);
   }
 
-  List<CheckBoxWithId> populateCheckBoxes(
+  List<CheckBoxWithIdMeal> populateCheckBoxes(
       List<MealRequest>? data, List<DietPlanMealModel>? dietPlanMeals) {
-    checkboxes = data!.map((e) => CheckBoxWithId(e)).toList();
+    checkboxes = data!.map((e) => CheckBoxWithIdMeal(e)).toList();
     dietPlanMeals!.forEach((element) {
       checkboxes
           .singleWhere((checkbox) => checkbox.mealRequest!.id == element.mealId)

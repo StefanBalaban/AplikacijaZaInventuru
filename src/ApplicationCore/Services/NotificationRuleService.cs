@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.Extensions;
+using ApplicationCore.Specifications.NotificationRuleSpecs;
 
 namespace ApplicationCore.Services
 {
@@ -29,7 +30,8 @@ namespace ApplicationCore.Services
 
         public async Task<NotificationRule> GetAsync(int id)
         {
-            var notificationRule = await _notificationRuleRepository.GetByIdAsync(id);
+            var spec = new NotificationRuleByIdFilterSpecification(id);
+            var notificationRule = await _notificationRuleRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(notificationRule, nameof(NotificationRule));
             return notificationRule;
         }
@@ -48,7 +50,8 @@ namespace ApplicationCore.Services
         public async Task<NotificationRule> PutAsync(NotificationRule t)
         {
             Guard.Against.ModelStateIsInvalid(t, nameof(NotificationRule));
-            var notificationRule = await _notificationRuleRepository.GetByIdAsync(t.Id);
+            var spec = new NotificationRuleByIdFilterSpecification(t.Id);
+            var notificationRule = await _notificationRuleRepository.FirstOrDefaultAsync(spec);
             Guard.Against.EntityNotFound(notificationRule, nameof(NotificationRule));
             notificationRule.NotificationRuleUserContactInfos = t.NotificationRuleUserContactInfos;
             await _notificationRuleRepository.UpdateAsync(notificationRule);

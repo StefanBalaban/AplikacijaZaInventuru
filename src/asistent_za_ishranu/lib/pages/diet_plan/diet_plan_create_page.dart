@@ -1,5 +1,5 @@
 import 'package:asistent_za_ishranu/models/diet_plan_meal_model.dart';
-import 'package:asistent_za_ishranu/widgets/checkbox_with_id.dart';
+import 'package:asistent_za_ishranu/widgets/checkbox_with_id_meal.dart';
 import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/models/meal_request.dart';
@@ -19,7 +19,7 @@ class _DietPlanCreatePageState extends State<DietPlanCreatePage> {
   final _formKey = GlobalKey<FormState>();
   late Future<List<MealRequest>> meals;
   TextEditingController _nameController = TextEditingController();
-  List<CheckBoxWithId> checkboxes = [];
+  List<CheckBoxWithIdMeal> checkboxes = [];
 
   Future<void> create() async {    
       var apiService = ApiService();
@@ -37,8 +37,8 @@ class _DietPlanCreatePageState extends State<DietPlanCreatePage> {
     return MealRequest.resultListFromJson(result);
   }
 
-  List<CheckBoxWithId> populateCheckBoxes(List<MealRequest>? data) {
-    checkboxes = data!.map((e) => CheckBoxWithId(e)).toList();
+  List<CheckBoxWithIdMeal> populateCheckBoxes(List<MealRequest>? data) {
+    checkboxes = data!.map((e) => CheckBoxWithIdMeal(e)).toList();
     
     return checkboxes;
   }
