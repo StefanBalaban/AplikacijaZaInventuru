@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PublicApi.Util.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Linq;
 using System.Threading;
@@ -24,7 +25,7 @@ namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
         }
 
         [HttpGet("api/userweightevidention")]
-        [Authorize(Policy = "2")]
+        [Authorize(Policy = PolicyUtil.AuthorizeUserIdPolicy)]
         [SwaggerOperation(Summary = "ListPaged UserWeightEvidention", Description = "ListPaged UserWeightEvidention", OperationId = "userweightevidention.listpaged", Tags = new[] { "UserWeightEvidentionEndpoints" })]
         public override async Task<ActionResult<ListPagedUserWeightEvidentionResponse>> HandleAsync([FromQuery] ListPagedUserWeightEvidentionRequest request, CancellationToken cancellationToken)
         {

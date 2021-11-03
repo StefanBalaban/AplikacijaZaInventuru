@@ -4,6 +4,7 @@ using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PublicApi.Util.Authorization;
 using PublicApi.Util.Middleware;
+using System;
 using System.Collections.Generic;
 
 namespace PublicApi.Util
@@ -44,7 +47,7 @@ namespace PublicApi.Util
 
         private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
-            services.AddDbContext<AppContext>(c =>
+            services.AddDbContext<Infrastructure.Data.AppContext>(c =>
                 c.UseInMemoryDatabase("Catalog"));
 
             services.AddDbContext<AppIdentityDbContext>(options =>
@@ -58,7 +61,7 @@ namespace PublicApi.Util
             // use real database
             // Requires LocalDB which can be installed with SQL Server Express 2016
             // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-            services.AddDbContext<AppContext>(c =>
+            services.AddDbContext<Infrastructure.Data.AppContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
             // Add Identity DbContext
@@ -77,7 +80,7 @@ namespace PublicApi.Util
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppContext>(c =>
+            services.AddDbContext<Infrastructure.Data.AppContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
@@ -111,7 +114,7 @@ namespace PublicApi.Util
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AuthorizeUseId", policy =>
+                options.AddPolicy(PolicyUtil.AuthorizeUserIdPolicy, policy =>
                     policy.Requirements.Add(new AuthorizationUserRequirement()));
             });
 
@@ -138,30 +141,22 @@ namespace PublicApi.Util
                 c.SchemaFilter<CustomSchemaFilters>();
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
-                    Name = "Authorization",
                     In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
                 });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header
-                        },
-                        new List<string>()
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                    },
+                    new string[] { }
                     }
                 });
             });
@@ -170,7 +165,7 @@ namespace PublicApi.Util
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
+
 
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
@@ -184,7 +179,7 @@ namespace PublicApi.Util
 
             app.UseMiddleware<ActiveUsersMiddleWare>();
             app.UseAuthorization();
-            
+
 
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 
-public class AuthorizationUserRequirement : IAuthorizationRequirement
+namespace PublicApi.Util.Authorization
 {
 
-    public AuthorizationUserRequirement()
+    public class AuthorizationUserRequirement : IAuthorizationRequirement
     {
+
+        public AuthorizationUserRequirement()
+        {
+        }
     }
 }

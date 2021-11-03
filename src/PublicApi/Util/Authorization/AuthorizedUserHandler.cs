@@ -7,44 +7,48 @@ using ApplicationCore.Specifications.UserSpecs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
-public class AuthorizedUserHandler : IAuthorizationHandler
+namespace PublicApi.Util.Authorization
 {
 
-    private readonly IActiveUsersSingleton _activeUsersSingleton;
-    public AuthorizedUserHandler(IActiveUsersSingleton activeUsersSingleton)
+    public class AuthorizedUserHandler : IAuthorizationHandler
     {
-        _activeUsersSingleton = activeUsersSingleton;
-    }
-    public Task HandleAsync(AuthorizationHandlerContext context)
-    {
-        var pendingRequirements = context.PendingRequirements.ToList();
 
-        foreach (var requirement in pendingRequirements)
+        private readonly IActiveUsersSingleton _activeUsersSingleton;
+        public AuthorizedUserHandler(IActiveUsersSingleton activeUsersSingleton)
         {
-            if (requirement is AuthorizationUserRequirement)
+            _activeUsersSingleton = activeUsersSingleton;
+        }
+        public Task HandleAsync(AuthorizationHandlerContext context)
+        {
+            var pendingRequirements = context.PendingRequirements.ToList();
+
+            foreach (var requirement in pendingRequirements)
             {
-                if (context.User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Administrator"))
+                if (requirement is AuthorizationUserRequirement)
                 {
-                    context.Succeed(requirement);
-                }
-
-                var name = context.User.Claims.SingleOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
-
-                if (context.Resource is HttpContext httpContext && _activeUsersSingleton.ActiveUsersId.TryGetValue(name, out int userId))
-                {
-                    var query = httpContext.Request.Query["userId"].ToString();
-                    if (query != null && int.TryParse(query, out int userIdQuery) && userIdQuery == userId)
+                    if (context.User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == "Administrator"))
                     {
-
                         context.Succeed(requirement);
                     }
 
+                    var name = context.User.Claims.SingleOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
 
+                    if (context.Resource is HttpContext httpContext && _activeUsersSingleton.ActiveUsersId.TryGetValue(name, out int userId))
+                    {
+                        var query = httpContext.Request.Query["userId"].ToString();
+                        if (query != null && int.TryParse(query, out int userIdQuery) && userIdQuery == userId)
+                        {
+
+                            context.Succeed(requirement);
+                        }
+
+
+                    }
                 }
             }
+
+
+            return Task.CompletedTask;
         }
-
-
-        return Task.CompletedTask;
     }
 }
