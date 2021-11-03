@@ -4,6 +4,7 @@ import 'package:asistent_za_ishranu/models/base_model.dart';
 
 class FoodProductRequest extends BaseModel {
   int? id;
+  int? userId;
   String? name;
   int? unitOfMeasureId;
   double? calories;
@@ -13,7 +14,7 @@ class FoodProductRequest extends BaseModel {
 
 
   FoodProductRequest(this.name, this.unitOfMeasureId, this.calories,
-      this.protein, this.carbohydrates, this.fats, [this.id]);
+      this.protein, this.carbohydrates, this.fats, [this.id, this.userId]);
 
   FoodProductRequest.forListResponse(this.id, this.name);
 
@@ -21,6 +22,7 @@ class FoodProductRequest extends BaseModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "userId": userId,
       "name": name,
       "unitOfMeasureId": unitOfMeasureId,
       "calories": calories,

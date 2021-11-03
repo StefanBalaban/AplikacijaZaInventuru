@@ -29,7 +29,7 @@ namespace PublicApi.Endpoints.DietPlanPeriodEndpoints
         {
             var response = new ListPagedDietPlanPeriodResponse(request.CorrelationId());
             var filterSpec = new DietPlanPeriodFilterSpecification(request.StartDateGTE, request.StartDateLTE, request.EndDateGTE, request.EndDateLTE);
-            var pagedSpec = new DietPlanPeriodFilterPaginatedSpecification(request.PageIndex * request.PageSize, request.PageSize, request.StartDateGTE, request.StartDateLTE, request.EndDateGTE, request.EndDateLTE);
+            var pagedSpec = new DietPlanPeriodFilterPaginatedSpecification(request.UserId ,request.PageIndex * request.PageSize, request.PageSize, request.StartDateGTE, request.StartDateLTE, request.EndDateGTE, request.EndDateLTE);
             var dietPlanPeriods = await _dietPlanPeriodService.GetAsync(filterSpec, pagedSpec);
             response.DietPlanPeriods.AddRange(dietPlanPeriods.List.Select(_mapper.Map<DietPlanPeriodDto>));
             response.PageCount = dietPlanPeriods.List.Count;

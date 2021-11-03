@@ -2,6 +2,7 @@ import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/pages/food_product/food_product_details_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 
 import 'food_product_create_page.dart';
@@ -22,11 +23,11 @@ class _FoodProductListPageState extends State<FoodProductListPage> {
     var apiService = ApiService();
     if (name == null) {
       var result =
-          await apiService.get("api/foodproduct?pageSize=1000&index=0");
+          await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
       return FoodProductRequest.resultListFromJson(result);
     }
     var result = await apiService
-        .get("api/foodproduct?pageSize=1000&index=0&name=$name");
+        .get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}&name=$name");
     return FoodProductRequest.resultListFromJson(result);
   }
 

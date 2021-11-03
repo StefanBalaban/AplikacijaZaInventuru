@@ -44,7 +44,7 @@ namespace ApplicationCore.Services
         public async Task<NotificationRule> PostAsync(NotificationRule t)
         {
             Guard.Against.ModelStateIsInvalid(t, nameof(NotificationRule));
-            return await _notificationRuleRepository.AddAsync(new NotificationRule { FoodProductId = t.FoodProductId, NotificationRuleUserContactInfos = t.NotificationRuleUserContactInfos });
+            return await _notificationRuleRepository.AddAsync(new NotificationRule { FoodProductId = t.FoodProductId, NotificationRuleUserContactInfos = t.NotificationRuleUserContactInfos, UserId = t.UserId });
         }
 
         public async Task<NotificationRule> PutAsync(NotificationRule t)

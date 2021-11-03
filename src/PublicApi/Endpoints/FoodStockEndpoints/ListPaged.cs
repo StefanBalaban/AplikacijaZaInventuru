@@ -33,7 +33,7 @@ namespace PublicApi.Endpoints.FoodStockEndpoints
         {
             var response = new ListPagedFoodStockResponse(request.CorrelationId());
             var filterSpec = new FoodStockFilterSpecification(request.FoodProductId);
-            var pagedSpec = new FoodStockFilterPaginatedSpecification(request.PageIndex * request.PageSize,
+            var pagedSpec = new FoodStockFilterPaginatedSpecification(request.UserId ,request.PageIndex * request.PageSize,
                 request.PageSize, request.FoodProductId);
             var foodStocks = await _foodStockService.GetAsync(filterSpec, pagedSpec);
             response.FoodStocks.AddRange(foodStocks.List.Select(_mapper.Map<FoodStockDto>));

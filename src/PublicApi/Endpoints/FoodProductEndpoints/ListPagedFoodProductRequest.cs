@@ -5,6 +5,7 @@ namespace PublicApi.Endpoints.FoodProductEndpoints
     public class ListPagedFoodProductRequest : BaseRequest
     {
         public int PageIndex { get; set; }
+        public int? UserId { get; set; }
 
         public int PageSize { get; set; }
         public string Name { get; set; }

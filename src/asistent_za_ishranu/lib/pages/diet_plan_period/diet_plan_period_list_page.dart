@@ -3,6 +3,7 @@ import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/pages/diet_plan_period/diet_plan_period_details_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:intl/intl.dart';
 
 import 'diet_plan_period_create_page.dart';
@@ -23,7 +24,7 @@ class _DietPlanPeriodListPageState extends State<DietPlanPeriodListPage> {
 
   Future<List<DietPlanRequest>> getDietPlans() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/dietplan?pageSize=1000&index=0");
+    var result = await apiService.get("api/dietplan?pageSize=1000&index=0&userId=${AuthService().userId}");
     return DietPlanRequest.resultListFromJson(result);
   }
 
@@ -31,12 +32,12 @@ class _DietPlanPeriodListPageState extends State<DietPlanPeriodListPage> {
     var apiService = ApiService();
     if (name == null) {
       var result =
-          await apiService.get("api/dietplanperiod?pageSize=1000&index=0");
+          await apiService.get("api/dietplanperiod?pageSize=1000&index=0&userId=${AuthService().userId}");
       dietPlans = await getDietPlans();
       return DietPlanPeriodRequest.resultListFromJson(result);
     }
     var result = await apiService
-        .get("api/dietplanperiod?pageSize=1000&index=0&name=$name");
+        .get("api/dietplanperiod?pageSize=1000&index=0&userId=${AuthService().userId}&name=$name");
 
     dietPlans = await getDietPlans();
     return DietPlanPeriodRequest.resultListFromJson(result);

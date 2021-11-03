@@ -1,4 +1,5 @@
 import 'package:asistent_za_ishranu/models/diet_plan_meal_model.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:asistent_za_ishranu/widgets/checkbox_with_id_meal.dart';
 import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
@@ -25,7 +26,7 @@ class _DietPlanCreatePageState extends State<DietPlanCreatePage> {
       var apiService = ApiService();
       List<DietPlanMealModel> dietPlanMealModels = [];
       checkboxes.forEach((element) {if (element.wrappedBoolean!.value) dietPlanMealModels.add(DietPlanMealModel(element.mealRequest!.id, 0));});
-      var req = DietPlanRequest(_nameController.text, dietPlanMealModels
+      var req = DietPlanRequest(_nameController.text, dietPlanMealModels, 0, AuthService().userId
       ).modelToJson();
       await apiService.post("api/dietplan", req);
       Navigator.of(context).pop(context);
@@ -33,7 +34,7 @@ class _DietPlanCreatePageState extends State<DietPlanCreatePage> {
 
   Future<List<MealRequest>> getMeals() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/meal?pageSize=1000&index=0");
+    var result = await apiService.get("api/meal?pageSize=1000&index=0&userId=${AuthService().userId}");
     return MealRequest.resultListFromJson(result);
   }
 

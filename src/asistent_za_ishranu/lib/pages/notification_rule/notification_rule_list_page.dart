@@ -2,6 +2,7 @@ import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/notification_rule_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 
 import 'notification_rule_create_page.dart';
 import 'notification_rule_details_page.dart';
@@ -23,9 +24,9 @@ class _NotificationRuleListPageState extends State<NotificationRuleListPage> {
   Future<List<NotificationRuleRequest>> getItems(String? name) async {
     var apiService = ApiService();
     foodProducts = FoodProductRequest.resultListFromJson(
-        await apiService.get("api/foodproduct?pageSize=1000&index=0"));
+        await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}"));
     return NotificationRuleRequest.resultListFromJson(
-        await apiService.get("api/notificationrule?pageSize=1000&index=0"));
+        await apiService.get("api/notificationrule?pageSize=1000&index=0&userId=${AuthService().userId}"));
   }
 
   @override

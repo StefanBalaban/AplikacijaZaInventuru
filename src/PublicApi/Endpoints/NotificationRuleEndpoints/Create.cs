@@ -27,7 +27,7 @@ namespace PublicApi.Endpoints.NotificationRuleEndpoints
         public override async Task<ActionResult<CreateNotificationRuleResponse>> HandleAsync(CreateNotificationRuleRequest request, CancellationToken cancellationToken)
         {
             var response = new CreateNotificationRuleResponse(request.CorrelationId());
-            var notificationRule = await _notificationRuleService.PostAsync(new NotificationRule { FoodProductId = request.FoodProductId, NotificationRuleUserContactInfos = request.NotificationRuleUserContactInfos });
+            var notificationRule = await _notificationRuleService.PostAsync(new NotificationRule {UserId = request.UserId, FoodProductId = request.FoodProductId, NotificationRuleUserContactInfos = request.NotificationRuleUserContactInfos });
             response.NotificationRule = _mapper.Map<NotificationRuleDto>(notificationRule);
             return response;
         }

@@ -2,6 +2,7 @@ import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_details_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 
 import 'meal_create_page.dart';
@@ -22,11 +23,11 @@ class _MealListPageState extends State<MealListPage> {
     var apiService = ApiService();
     if (name == null) {
       var result =
-      await apiService.get("api/meal?pageSize=1000&index=0");
+      await apiService.get("api/meal?pageSize=1000&index=0&userId=${AuthService().userId}");
       return MealRequest.resultListFromJson(result);
     }
     var result =
-    await apiService.get("api/meal?pageSize=1000&index=0&name=$name");
+    await apiService.get("api/meal?pageSize=1000&index=0&userId=${AuthService().userId}&name=$name");
     return MealRequest.resultListFromJson(result);
   }
 

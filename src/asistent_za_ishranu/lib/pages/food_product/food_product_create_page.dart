@@ -33,7 +33,7 @@ class _FoodProductCreatePageState extends State<FoodProductCreatePage> {
                   double.parse(_caloriesController.text),
                   double.parse(_proteinController.text),
                   double.parse(_carbohydratesController.text),
-                  double.parse(_fatsController.text))
+                  double.parse(_fatsController.text), 0, AuthService().userId)
               .modelToJson());
 
       Navigator.of(context).pop(context);

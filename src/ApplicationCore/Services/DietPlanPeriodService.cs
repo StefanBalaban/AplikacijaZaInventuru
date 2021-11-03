@@ -41,7 +41,7 @@ namespace ApplicationCore.Services
         public async Task<DietPlanPeriod> PostAsync(DietPlanPeriod t)
         {
             Guard.Against.ModelStateIsInvalid(t, nameof(DietPlanPeriod));
-            return await _dietPlanPeriodRepository.AddAsync(new DietPlanPeriod { DietPlanId = t.DietPlanId, StartDate = t.StartDate, EndDate = t.EndDate });
+            return await _dietPlanPeriodRepository.AddAsync(new DietPlanPeriod { DietPlanId = t.DietPlanId, StartDate = t.StartDate, EndDate = t.EndDate, UserId = t.UserId });
         }
 
         public async Task<DietPlanPeriod> PutAsync(DietPlanPeriod t)

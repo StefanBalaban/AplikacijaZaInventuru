@@ -59,7 +59,7 @@ namespace FunctionalTests.ApiTests.DietPlanEndpoints
             var request = new CreateDietPlanRequest
             {
                 Name = _name,
-                DietPlanMeals = new List<DietPlanMeal>() { new DietPlanMeal { MealId = _mealId, DietPlanId = 13 } }
+                //DietPlanMeals = new List<DietPlanMeal>() { new DietPlanMeal { MealId = _mealId, DietPlanId = 13 } }
 
             };
             var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");

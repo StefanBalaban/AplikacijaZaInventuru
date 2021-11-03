@@ -2,6 +2,7 @@ import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/food_stock_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -30,8 +31,15 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
       var apiService = ApiService();
       await apiService.post(
           "api/foodstock",
-          FoodStockRequest(foodProductId, bestUseByDate, dateOfPurchase, double.parse(amount.text),
-                  double.parse(upperAmount.text), double.parse(lowerAmount.text))
+          FoodStockRequest(
+                  foodProductId,
+                  bestUseByDate,
+                  dateOfPurchase,
+                  double.parse(amount.text),
+                  double.parse(upperAmount.text),
+                  double.parse(lowerAmount.text),
+                  0,
+                  AuthService().userId)
               .modelToJson());
 
       Navigator.of(context).pop(context);
@@ -40,7 +48,7 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
 
   Future<List<FoodProductRequest>> getFoodProducts() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
     return FoodProductRequest.resultListFromJson(result);
   }
 
@@ -117,7 +125,8 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
                                   'Rok trajanja',
                                 ),
                               ))),
-                      Text("${DateFormat('dd.MM.yyyy').format(bestUseByDate ?? DateTime.now())}"),
+                      Text(
+                          "${DateFormat('dd.MM.yyyy').format(bestUseByDate ?? DateTime.now())}"),
                       ConstrainedBox(
                           constraints:
                               BoxConstraints.tight(const Size(200, 50)),
@@ -140,52 +149,59 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
                                   'Datum kupovine',
                                 ),
                               ))),
-                      Text("${DateFormat('dd.MM.yyyy').format(dateOfPurchase ?? DateTime.now())}"),
+                      Text(
+                          "${DateFormat('dd.MM.yyyy').format(dateOfPurchase ?? DateTime.now())}"),
                       ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(200, 50)),
-                    child: TextFormField(
-                        decoration: InputDecoration(labelText: "Količina"),
-                        controller: amount,
-                        validator: (String? value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              double.tryParse(value) == null) {
-                            return 'Vrijednost je prazna ili nije broj';
-                          }
-                          return null;
-                        },
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true))),
-                            ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(200, 50)),
-                    child: TextFormField(
-                        decoration: InputDecoration(labelText: "Gornja granica"),
-                        controller: upperAmount,
-                        validator: (String? value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              double.tryParse(value) == null) {
-                            return 'Vrijednost je prazna ili nije broj';
-                          }
-                          return null;
-                        },
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true))),
-                            ConstrainedBox(
-                    constraints: BoxConstraints.tight(const Size(200, 50)),
-                    child: TextFormField(
-                        decoration: InputDecoration(labelText: "Donja granica"),
-                        controller: lowerAmount,
-                        validator: (String? value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              double.tryParse(value) == null) {
-                            return 'Vrijednost je prazna ili nije broj';
-                          }
-                          return null;
-                        },
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true))),
+                          constraints:
+                              BoxConstraints.tight(const Size(200, 50)),
+                          child: TextFormField(
+                              decoration:
+                                  InputDecoration(labelText: "Količina"),
+                              controller: amount,
+                              validator: (String? value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    double.tryParse(value) == null) {
+                                  return 'Vrijednost je prazna ili nije broj';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true))),
+                      ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tight(const Size(200, 50)),
+                          child: TextFormField(
+                              decoration:
+                                  InputDecoration(labelText: "Gornja granica"),
+                              controller: upperAmount,
+                              validator: (String? value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    double.tryParse(value) == null) {
+                                  return 'Vrijednost je prazna ili nije broj';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true))),
+                      ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tight(const Size(200, 50)),
+                          child: TextFormField(
+                              decoration:
+                                  InputDecoration(labelText: "Donja granica"),
+                              controller: lowerAmount,
+                              validator: (String? value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    double.tryParse(value) == null) {
+                                  return 'Vrijednost je prazna ili nije broj';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true))),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace PublicApi.Util
+namespace PublicApi.Util.Middleware
 {
     public class ErrorHandlerMiddleware
     {

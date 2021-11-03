@@ -5,6 +5,7 @@ namespace PublicApi.Endpoints.FoodStockEndpoints
     public class FoodStockDto
     {
         public int Id { get; set; }
+        public int? UserId { get; set; }
         public int FoodProductId { get; set; }
 
         public float Amount { get; set; }

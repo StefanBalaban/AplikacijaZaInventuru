@@ -34,5 +34,6 @@ namespace ApplicationCore.Entities
         [Post] [Put] [Dto] public float Carbohydrates { get; set; }
 
         [Get] [Post] [Put] [Dto] public float Fats { get; set; }
+        [Dto] [Get(FilterConstants.EQUAL)] [Post] [Put] [Required] public int UserId { get; set; }
     }
 }

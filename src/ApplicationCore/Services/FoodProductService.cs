@@ -49,7 +49,7 @@ namespace ApplicationCore.Services
             {
                 Name = t.Name, UnitOfMeasureId = t.UnitOfMeasureId, Calories = t.Calories, Protein = t.Protein,
                 Carbohydrates = t.Carbohydrates, Fats = t.Fats
-            });
+           , UserId = t.UserId });
         }
 
         public async Task<FoodProduct> PutAsync(FoodProduct t)

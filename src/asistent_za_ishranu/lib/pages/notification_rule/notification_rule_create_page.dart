@@ -42,7 +42,7 @@ class _NotificationRuleCreatePageState
             NotificationRuleUserContactModel(element.userContactModel!.id, 0));
     });
     var req = NotificationRuleRequest(
-            foodProductId, notificationruleUserContactModels)
+            foodProductId, notificationruleUserContactModels, 0, AuthService().userId)
         .modelToJson();
     await apiService.post("api/notificationrule", req);
     Navigator.of(context).pop(context);
@@ -57,7 +57,7 @@ class _NotificationRuleCreatePageState
 
   Future<List<FoodProductRequest>> getFoodProducts() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
     return FoodProductRequest.resultListFromJson(result);
   }
 

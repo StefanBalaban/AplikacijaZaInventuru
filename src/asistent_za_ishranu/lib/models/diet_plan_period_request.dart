@@ -4,12 +4,13 @@ import 'package:asistent_za_ishranu/models/base_model.dart';
 
 class DietPlanPeriodRequest extends BaseModel {
   int? id;
+  int? userId;
   int? dietPlanId;
   DateTime? startDate;
   DateTime? endDate;
 
   DietPlanPeriodRequest(this.dietPlanId, this.startDate, this.endDate,
-      [this.id]);
+      [this.id, this.userId]);
 
   DietPlanPeriodRequest.forListResponse(this.id, this.startDate);
 
@@ -17,6 +18,7 @@ class DietPlanPeriodRequest extends BaseModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "userId": userId,
       "startDate": startDate!.toIso8601String(),
       "endDate": endDate!.toIso8601String(),
       "dietPlanId": dietPlanId

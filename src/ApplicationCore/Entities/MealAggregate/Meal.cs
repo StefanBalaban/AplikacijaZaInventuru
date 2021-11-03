@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Constants;
 using ApplicationCore.Entities.DietPlanAggregate;
 using ApplicationCore.Filters;
 using ApplicationCore.Interfaces;
@@ -12,5 +13,6 @@ namespace ApplicationCore.Entities.MealAggregate
 
         [Dto] [Get] [Post] [Put] [Required] public string Name { get; set; }
         public List<DietPlanMeal> DietPlanMeals { get; set; }
+        [Dto] [Get(FilterConstants.EQUAL)] [Post] [Put] [Required] public int UserId { get; set; }
     }
 }

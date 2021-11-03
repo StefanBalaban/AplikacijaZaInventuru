@@ -6,6 +6,7 @@ namespace PublicApi.Endpoints.MealEndpoints
     public class MealDto
     {
         public int Id { get; set; }
+        public int? UserId { get; set; }
 
         public List<MealItem> Meals { get; set; }
 

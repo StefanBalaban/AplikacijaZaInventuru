@@ -6,6 +6,7 @@ namespace PublicApi.Endpoints.NotificationRuleEndpoints
     public class NotificationRuleDto
     {
         public int Id { get; set; }
+        public int? UserId { get; set; }
 
         public int FoodProductId { get; set; }
 

@@ -24,12 +24,13 @@ namespace PublicApi.Endpoints.UserWeightEvidentionEndpoints
         }
 
         [HttpGet("api/userweightevidention")]
+        [Authorize(Policy = "2")]
         [SwaggerOperation(Summary = "ListPaged UserWeightEvidention", Description = "ListPaged UserWeightEvidention", OperationId = "userweightevidention.listpaged", Tags = new[] { "UserWeightEvidentionEndpoints" })]
         public override async Task<ActionResult<ListPagedUserWeightEvidentionResponse>> HandleAsync([FromQuery] ListPagedUserWeightEvidentionRequest request, CancellationToken cancellationToken)
         {
             var response = new ListPagedUserWeightEvidentionResponse(request.CorrelationId());
             var filterSpec = new UserWeightEvidentionFilterSpecification();
-            var pagedSpec = new UserWeightEvidentionFilterPaginatedSpecification(request.PageIndex * request.PageSize, request.PageSize);
+            var pagedSpec = new UserWeightEvidentionFilterPaginatedSpecification(request.UserId, request.PageIndex * request.PageSize, request.PageSize);
             var userWeightEvidentions = await _userWeightEvidentionService.GetAsync(filterSpec, pagedSpec);
             response.UserWeightEvidentions.AddRange(userWeightEvidentions.List.Select(_mapper.Map<UserWeightEvidentionDto>));
             response.PageCount = userWeightEvidentions.List.Count;

@@ -29,7 +29,7 @@ namespace PublicApi.Endpoints.NotificationRuleEndpoints
         {
             var response = new ListPagedNotificationRuleResponse(request.CorrelationId());
             var filterSpec = new NotificationRuleFilterSpecification(request.FoodProductId);
-            var pagedSpec = new NotificationRuleFilterPaginatedSpecification(request.PageIndex * request.PageSize, request.PageSize, request.FoodProductId);
+            var pagedSpec = new NotificationRuleFilterPaginatedSpecification(request.UserId ,request.PageIndex * request.PageSize, request.PageSize, request.FoodProductId);
             var notificationRules = await _notificationRuleService.GetAsync(filterSpec, pagedSpec);
             response.NotificationRules.AddRange(notificationRules.List.Select(_mapper.Map<NotificationRuleDto>));
             response.PageCount = notificationRules.List.Count;

@@ -3,6 +3,7 @@ import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import 'diet_plan_update_page.dart';
@@ -24,7 +25,7 @@ class _DietPlanDetailsPageState extends State<DietPlanDetailsPage> {
     var result = await apiService.get("api/dietplan/$id");
 
     apiService = ApiService();
-    var mealResult = await apiService.get("api/meal?pageSize=1000&index=0");
+    var mealResult = await apiService.get("api/meal?pageSize=1000&index=0&userId=${AuthService().userId}");
     meals = MealRequest.resultListFromJson(mealResult);
 
     var dietPlan = DietPlanRequest.resultFromJson(result);

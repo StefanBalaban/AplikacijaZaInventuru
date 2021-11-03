@@ -33,6 +33,7 @@ namespace PublicApi.Endpoints.FoodProductEndpoints
             var response = new CreateFoodProductResponse(request.CorrelationId());
             var foodProduct = await _foodProductService.PostAsync(new FoodProduct
             {
+                UserId = request.UserId,
                 Name = request.Name, UnitOfMeasureId = request.UnitOfMeasureId, Calories = request.Calories,
                 Protein = request.Protein, Carbohydrates = request.Carbohydrates, Fats = request.Fats
             });

@@ -5,6 +5,7 @@ namespace PublicApi.Endpoints.DietPlanPeriodEndpoints
     public class DietPlanPeriodDto
     {
         public int Id { get; set; }
+        public int? UserId { get; set; }
 
         public int DietPlanId { get; set; }
 

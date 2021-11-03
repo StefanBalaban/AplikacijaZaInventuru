@@ -6,6 +6,7 @@ namespace PublicApi.Endpoints.DietPlanPeriodEndpoints
     public class ListPagedDietPlanPeriodRequest : BaseRequest
     {
         public int PageIndex { get; set; }
+        public int? UserId { get; set; }
 
         public int PageSize { get; set; }
 

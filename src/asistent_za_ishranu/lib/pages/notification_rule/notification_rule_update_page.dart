@@ -32,7 +32,7 @@ class _NotificationRuleUpdatePageState
 
   Future<NotificationRuleRequest> getItem(id) async {
     foodProducts = FoodProductRequest.resultListFromJson(
-        await ApiService().get("api/foodproduct?pageSize=1000&index=0"));
+        await ApiService().get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}"));
     user = UserModel.resultFromJson(
         await ApiService().get("api/user/${AuthService().userId}"));
     return NotificationRuleRequest.resultFromJson(

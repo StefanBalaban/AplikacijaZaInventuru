@@ -4,6 +4,7 @@ import 'package:asistent_za_ishranu/models/base_model.dart';
 
 class FoodStockRequest extends BaseModel {
   int? id;
+  int? userId;
   int? foodProductId;
   DateTime? bestUseByDate;
   DateTime? dateOfPurchase;
@@ -13,7 +14,7 @@ class FoodStockRequest extends BaseModel {
 
   FoodStockRequest(this.foodProductId, this.bestUseByDate, this.dateOfPurchase,
       this.amount, this.upperAmount, this.lowerAmount,
-      [this.id]);
+      [this.id, this.userId]);
 
   FoodStockRequest.forListResponse(this.id, this.foodProductId);
 
@@ -21,6 +22,7 @@ class FoodStockRequest extends BaseModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "userId": userId,
       "bestUseByDate": bestUseByDate!.toIso8601String(),
       "dateOfPurchase": dateOfPurchase!.toIso8601String(),
       "foodProductId": foodProductId,

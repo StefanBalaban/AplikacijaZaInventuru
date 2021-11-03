@@ -4,10 +4,11 @@ import 'diet_plan_meal_model.dart';
 
 class DietPlanRequest extends BaseModel {
   int? id;
+  int? userId;
   String? name;
   List<DietPlanMealModel>? dietPlanMeals;
 
-  DietPlanRequest(this.name, this.dietPlanMeals, [this.id]);
+  DietPlanRequest(this.name, this.dietPlanMeals, [this.id, this.userId]);
 
   DietPlanRequest.forListResponse(this.id, this.name);
 
@@ -15,6 +16,7 @@ class DietPlanRequest extends BaseModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "userId": userId,
       "name": name,
       "dietPlanMeals": dietPlanMeals
     };

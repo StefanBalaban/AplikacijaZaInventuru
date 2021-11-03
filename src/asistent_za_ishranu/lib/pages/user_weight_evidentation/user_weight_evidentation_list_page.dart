@@ -3,6 +3,7 @@ import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_details_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:intl/intl.dart';
 
 import 'user_weight_evidentation_create_page.dart';
@@ -22,7 +23,7 @@ class _UserWeightEvidentationListPageState
 
   Future<List<UserWeightEvidentationRequest>> getItems() async {
         var result = UserWeightEvidentationRequest.resultListFromJson(await ApiService()
-        .get("api/userweightevidention?pageSize=1000&index=0"));
+        .get("api/userweightevidention?pageSize=1000&index=0&userId=${AuthService().userId}"));
     return result;
   }
 

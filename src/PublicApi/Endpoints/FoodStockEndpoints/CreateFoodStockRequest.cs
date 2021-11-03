@@ -3,8 +3,9 @@ using PublicApi.Util;
 
 namespace PublicApi.Endpoints.FoodStockEndpoints
 {
-    public class CreateFoodStockRequest : BaseRequest
+    public class CreateFoodStockRequest : BaseRequest 
     {
+        public int UserId { get; set; }
         public int FoodProductId { get; set; }
 
         public float Amount { get; set; }

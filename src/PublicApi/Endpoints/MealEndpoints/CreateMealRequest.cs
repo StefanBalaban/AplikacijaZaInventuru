@@ -4,8 +4,9 @@ using PublicApi.Util;
 
 namespace PublicApi.Endpoints.MealEndpoints
 {
-    public class CreateMealRequest : BaseRequest
+    public class CreateMealRequest : BaseRequest 
     {
+        public int UserId { get; set; }
         public List<MealItem> Meals { get; set; } = new List<MealItem>();
 
         public string Name { get; set; }

@@ -4,6 +4,7 @@ using AutoMapper;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PublicApi.Util.Middleware;
 using System.Collections.Generic;
 
 namespace PublicApi.Util
@@ -75,21 +77,11 @@ namespace PublicApi.Util
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ////IdentityModelEventSource.ShowPII = true;
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<AppIdentityDbContext>();
-            //    .AddDefaultTokenProviders();
-
-
             services.AddDbContext<AppContext>(c =>
                 c.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
 
-            //services.AddDbContext<AppIdentityDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            //services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 
             services.AddTransient<IFoodProductService, FoodProductService>();
             services.AddTransient<IFoodStockService, FoodStockService>();
@@ -100,6 +92,8 @@ namespace PublicApi.Util
             services.AddTransient<INotificationRuleService, NotificationRuleService>();
             services.AddTransient<IUserWeightEvidentionService, UserWeightEvidentionService>();
             services.AddTransient<IUserSubscriptionService, UserSubscriptionService>();
+            services.AddSingleton<IActiveUsersSingleton, ActiveUsersSingleton>();
+            services.AddSingleton<IAuthorizationHandler, AuthorizedUserHandler>();
 
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
@@ -114,6 +108,13 @@ namespace PublicApi.Util
                 // TODO: KILL THIS
                 options.RequireHttpsMetadata = false;
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AuthorizeUseId", policy =>
+                    policy.Requirements.Add(new AuthorizationUserRequirement()));
+            });
+
 
             services.AddCors(options =>
             {
@@ -169,6 +170,8 @@ namespace PublicApi.Util
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
+
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
@@ -176,10 +179,13 @@ namespace PublicApi.Util
             app.UseRouting();
 
             app.UseCors(CORS_POLICY);
-
             app.UseAuthentication();
 
+
+            app.UseMiddleware<ActiveUsersMiddleWare>();
             app.UseAuthorization();
+            
+
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

@@ -2,6 +2,7 @@ import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/meal_item_model.dart';
 import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class MealCreatePage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _MealCreatePageState extends State<MealCreatePage> {
             _foodProductIds.map((e) {
               return MealItemModel(int.parse(e.text),
                   double.parse(_amountControllers[fieldIndex++].text));
-            }).toList())
+            }).toList(), 0, AuthService().userId)
         .modelToJson();
     {
       var apiService = ApiService();
@@ -42,7 +43,7 @@ class _MealCreatePageState extends State<MealCreatePage> {
 
   Future<List<FoodProductRequest>> getFoodProducts() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
     return FoodProductRequest.resultListFromJson(result);
   }
 

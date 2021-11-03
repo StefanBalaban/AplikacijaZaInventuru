@@ -25,5 +25,6 @@ namespace ApplicationCore.Entities
         [Dto] [Get] [Post] [Put] public DateTime? DateOfPurchase { get; set; }
 
         [Dto] [Get] [Post] [Put] public DateTime? BestUseByDate { get; set; }
+        [Dto] [Get(FilterConstants.EQUAL)] [Post] [Put] [Required] public int UserId { get; set; }
     }
 }

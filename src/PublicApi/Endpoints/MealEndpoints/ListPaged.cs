@@ -33,7 +33,7 @@ namespace PublicApi.Endpoints.MealEndpoints
             var response = new ListPagedMealResponse(request.CorrelationId());
             var filterSpec = new MealFilterSpecification();
             var pagedSpec =
-                new MealFilterPaginatedSpecification(request.PageIndex * request.PageSize, request.PageSize);
+                new MealFilterPaginatedSpecification(request.UserId ,request.PageIndex * request.PageSize, request.PageSize);
             var meals = await _mealService.GetAsync(filterSpec, pagedSpec);
             response.Meals.AddRange(meals.List.Select(_mapper.Map<MealDto>));
             response.PageCount = meals.List.Count;

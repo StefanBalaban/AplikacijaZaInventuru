@@ -5,10 +5,11 @@ import 'package:asistent_za_ishranu/models/meal_item_model.dart';
 
 class MealRequest extends BaseModel {
   int? id;
+  int? userId;
   String? name;
   List<MealItemModel>? meals;
 
-  MealRequest(this.name, this.meals, [this.id]);
+  MealRequest(this.name, this.meals, [this.id, this.userId]);
 
   MealRequest.forListResponse(this.id, this.name);
 
@@ -16,6 +17,7 @@ class MealRequest extends BaseModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "userId": userId,
       "name": name,
       "meals": meals
     };

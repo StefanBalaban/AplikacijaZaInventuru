@@ -32,6 +32,7 @@ namespace PublicApi.Endpoints.FoodStockEndpoints
             var response = new CreateFoodStockResponse(request.CorrelationId());
             var foodStock = await _foodStockService.PostAsync(new FoodStock
             {
+                UserId = request.UserId,
                 FoodProductId = request.FoodProductId, Amount = request.Amount, UpperAmount = request.UpperAmount,
                 LowerAmount = request.LowerAmount, DateOfPurchase = request.DateOfPurchase,
                 BestUseByDate = request.BestUseByDate

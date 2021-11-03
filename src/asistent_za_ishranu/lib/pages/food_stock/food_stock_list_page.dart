@@ -3,6 +3,7 @@ import 'package:asistent_za_ishranu/models/food_stock_request.dart';
 import 'package:asistent_za_ishranu/models/diet_plan_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 
 import 'food_stock_create_page.dart';
 import 'food_stock_details_page.dart';
@@ -23,7 +24,7 @@ class _FoodStockListPageState extends State<FoodStockListPage> {
 
   Future<List<FoodProductRequest>> getFoodProduct() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
     return FoodProductRequest.resultListFromJson(result);
   }
 
@@ -31,13 +32,13 @@ class _FoodStockListPageState extends State<FoodStockListPage> {
     
     var apiService = ApiService();
     var result =
-          await apiService.get("api/foodstock?pageSize=1000&index=0");
+          await apiService.get("api/foodstock?pageSize=1000&index=0&userId=${AuthService().userId}");
     if (name == null) {
       foodProducts = await getFoodProduct();
       return FoodStockRequest.resultListFromJson(result);
     }
     var foodProductsResult = await apiService
-        .get("api/foodproduct?pageSize=1000&index=0&name=$name");
+        .get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}&name=$name");
 
     foodProducts = FoodProductRequest.resultListFromJson(foodProductsResult);
     var foodStockRequests = FoodStockRequest.resultListFromJson(result);

@@ -28,5 +28,6 @@ namespace ApplicationCore.Entities
         [Put]
         [Required]
         public DateTime EndDate { get; set; }
+        [Dto] [Get(FilterConstants.EQUAL)] [Post] [Put] [Required] public int UserId { get; set; }
     }
 }

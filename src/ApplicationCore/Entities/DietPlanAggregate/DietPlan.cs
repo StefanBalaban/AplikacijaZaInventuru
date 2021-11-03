@@ -12,5 +12,7 @@ namespace ApplicationCore.Entities.DietPlanAggregate
         [Dto] [Get(FilterConstants.INCLUDE)] [Post] [Put] [Required] public List<DietPlanMeal> DietPlanMeals { get; set; }
 
         [Dto] [Get(FilterConstants.EQUAL)] [Post] [Put] [Required] public string Name { get; set; }
+        [Dto] [Get(FilterConstants.EQUAL)] [Post] [Put] [Required] public int UserId { get; set; }
+
     }
 }

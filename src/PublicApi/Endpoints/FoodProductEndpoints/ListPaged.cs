@@ -12,7 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PublicApi.Endpoints.FoodProductEndpoints
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AuthorizeUseId")]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedFoodProductRequest>.WithResponse<
         ListPagedFoodProductResponse>
     {
@@ -26,6 +26,7 @@ namespace PublicApi.Endpoints.FoodProductEndpoints
         }
 
         [HttpGet("api/foodproduct")]
+
         [SwaggerOperation(Summary = "ListPaged FoodProduct", Description = "ListPaged FoodProduct",
             OperationId = "foodproduct.listpaged", Tags = new[] { "FoodProductEndpoints" })]
         public override async Task<ActionResult<ListPagedFoodProductResponse>> HandleAsync(
@@ -34,7 +35,7 @@ namespace PublicApi.Endpoints.FoodProductEndpoints
             var response = new ListPagedFoodProductResponse(request.CorrelationId());
             var filterSpec = new FoodProductFilterSpecification(request.UnitOfMeasureId, request.CaloriesGTE,
                 request.CaloriesLTE, request.Protein, request.Name);
-            var pagedSpec = new FoodProductFilterPaginatedSpecification(request.PageIndex * request.PageSize,
+            var pagedSpec = new FoodProductFilterPaginatedSpecification(request.UserId ,request.PageIndex * request.PageSize,
                 request.PageSize, request.UnitOfMeasureId, request.CaloriesGTE, request.CaloriesLTE, request.Protein, request.Name);
             var foodProducts = await _foodProductService.GetAsync(filterSpec, pagedSpec);
             response.FoodProducts.AddRange(foodProducts.List.Select(_mapper.Map<FoodProductDto>));

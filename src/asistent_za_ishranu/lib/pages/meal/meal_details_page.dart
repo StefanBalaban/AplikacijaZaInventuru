@@ -3,6 +3,7 @@ import 'package:asistent_za_ishranu/models/meal_item_model.dart';
 import 'package:asistent_za_ishranu/models/meal_request.dart';
 import 'package:asistent_za_ishranu/pages/meal/meal_update_page.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class MealDetailsPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _MealDetailsPageState extends State<MealDetailsPage> {
     var result = await apiService.get("api/meal/$id");
 
     apiService = ApiService();
-    var foodProductResult = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    var foodProductResult = await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
     foodProducts = FoodProductRequest.resultListFromJson(foodProductResult);
 
     return MealRequest.resultFromJson(result);

@@ -6,6 +6,7 @@ namespace PublicApi.Endpoints.DietPlanEndpoints
     public class DietPlanDto
     {
         public int Id { get; set; }
+        public int? UserId { get; set; }
 
         public List<DietPlanMealDto> DietPlanMeals { get; set; } = new List<DietPlanMealDto>();
 

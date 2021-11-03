@@ -1,6 +1,7 @@
 import 'package:asistent_za_ishranu/models/food_product_request.dart';
 import 'package:asistent_za_ishranu/models/food_stock_request.dart';
 import 'package:asistent_za_ishranu/services/api_service.dart';
+import 'package:asistent_za_ishranu/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -32,7 +33,7 @@ class _FoodStockUpdatePageState extends State<FoodStockUpdatePage> {
 
   Future<List<FoodProductRequest>> getFoodProducts() async {
     var apiService = ApiService();
-    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0");
+    var result = await apiService.get("api/foodproduct?pageSize=1000&index=0&userId=${AuthService().userId}");
     return FoodProductRequest.resultListFromJson(result);
   }
 

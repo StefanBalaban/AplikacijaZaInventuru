@@ -5,10 +5,12 @@ import 'notification_rule_user_contact_model.dart';
 
 class NotificationRuleRequest extends BaseModel {
   int? id;
+  int? userId;
   int? foodProductId;
   List<NotificationRuleUserContactModel>? notificationRuleUserContacts;
 
-  NotificationRuleRequest(this.foodProductId, this.notificationRuleUserContacts, [this.id]);
+
+  NotificationRuleRequest(this.foodProductId, this.notificationRuleUserContacts, [this.id, this.userId]);
 
   NotificationRuleRequest.forListResponse(this.id, this.foodProductId);
 
@@ -16,6 +18,7 @@ class NotificationRuleRequest extends BaseModel {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
+      "userId": userId,
       "foodProductId": foodProductId,
       "NotificationRuleUserContactInfos": notificationRuleUserContacts
     };

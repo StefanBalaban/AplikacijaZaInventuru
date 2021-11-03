@@ -29,7 +29,7 @@ namespace PublicApi.Endpoints.DietPlanEndpoints
         {
             var response = new ListPagedDietPlanResponse(request.CorrelationId());
             var filterSpec = new DietPlanFilterSpecification(request.Name);
-            var pagedSpec = new DietPlanFilterPaginatedSpecification(request.PageIndex * request.PageSize, request.PageSize, request.Name);
+            var pagedSpec = new DietPlanFilterPaginatedSpecification(request.UserId ,request.PageIndex * request.PageSize, request.PageSize, request.Name);
             var dietPlans = await _dietPlanService.GetAsync(filterSpec, pagedSpec);
             response.DietPlans.AddRange(dietPlans.List.Select(_mapper.Map<DietPlanDto>));
             response.PageCount = dietPlans.List.Count;

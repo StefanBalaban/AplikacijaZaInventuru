@@ -52,7 +52,7 @@ namespace ApplicationCore.Services
                 LowerAmount = t.LowerAmount,
                 DateOfPurchase = t.DateOfPurchase,
                 BestUseByDate = t.BestUseByDate
-            });
+           , UserId = t.UserId });
         }
 
         public async Task<FoodStock> PutAsync(FoodStock t)

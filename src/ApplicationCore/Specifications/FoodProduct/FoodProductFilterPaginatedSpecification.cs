@@ -6,7 +6,7 @@ namespace ApplicationCore.Specifications.FoodProductSpecs
 {
     public class FoodProductFilterPaginatedSpecification : Specification<FoodProduct>
     {
-        public FoodProductFilterPaginatedSpecification(int skip, int take, int? unitOfMeasureId, float? caloriesGTE,
+        public FoodProductFilterPaginatedSpecification(int? userId, int skip, int take, int? unitOfMeasureId, float? caloriesGTE,
             float? caloriesLTE, float? protein, string name)
         {
             Query.Where(i => !unitOfMeasureId.HasValue || i.UnitOfMeasureId == unitOfMeasureId);
@@ -14,9 +14,10 @@ namespace ApplicationCore.Specifications.FoodProductSpecs
             Query.Where(i => !caloriesLTE.HasValue || i.Calories <= caloriesLTE);
             Query.Where(i => !protein.HasValue || i.Protein == protein);
             Query.Skip(skip);
+            Query.Where(i => userId == null || i.UserId == userId);
             Query.Take(take);
             Query.Include(x => x.UnitOfMeasure);
-Query.Where(i => name == null || i.Name.Contains(name));
-}
+            Query.Where(i => name == null || i.Name.Contains(name));
+        }
     }
 }

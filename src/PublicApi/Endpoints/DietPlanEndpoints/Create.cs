@@ -30,6 +30,7 @@ namespace PublicApi.Endpoints.DietPlanEndpoints
             var response = new CreateDietPlanResponse(request.CorrelationId());
             var dietPlan = await _dietPlanService.PostAsync(new DietPlan
             {
+                UserId = request.UserId,
                 DietPlanMeals = request.DietPlanMeals.Select(x => new DietPlanMeal()
                 {
                     MealId = x.MealId,
