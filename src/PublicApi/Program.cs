@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Infrastructure.Data;
 using Infrastructure.Identity;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,24 +19,18 @@ namespace PublicApi.Util
             var host = CreateHostBuilder(args)
                 .Build();
 
-            using (var scope = host.Services.CreateScope())
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            try
             {
-                var services = scope.ServiceProvider;
-                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                try
-                {
-                    var catalogContext = services.GetRequiredService<AppContext>();
-                    //await AppContextSeed.SeedAsync(catalogContext, loggerFactory);
-
-                    //var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    //await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
-                }
-                catch (Exception ex)
-                {
-                    var logger = loggerFactory.CreateLogger<Program>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
+                using var catalogContext = services.GetRequiredService<AppContext>();
+                await SetupService.InitDataAsync(catalogContext);
+            }
+            catch (Exception ex)
+            {
+                var logger = loggerFactory.CreateLogger<Program>();
+                logger.LogError(ex, "An error occurred seeding the DB.");
             }
 
             host.Run();

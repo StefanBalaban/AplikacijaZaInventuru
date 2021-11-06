@@ -2,10 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServerAspNetIdentity.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -40,6 +43,22 @@ namespace IdentityServerAspNetIdentity
 
 
                 var host = CreateHostBuilder(args).Build();
+
+                using var scope = host.Services.CreateScope();
+                var services = scope.ServiceProvider;
+                    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                    try
+                    {
+
+                        using var catalogContext = services.GetRequiredService<ApplicationDbContext>();
+                        catalogContext.Database.Migrate();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = loggerFactory.CreateLogger<Program>();
+                        logger.LogError(ex, "An error occurred seeding the DB.");
+                    }
 
                 Log.Information("Starting host...");
                 host.Run();

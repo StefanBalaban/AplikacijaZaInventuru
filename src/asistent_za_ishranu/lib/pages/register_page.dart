@@ -53,9 +53,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(200, 50)),
                     child: TextFormField(
+                      decoration: InputDecoration(labelText: "Email"),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
-                        if (value == null || value.isEmpty || !EmailValidator.validate(value)) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            !EmailValidator.validate(value)) {
                           return 'Unesite email adresu';
                         }
                       },
@@ -64,6 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(200, 50)),
                     child: TextFormField(
+                      decoration: InputDecoration(labelText: "Lozinka"),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -74,12 +78,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                     )),
-                    ConstrainedBox(
+                ConstrainedBox(
                     constraints: BoxConstraints.tight(const Size(200, 50)),
                     child: TextFormField(
-                      controller: _errorMessageController,
-                      readOnly: true
-                    )),
+                        controller: _errorMessageController, readOnly: true)),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {

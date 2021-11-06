@@ -31,9 +31,8 @@ namespace PublicApi.Util.Authorization
                         context.Succeed(requirement);
                     }
 
-                    var name = context.User.Claims.SingleOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
-
-                    if (context.Resource is HttpContext httpContext && _activeUsersSingleton.ActiveUsersId.TryGetValue(name, out int userId))
+                    var name = context.User.Claims.SingleOrDefault(x => x.Type == ClaimsIdentity.DefaultNameClaimType)?.Value;
+                    if (name != null && context.Resource is HttpContext httpContext && _activeUsersSingleton.ActiveUsersId.TryGetValue(name, out int userId))
                     {
                         var query = httpContext.Request.Query["userId"].ToString();
                         if (query != null && int.TryParse(query, out int userIdQuery) && userIdQuery == userId)

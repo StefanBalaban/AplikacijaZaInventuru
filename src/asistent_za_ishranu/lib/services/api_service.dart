@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   AuthService _authService = AuthService();
-  String _baseApiUrl = "https://192.168.0.20:5099";
+  String _baseApiUrl = "http://10.0.2.2:5098";
 
   Future<String> post(String path, String body) async {
     _authService.verifySession();
@@ -14,6 +14,7 @@ class ApiService {
 
     HttpClientRequest request = await client.postUrl(Uri.parse("$_baseApiUrl/$path"));
     request.headers.set('Content-Type', 'application/json');
+    var token = _authService.getToken();
     request.headers.set('Authorization', 'Bearer ${_authService.getToken()}');
     request.add(utf8.encode(body));
     HttpClientResponse result = await request.close();

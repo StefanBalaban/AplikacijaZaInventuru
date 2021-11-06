@@ -2,11 +2,10 @@
 {
     public class UnitOfMeasure : BaseEntity
     {
-        public UnitOfMeasure(int id)
+        public UnitOfMeasure()
         {
-            Id = id;
         }
 
-        public string Measure { get; private set; }
+        public string Measure { get; set; }
     }
 }

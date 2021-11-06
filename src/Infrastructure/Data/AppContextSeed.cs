@@ -24,7 +24,7 @@ namespace Infrastructure.Data
                 if (!await catalogContext.UnitOfMeasures.AnyAsync())
                 {
                     await catalogContext.UnitOfMeasures.AddRangeAsync(
-                        new UnitOfMeasure(1));
+                        new UnitOfMeasure());
 
                     await catalogContext.SaveChangesAsync();
                 }

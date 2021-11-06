@@ -1,14 +1,50 @@
 version: '3.4'
 
 services:
-  eshopwebmvc:
-    image: ${DOCKER_REGISTRY-}eshopwebmvc
+  inventura-sql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PlanesCarsAndTrains4321
+      - MSSQL_PID=Developer
+    ports:
+      - 1401:1433
+    networks:
+      - inventuranet
+  identity-server:
+    restart: unless-stopped
     build:
       context: .
-      dockerfile: src/Web/Dockerfile
-  eshoppublicapi:
-    image: ${DOCKER_REGISTRY-}eshoppublicapi
+      dockerfile: ./src/IdentityServerAspNetIdentity/Dockerfile
+    environment: 
+      - ConnectionStrings:DefaultConnection=Server=inventura-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Database=Identity
+    ports:
+      - 5001:5001
+    networks:
+      - inventuranet
+    links:
+      - inventura-sql
+    depends_on:
+      - inventura-sql
+  public-api:
+    restart: unless-stopped
     build:
       context: .
-      dockerfile: src/PublicApi/Dockerfile
-
+      dockerfile: ./src/PublicApi/Dockerfile
+    environment: 
+      - ConnectionStrings:DbConnection=Server=inventura-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Database=AppDb
+      - ConnectionStrings:IdentityAuthority=http://identity-server:5001
+    ports:
+      - 5098:5098
+    networks:
+      - inventuranet
+    links:
+      - inventura-sql
+      - identity-server
+    depends_on:
+      - inventura-sql
+      - identity-server
+networks:
+  inventuranet:
+    driver: bridge

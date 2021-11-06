@@ -107,7 +107,7 @@ namespace PublicApi.Util
             {
                 options.ApiName = "api1";
                 // TODO: Put this in config
-                options.Authority = "http://192.168.0.20:5001";
+                options.Authority = Configuration.GetConnectionString("IdentityAuthority");
                 // TODO: KILL THIS
                 options.RequireHttpsMetadata = false;
             });
@@ -176,7 +176,7 @@ namespace PublicApi.Util
             app.UseCors(CORS_POLICY);
             app.UseAuthentication();
 
-
+            // Adds active users Id's to a singleton class
             app.UseMiddleware<ActiveUsersMiddleWare>();
             app.UseAuthorization();
 
