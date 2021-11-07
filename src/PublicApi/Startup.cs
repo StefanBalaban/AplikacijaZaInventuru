@@ -103,13 +103,14 @@ namespace PublicApi.Util
 
             services.AddMemoryCache();
 
-            services.AddAuthentication("Bearer").AddIdentityServerAuthentication("Bearer", options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.ApiName = "api1";
                 // TODO: Put this in config
                 options.Authority = Configuration.GetConnectionString("IdentityAuthority");
                 // TODO: KILL THIS
                 options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters.ValidAudiences = new[] {"api1"};
+                options.TokenValidationParameters.ValidTypes = new[] {"at+jwt"};
             });
 
             services.AddAuthorization(options =>
