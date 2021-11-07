@@ -31,7 +31,6 @@ namespace IdentityServerAspNetIdentity
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
                 config.Password.RequiredLength = 8;
@@ -44,7 +43,6 @@ namespace IdentityServerAspNetIdentity
 
             var builder = services.AddIdentityServer(options =>
             {
-                options.IssuerUri = Configuration["Issuer"];
                 options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;

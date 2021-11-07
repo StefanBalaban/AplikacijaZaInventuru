@@ -1,16 +1,16 @@
-using System.Threading.Tasks;
-using Infrastructure.Data;
-using Infrastructure.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
+using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
+using IdentityServerAspNetIdentity.Data;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services
+namespace IdentityServerAspNetIdentity.Services
 {
     public class SetupService
     {
-        private static async Task WaitUntilCanConnectToDb(AppContext context)
-         {
+        private static async Task WaitUntilCanConnectToDb(ApplicationDbContext context)
+        {
             var conn = context.Database.GetDbConnection().DataSource;
             var cons = conn.Split(',');
             var maxTimeout = 7;            
@@ -33,25 +33,10 @@ namespace Infrastructure.Services
                 }
             }
         }
-        public static async Task MigrateContextAsync(AppContext context)
+        public static async Task MigrateContextAsync(ApplicationDbContext context)
         {
             await WaitUntilCanConnectToDb(context);
             await context.Database.MigrateAsync();
-
-            if (!(await context.UnitOfMeasures.AnyAsync()))
-            {
-                await context.UnitOfMeasures.AddAsync(new ApplicationCore.Entities.UnitOfMeasure
-                {
-                    Measure = "Komad"
-                });
-                await context.UnitOfMeasures.AddAsync(new ApplicationCore.Entities.UnitOfMeasure
-                {
-                    Measure = "Težina"
-                });
-
-                await context.SaveChangesAsync();
-            }
-
         }
     }
 }

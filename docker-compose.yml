@@ -10,7 +10,18 @@ services:
       - MSSQL_PID=Developer
     ports:
       - 1401:1433
-    networks:
+    networks: 
+      - inventuranet
+  identity-sql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PlanesCarsAndTrains4321
+      - MSSQL_PID=Developer
+    ports:
+      - 1402:1433
+    networks: 
       - inventuranet
   identity-server:
     restart: unless-stopped
@@ -18,23 +29,24 @@ services:
       context: .
       dockerfile: ./src/IdentityServerAspNetIdentity/Dockerfile
     environment: 
-      - ConnectionStrings:DefaultConnection=Server=inventura-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Database=Identity
+      - ConnectionStrings:DefaultConnection=Data Source=identity-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Initial Catalog=IdentityDb
     ports:
       - 5001:5001
     networks:
       - inventuranet
     links:
-      - inventura-sql
+      - identity-sql
     depends_on:
-      - inventura-sql
+      - identity-sql
   public-api:
     restart: unless-stopped
     build:
       context: .
       dockerfile: ./src/PublicApi/Dockerfile
     environment: 
-      - ConnectionStrings:DbConnection=Server=inventura-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Database=AppDb
+      - ConnectionStrings:DbConnection=Server=inventura-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Initial Catalog=AppDb
       - ConnectionStrings:IdentityAuthority=http://identity-server:5001
+      - Issuer=http://localhost:5001
     ports:
       - 5098:5098
     networks:

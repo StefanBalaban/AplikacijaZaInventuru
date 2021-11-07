@@ -25,7 +25,7 @@ namespace PublicApi.Util
             try
             {
                 using var catalogContext = services.GetRequiredService<AppContext>();
-                await SetupService.InitDataAsync(catalogContext);
+                await SetupService.MigrateContextAsync(catalogContext);
             }
             catch (Exception ex)
             {

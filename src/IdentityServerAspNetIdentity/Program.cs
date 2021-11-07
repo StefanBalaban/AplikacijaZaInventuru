@@ -3,6 +3,7 @@
 
 
 using IdentityServerAspNetIdentity.Data;
+using IdentityServerAspNetIdentity.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,12 +15,13 @@ using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -46,19 +48,19 @@ namespace IdentityServerAspNetIdentity
 
                 using var scope = host.Services.CreateScope();
                 var services = scope.ServiceProvider;
-                    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                    try
-                    {
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                try
+                {
+                    using var catalogContext = services.GetRequiredService<ApplicationDbContext>();   
+                    await SetupService.MigrateContextAsync(catalogContext);
 
-                        using var catalogContext = services.GetRequiredService<ApplicationDbContext>();
-                        catalogContext.Database.Migrate();
 
-                    }
-                    catch (Exception ex)
-                    {
-                        var logger = loggerFactory.CreateLogger<Program>();
-                        logger.LogError(ex, "An error occurred seeding the DB.");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    var logger = loggerFactory.CreateLogger<Program>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
 
                 Log.Information("Starting host...");
                 host.Run();

@@ -28,7 +28,8 @@ namespace PublicApi.Util.Middleware
             if (name != null && !_activeUsersSingleton.ActiveUsersId.TryGetValue(name, out int userId))
             {
                 var spec = new UserByNameFilterSpecification(name);
-                var user = (await _userService.GetAsync(spec, spec)).List[0];
+                var list = await _userService.GetAsync(spec, spec);
+                var user = list.List.SingleOrDefault(x => x.FirstName.Equals(name));
                 if (user != null)
                 {
                     _activeUsersSingleton.ActiveUsersId.Add(name, user.Id);
