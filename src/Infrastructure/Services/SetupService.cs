@@ -22,6 +22,7 @@ namespace Infrastructure.Services
                     using TcpClient client = new TcpClient();
                     client.Connect(cons[0], System.Convert.ToInt32(cons[1]));                    
                     await Task.Delay(connectionTimeout);
+                    break;
                 }
                 catch (System.Exception)
                 {
