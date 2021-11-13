@@ -19,7 +19,8 @@ namespace IdentityServerAspNetIdentity.Services
             {
                 try
                 {
-                    using TcpClient client = new TcpClient();
+                    using TcpClient client = new TcpClient();                                                    
+                    await Task.Delay(connectionTimeout);
                     client.Connect(cons[0], System.Convert.ToInt32(cons[1]));                    
                     await Task.Delay(connectionTimeout);
                     break;

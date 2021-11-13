@@ -46,7 +46,7 @@ services:
     environment: 
       - ConnectionStrings:DbConnection=Server=inventura-sql,1433;User=sa;Password=PlanesCarsAndTrains4321;Initial Catalog=AppDb
       - ConnectionStrings:IdentityAuthority=http://identity-server:5001
-      - Issuer=http://localhost:5001
+      - Issuer=http://localhost:5001,http://10.0.2.2:5001
     ports:
       - 5098:5098
     networks:

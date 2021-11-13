@@ -15,6 +15,7 @@ class ApiService {
     HttpClientRequest request = await client.postUrl(Uri.parse("$_baseApiUrl/$path"));
     request.headers.set('Content-Type', 'application/json');
     var token = _authService.getToken();
+    print(token);
     request.headers.set('Authorization', 'Bearer ${_authService.getToken()}');
     request.add(utf8.encode(body));
     HttpClientResponse result = await request.close();

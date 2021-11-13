@@ -21,8 +21,6 @@ class AuthService {
     return _instance;
   }
 
-
-
   Future<AuthResult?> loginAction(AuthRequest authRequest) async {
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
@@ -57,7 +55,6 @@ class AuthService {
   }
 
   Future<AuthResult?> registerAction(AuthRequest authRequest) async {
-    
     client.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => true);
     HttpClientRequest request =
@@ -71,6 +68,8 @@ class AuthService {
       await for (var data in result.transform(utf8.decoder)) {
         contents.write(data);
       }
+      _username = authRequest.username;
+      _password = authRequest.password;
       _authResult = AuthResult.authResultFromJson(contents.toString());
       return _authResult;
     }

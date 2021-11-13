@@ -12,7 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace PublicApi.Endpoints.FoodProductEndpoints
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AuthorizeUseId")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "AuthorizeUserId")]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedFoodProductRequest>.WithResponse<
         ListPagedFoodProductResponse>
     {

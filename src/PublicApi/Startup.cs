@@ -109,7 +109,7 @@ namespace PublicApi.Util
                 options.Authority = Configuration.GetConnectionString("IdentityAuthority");
                 // TODO: KILL THIS
                 options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters.ValidIssuer = Configuration["Issuer"];
+                options.TokenValidationParameters.ValidIssuers = Configuration["Issuer"].Split(',');
                 options.TokenValidationParameters.ValidAudiences = new[] {"api1"};
                 options.TokenValidationParameters.ValidTypes = new[] {"at+jwt"};
             });
