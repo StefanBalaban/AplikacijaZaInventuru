@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "tests\Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerAspNetIdentity", "src\IdentityServerAspNetIdentity\IdentityServerAspNetIdentity.csproj", "{BB5C3CE2-EDB6-4B6D-9685-DD16C1F4936D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUI", "src\WinUI\WinUI.csproj", "{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,18 @@ Global
 		{BB5C3CE2-EDB6-4B6D-9685-DD16C1F4936D}.Release|x64.Build.0 = Release|Any CPU
 		{BB5C3CE2-EDB6-4B6D-9685-DD16C1F4936D}.Release|x86.ActiveCfg = Release|Any CPU
 		{BB5C3CE2-EDB6-4B6D-9685-DD16C1F4936D}.Release|x86.Build.0 = Release|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Release|x64.Build.0 = Release|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +133,7 @@ Global
 		{20EE60B3-3EE1-4303-B1E5-1C45F59981B7} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
 		{CDF5C585-2D2A-40F9-92E6-E8ACFCC73B57} = {15EA4737-125B-4E6E-A806-E13B7EBCDCCF}
 		{BB5C3CE2-EDB6-4B6D-9685-DD16C1F4936D} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
+		{B1E1945D-EE1E-4E2B-A6BF-C51163E9CA2B} = {419A6ACE-0419-4315-A6FB-B0E63D39432E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49813262-5DA3-4D61-ABD3-493C74CE8C2B}
