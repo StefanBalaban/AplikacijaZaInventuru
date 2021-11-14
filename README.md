@@ -15,12 +15,14 @@ This will start the SQL Servers, the API and the IdentityServer simply run `dock
 
 The mobile application can be executed using android emulator and as such requires no additional setup. To get the emulator device id simply run `flutter emulators`. To use the mobile application on an actual device you will need to change the baseUrl in the auth_service.dart and api_service.dart classes to match the IP address of your local machine.
 
+Requires flutter and Android Emulator to be installed on the device.
+
 ## Desktop
 1. `cd src\WinUI`
 2. `dotnet publish -c Release`
 3. `dotnet bin\Release\net6.0-windows\publish\WinUI.dll`
 
-This will start the Winforms Desktop application.
+This will start the Winforms Desktop application. It requires .NET 6 to be run.
 
 # Usage
 ## Mobile
