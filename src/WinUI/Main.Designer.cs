@@ -125,7 +125,7 @@ namespace WinUI
             this.richTextBox1.Location = new System.Drawing.Point(386, 96);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(134, 197);
+            this.richTextBox1.Size = new System.Drawing.Size(134, 205);
             this.richTextBox1.TabIndex = 8;
             this.richTextBox1.Text = "";
             this.richTextBox1.Visible = false;

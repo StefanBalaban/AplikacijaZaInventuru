@@ -58,6 +58,7 @@ namespace WinUI
         private async void button3_Click(object sender, EventArgs e)
         {
             HideElements();
+            richTextBox1.Text = "";
             var numberOfUserSubscriptionsPerMonths = await _userSubscriptionService.GetProfitForUserSubscriptionsForYear(dateTimePicker1.Value.Year);
             for (int i = 0; i < numberOfUserSubscriptionsPerMonths.Count ; i++)
             {
