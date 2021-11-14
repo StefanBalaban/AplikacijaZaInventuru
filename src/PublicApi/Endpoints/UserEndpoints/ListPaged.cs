@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PublicApi.Endpoints.UserEndpoints
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedUserRequest>.WithResponse<ListPagedUserResponse>
     {
         private readonly IUserService _userService;

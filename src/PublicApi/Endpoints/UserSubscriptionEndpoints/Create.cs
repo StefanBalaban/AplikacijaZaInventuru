@@ -188,7 +188,7 @@ private readonly IUserSubscriptionService _userSubscriptionService;
         public string Status { get; set; } = "Deleted";
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
     public class ListPaged : BaseAsyncEndpoint.WithRequest<ListPagedUserSubscriptionRequest>.WithResponse<ListPagedUserSubscriptionResponse>
 {
 private readonly IUserSubscriptionService _userSubscriptionService;

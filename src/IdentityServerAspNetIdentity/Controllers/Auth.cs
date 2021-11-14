@@ -24,6 +24,8 @@ namespace IdentityServerAspNetIdentity.Controllers
             _userManager = userManager;
             _tools = tools;
             _roleManager = roleManager;
+
+
         }
 
         [HttpPost("login")]
@@ -45,7 +47,7 @@ namespace IdentityServerAspNetIdentity.Controllers
                 var roles = await _userManager.GetRolesAsync(user);
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, request.Username) };
 
-                foreach (var role in roles) claims.Add(new Claim("Role", role));
+                foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
                 response.Token = await _tools.IssueClientJwtAsync("client",3600, scopes: new[] { "api1"}, audiences: new[] { "api1" }, additionalClaims: claims);
 
@@ -65,10 +67,20 @@ namespace IdentityServerAspNetIdentity.Controllers
 
             if (result.Succeeded)
             {
+                if (!await _roleManager.RoleExistsAsync("Administrator"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole { Name = "Administrator", NormalizedName = "ADMINISTRATOR" });
+                }
+
+                if ((await _userManager.GetUsersInRoleAsync("Administrator")).Count == 0)
+                {
+                    var createdUser = await _userManager.FindByNameAsync(request.Username);
+                    await _userManager.AddToRoleAsync(createdUser, "Administrator");
+                }
                 var roles = await _userManager.GetRolesAsync(user);
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, request.Username) };
 
-                foreach (var role in roles) claims.Add(new Claim("Role", role));
+                foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
                 response.Token = await _tools.IssueClientJwtAsync("client", 3600, scopes: new[] { "api1" }, audiences: new[] { "api1" }, additionalClaims: claims);
 
