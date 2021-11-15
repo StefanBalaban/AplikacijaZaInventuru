@@ -11,7 +11,7 @@ namespace ApplicationCore.Specifications.DietPlanSpecs
             Query.Skip(skip);
             Query.Where(i => userId == null || i.UserId == userId);
             Query.Take(take);
-            Query.Include(x => x.DietPlanMeals);
+            Query.Include(x => x.DietPlanMeals).ThenInclude(x => x.Meal).ThenInclude(x => x.Meals).ThenInclude(x => x.FoodProduct);
         }
     }
 

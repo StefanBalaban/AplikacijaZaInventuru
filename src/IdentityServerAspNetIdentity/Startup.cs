@@ -37,6 +37,7 @@ namespace IdentityServerAspNetIdentity
                 config.Password.RequireDigit = true;
                 config.Password.RequireNonAlphanumeric = true;
                 config.Password.RequireUppercase = true;
+                
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

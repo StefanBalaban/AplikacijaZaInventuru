@@ -11,7 +11,7 @@ namespace ApplicationCore.Specifications.NotificationRuleSpecs
             Query.Skip(skip);
             Query.Where(i => userId == null || i.UserId == userId);
             Query.Take(take);
-            Query.Include(x => x.NotificationRuleUserContactInfos);
+            Query.Include(x => x.NotificationRuleUserContactInfos).ThenInclude(x =>x.UserContactInfo);
         }
     }
 }

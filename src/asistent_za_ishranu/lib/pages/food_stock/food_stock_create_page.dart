@@ -19,8 +19,8 @@ class FoodStockCreatePage extends StatefulWidget {
 class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
   final _formKey = GlobalKey<FormState>();
   int? foodProductId;
-  DateTime? bestUseByDate;
-  DateTime? dateOfPurchase;
+  DateTime bestUseByDate = DateTime.now();
+  DateTime dateOfPurchase =  DateTime.now();
   TextEditingController amount = TextEditingController();
   TextEditingController upperAmount = TextEditingController();
   TextEditingController lowerAmount = TextEditingController();

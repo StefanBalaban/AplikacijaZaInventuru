@@ -54,7 +54,7 @@ class _FoodStockListPageState extends State<FoodStockListPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              "Zaliha prehrambenih proizvoda",
+              "Periodi plana ishrane",
               style: TextStyle(fontSize: 15),
             ),
             actions: <Widget>[

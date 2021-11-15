@@ -63,6 +63,11 @@ namespace ApplicationCore.Services
             await _dietPlanPeriodRepository.DeleteAsync(dietPlanPeriod);
             return true;
         }
+
+        public async Task<List<DietPlanPeriod>> ListAll()
+        {
+            return (await _dietPlanPeriodRepository.ListAllAsync()).ToList();
+        }
     }
 }
 

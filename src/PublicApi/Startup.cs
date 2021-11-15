@@ -1,9 +1,11 @@
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using AutoMapper;
+using EasyCronJob.Core;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Logging;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -96,7 +98,13 @@ namespace PublicApi.Util
             services.AddTransient<IUserWeightEvidentionService, UserWeightEvidentionService>();
             services.AddTransient<IUserSubscriptionService, UserSubscriptionService>();
             services.AddSingleton<IActiveUsersSingleton, ActiveUsersSingleton>();
+            services.AddSingleton<IAlertService, AlertService>();
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<IAuthorizationHandler, AuthorizedUserHandler>();
+            services.ApplyResulation<AlertServiceCronJob>(options => {
+                options.CronExpression = "* * * * *";
+                options.TimeZoneInfo = TimeZoneInfo.Local;
+            });
 
             var baseUrlConfig = new BaseUrlConfiguration();
             Configuration.Bind(BaseUrlConfiguration.CONFIG_NAME, baseUrlConfig);
