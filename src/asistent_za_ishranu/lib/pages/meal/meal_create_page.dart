@@ -75,7 +75,7 @@ class _MealCreatePageState extends State<MealCreatePage> {
                     value: e.id,
                   ))
               .toList(),
-          hint: Text('Jedinica mjere'),
+          hint: Text('Prehrambeni proizvod'),
           onChanged: (value) {
             setState(() {
               _foodProductIds[_foodProductIdIndex].text = "$value";
@@ -83,7 +83,7 @@ class _MealCreatePageState extends State<MealCreatePage> {
           },
           validator: (int? value) {
             if (value == null || value == 0) {
-              return 'Odaberite jedinicu';
+              return 'Odaberite proizvod';
             }
             return null;
           },

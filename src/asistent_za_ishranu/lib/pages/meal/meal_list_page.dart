@@ -43,7 +43,7 @@ class _MealListPageState extends State<MealListPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              "Prehrambeni proizvodi",
+              "Obroci",
               style: TextStyle(fontSize: 15),
             ),
             actions: <Widget>[

@@ -36,7 +36,7 @@ class _UserWeightEvidentationListPageState
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              "Period plana ishrane",
+              "Evidencije kilaže",
               style: TextStyle(fontSize: 15),
             ),
             actions: <Widget>[

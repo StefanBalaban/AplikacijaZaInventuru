@@ -61,7 +61,7 @@ class _FoodStockUpdatePageState extends State<FoodStockUpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Izmjeni stanje prehrambenog proizvoda"),
+          title: Text("Izmjeni stanje zalihe"),
         ),
         body: FutureBuilder<FoodStockRequest>(
             future: foodStock,

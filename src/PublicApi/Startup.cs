@@ -99,7 +99,7 @@ namespace PublicApi.Util
             services.AddTransient<IUserSubscriptionService, UserSubscriptionService>();
             services.AddSingleton<IActiveUsersSingleton, ActiveUsersSingleton>();
             services.AddSingleton<IAlertService, AlertService>();
-            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<IEmailSender, EmailSender>(x => new EmailSender(Configuration["SendGridApiKey"], Configuration["SendGridSenderAddress"]));
             services.AddSingleton<IAuthorizationHandler, AuthorizedUserHandler>();
             services.ApplyResulation<AlertServiceCronJob>(options => {
                 options.CronExpression = "* * * * *";

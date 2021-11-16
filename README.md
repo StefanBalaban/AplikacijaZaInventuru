@@ -35,3 +35,6 @@ The features are located under the hamburger menu.
 
 ## Desktop
 To use the desktop application you first have to register with the mobile application. The first user registered on the mobile application will have the Administrator role and will be able to use the desktop application features.
+
+## Email Alert Service
+The cron job to send email alerts requires a SendGrid API key supplied in the docker-compose.yaml file for the API application. If this is left empty the service will run but it will not send any email.

@@ -67,7 +67,7 @@ class _FoodStockCreatePageState extends State<FoodStockCreatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Unos perioda plana ishrane"),
+          title: Text("Unos zalihe"),
         ),
         body: FutureBuilder<List<FoodProductRequest>>(
             future: foodProducts,
