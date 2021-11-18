@@ -102,7 +102,7 @@ namespace PublicApi.Util
             services.AddSingleton<IEmailSender, EmailSender>(x => new EmailSender(Configuration["SendGridApiKey"], Configuration["SendGridSenderAddress"]));
             services.AddSingleton<IAuthorizationHandler, AuthorizedUserHandler>();
             services.ApplyResulation<AlertServiceCronJob>(options => {
-                options.CronExpression = "* * * * *";
+                options.CronExpression = "1 1 * * *";
                 options.TimeZoneInfo = TimeZoneInfo.Local;
             });
 

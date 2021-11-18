@@ -33,10 +33,10 @@ namespace IdentityServerAspNetIdentity
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
-                config.Password.RequiredLength = 8;
-                config.Password.RequireDigit = true;
-                config.Password.RequireNonAlphanumeric = true;
-                config.Password.RequireUppercase = true;
+                config.Password.RequiredLength = 0;
+                config.Password.RequireDigit = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
                 
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()

@@ -2,9 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServerAspNetIdentity.Controllers;
 using IdentityServerAspNetIdentity.Data;
+using IdentityServerAspNetIdentity.Models;
 using IdentityServerAspNetIdentity.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,8 +54,10 @@ namespace IdentityServerAspNetIdentity
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {
-                    using var catalogContext = services.GetRequiredService<ApplicationDbContext>();   
-                    await SetupService.MigrateContextAsync(catalogContext);
+                    using var catalogContext = services.GetRequiredService<ApplicationDbContext>();
+                    var userService = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleService = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await SetupService.MigrateContextAsync(catalogContext, userService, roleService);
 
 
                 }

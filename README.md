@@ -1,3 +1,16 @@
+# About
+Asistent za ishranu AKA nutrition assistant, formerly known as Aplikacija za Inventuru (Food Stock App), is an application that helps the user keep a track of their nutrition intake and fitness progress. The application offers to the user a way to have nutritional information about the food they are consuming, stocks of food they posses, diet plans that they are keeping, and a way to track bodily weight across time in a single place.
+
+Video tutorial that showcases how to start up the application and how to use it: https://youtu.be/pJFb3ampH68.
+
+Test users:
+- mobile app:
+    - username: mobile
+    - password: test
+- desktop app:
+    - username: desktop
+    - password: test
+
 # Startup
 ## Backend
 1. `cd [App root dir]`

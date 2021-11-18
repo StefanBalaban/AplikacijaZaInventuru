@@ -6,6 +6,7 @@ import 'package:asistent_za_ishranu/pages/meal/meal_list_page.dart';
 import 'package:asistent_za_ishranu/pages/notification_rule/notification_rule_list_page.dart';
 import 'package:asistent_za_ishranu/pages/user_weight_evidentation/user_weight_evidentation_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +16,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void initState() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,8 +64,7 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: Text("Zaliha prehrambenih proizvoda"),
               onTap: () {
-                Navigator.of(context)
-                    .pushNamed(FoodStockListPage.routeName);
+                Navigator.of(context).pushNamed(FoodStockListPage.routeName);
               },
             ),
             ListTile(

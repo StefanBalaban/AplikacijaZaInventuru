@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Infrastructure.Data;
 using Infrastructure.Identity;
@@ -9,19 +10,19 @@ namespace Infrastructure.Services
 {
     public class SetupService
     {
-        private static async Task WaitUntilCanConnectToDb(AppContext context)
-         {
+        private static async Task WaitUntilCanConnectToDb(Infrastructure.Data.AppContext context)
+        {
             var conn = context.Database.GetDbConnection().DataSource;
             var cons = conn.Split(',');
-            var maxTimeout = 7;            
+            var maxTimeout = 7;
             var connectionTimeout = 15000;
             for (int i = 1; i <= maxTimeout; i++)
             {
                 try
                 {
-                    using TcpClient client = new TcpClient();                                    
+                    using TcpClient client = new TcpClient();
                     await Task.Delay(connectionTimeout);
-                    client.Connect(cons[0], System.Convert.ToInt32(cons[1]));                    
+                    client.Connect(cons[0], System.Convert.ToInt32(cons[1]));
                     await Task.Delay(connectionTimeout);
                     break;
                 }
@@ -35,7 +36,7 @@ namespace Infrastructure.Services
                 }
             }
         }
-        public static async Task MigrateContextAsync(AppContext context)
+        public static async Task MigrateContextAsync(Infrastructure.Data.AppContext context)
         {
             await WaitUntilCanConnectToDb(context);
             await context.Database.MigrateAsync();
@@ -52,6 +53,36 @@ namespace Infrastructure.Services
                 });
 
                 await context.SaveChangesAsync();
+            }
+
+            if (!(await context.User.AnyAsync()))
+            {
+                var user = new ApplicationCore.Entities.UserAggregate.User
+                {
+                    FirstName = "mobile",
+                    LastName = "test"
+                };
+                await context.User.AddAsync(user);
+
+                context.UserContactInfo.Add(new ApplicationCore.Entities.UserAggregate.UserContactInfo
+                {
+                    Contact = "mobile@test.ba",
+                    User = user
+                });
+
+                await context.SaveChangesAsync();
+
+                context.UserSubscription.Add(new ApplicationCore.Entities.UserSubscription
+                {
+                    UserId = 1,
+                    PaymentDate = DateTime.Now,
+                    BegginDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddDays(365)
+                });
+
+                await context.SaveChangesAsync();
+
+
             }
 
         }
